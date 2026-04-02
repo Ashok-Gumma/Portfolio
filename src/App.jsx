@@ -231,7 +231,7 @@ const App = () => {
   const projects = [
     {
       title: "Anva",
-      tagline: "Skill Exchange Platform",
+      tagline: "Learning & Collaboration",
       description: "A premium peer-to-peer platform for learning and teaching skills, featuring real-time collaboration and AI assistance. Connecting people through shared knowledge.",
       features: ["Real-time Chat & Video (Stream)", "Integrated Code Compiler", "AI Learning Assistant"],
       tags: ["Clerk", "MongoDB", "MERN", "Vite", "Stream Chat"],
