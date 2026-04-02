@@ -246,15 +246,6 @@ const App = () => {
       tags: ["MERN", "Vite", "Google OAuth", "REST APIs"],
       image: "https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&q=80&w=1200",
       link: "https://as-you-wish-q2lj.onrender.com/"
-    },
-    {
-      title: "Financial Simulator",
-      tagline: "Scenario Analysis",
-      description: "An interactive system that simulates financial scenarios to help analyze inputs and generate strategic insights for informed decision-making.",
-      features: ["Scenario Simulation", "Insight Generation", "Interactive Dashboards"],
-      tags: ["React", "Data Visualization", "WIP"],
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200",
-      status: "OnGoing"
     }
   ];
 
