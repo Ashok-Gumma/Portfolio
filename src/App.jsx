@@ -239,7 +239,7 @@ const App = () => {
       link: "https://anva-akzm.onrender.com/"
     },
     {
-      title: "As You Wish",
+      title: "FRIDAY",
       tagline: "Personalized AI Assistance",
       description: "An adaptive AI assistant platform that provides conversational task guidance with natural emotional resonance and secure Google authentication.",
       features: ["Adaptive User Responses", "Conversational AI Interface", "Google OAuth Integration"],
