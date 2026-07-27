@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { 
-  ExternalLink, 
-  Mail, 
-  ChevronDown, 
-  ArrowUpRight, 
-  Globe, 
-  Cpu, 
+import {
+  ExternalLink,
+  Mail,
+  ChevronDown,
+  ArrowUpRight,
+  Globe,
+  Cpu,
   Code,
   Smartphone,
   MapPin,
@@ -35,8 +35,8 @@ const LinkedinIcon = ({ size = 20, style = {} }) => (
 
 const LeetCodeIcon = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-4.593 4.593a1.381 1.381 0 0 0 0 1.954l1.954 1.954a1.381 1.381 0 0 0 1.954 0L14.717 6.04a1.374 1.374 0 0 0 0-1.953l-4.593-4.593l-.641-.493a1.374 1.374 0 0 0-1.02-.274H13.48zM7.332 5.034a1.374 1.374 0 0 0-.961.414L1.778 10.04a1.381 1.381 0 0 0 0 1.954l1.954 1.954a1.381 1.381 0 0 0 1.954 0l4.593-4.593a1.374 1.374 0 0 0 0-1.953L5.686 5.448l-.641-.414a1.374 1.374 0 0 0-.961.414l-.752.752a1.374 1.374 0 0 0 0 1.953l1.954 1.954a1.374 1.374 0 0 0 1.954 0l1.101-1.101L7.332 5.034z"/>
-    <path d="M16.668 18.966a1.374 1.374 0 0 0 .961-.414l4.593-4.593a1.381 1.381 0 0 0 0-1.954l-1.954-1.954a1.381 1.381 0 0 0-1.954 0l-4.593 4.593a1.374 1.374 0 0 0 0 1.953l1.954 1.506l.641.414a1.374 1.374 0 0 0 .961.414l.752-.752a1.374 1.374 0 0 0 0-1.953l-1.954-1.954a1.374 1.374 0 0 0-1.954 0l-1.101 1.101l1.101 1.101zM10.517 24a1.374 1.374 0 0 0 .961-.414l4.593-4.593a1.381 1.381 0 0 0 0-1.954l-1.954-1.954a1.381 1.381 0 0 0-1.954 0L7.136 19.345a1.374 1.374 0 0 0 0 1.953l4.593 4.593l.641.493a1.374 1.374 0 0 0 1.02.274H10.517z"/>
+    <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-4.593 4.593a1.381 1.381 0 0 0 0 1.954l1.954 1.954a1.381 1.381 0 0 0 1.954 0L14.717 6.04a1.374 1.374 0 0 0 0-1.953l-4.593-4.593l-.641-.493a1.374 1.374 0 0 0-1.02-.274H13.48zM7.332 5.034a1.374 1.374 0 0 0-.961.414L1.778 10.04a1.381 1.381 0 0 0 0 1.954l1.954 1.954a1.381 1.381 0 0 0 1.954 0l4.593-4.593a1.374 1.374 0 0 0 0-1.953L5.686 5.448l-.641-.414a1.374 1.374 0 0 0-.961.414l-.752.752a1.374 1.374 0 0 0 0 1.953l1.954 1.954a1.374 1.374 0 0 0 1.954 0l1.101-1.101L7.332 5.034z" />
+    <path d="M16.668 18.966a1.374 1.374 0 0 0 .961-.414l4.593-4.593a1.381 1.381 0 0 0 0-1.954l-1.954-1.954a1.381 1.381 0 0 0-1.954 0l-4.593 4.593a1.374 1.374 0 0 0 0 1.953l1.954 1.506l.641.414a1.374 1.374 0 0 0 .961.414l.752-.752a1.374 1.374 0 0 0 0-1.953l-1.954-1.954a1.374 1.374 0 0 0-1.954 0l-1.101 1.101l1.101 1.101zM10.517 24a1.374 1.374 0 0 0 .961-.414l4.593-4.593a1.381 1.381 0 0 0 0-1.954l-1.954-1.954a1.381 1.381 0 0 0-1.954 0L7.136 19.345a1.374 1.374 0 0 0 0 1.953l4.593 4.593l.641.493a1.374 1.374 0 0 0 1.02.274H10.517z" />
   </svg>
 );
 
@@ -45,11 +45,11 @@ const Navbar = () => {
 
   useEffect(() => {
     const updateTime = () => {
-      setTime(new Date().toLocaleTimeString('en-US', { 
-        timeZone: 'Asia/Kolkata', 
-        hour12: false, 
-        hour: '2-digit', 
-        minute: '2-digit' 
+      setTime(new Date().toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Kolkata',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit'
       }));
     };
     updateTime();
@@ -90,7 +90,7 @@ const Hero = () => {
 
   return (
     <section className="hero" ref={containerRef}>
-      <motion.div 
+      <motion.div
         className="hero-content"
         style={{ y, opacity }}
         initial="hidden"
@@ -111,7 +111,7 @@ const Hero = () => {
             LET'S TALK <ArrowUpRight size={20} />
           </motion.a>
           <motion.p className="hero-desc" variants={revealVariants}>
-            Final Year B.Tech Student (CSE - AI) at Parul University specializing in scalable 
+            Final Year B.Tech Student (CSE - AI) at Parul University specializing in scalable
             web solutions, real-time communication, and personalized AI platforms.
           </motion.p>
         </div>
@@ -129,12 +129,12 @@ const ProjectCard = ({ project, index }) => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { 
+    visible: {
+      opacity: 1,
+      transition: {
         staggerChildren: 0.15,
         delayChildren: 0.2
-      } 
+      }
     }
   };
 
@@ -149,7 +149,7 @@ const ProjectCard = ({ project, index }) => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="project-card"
       ref={ref}
       initial="hidden"
@@ -158,9 +158,9 @@ const ProjectCard = ({ project, index }) => {
     >
       <motion.div className="project-index" variants={itemVariants}>0{index + 1}</motion.div>
       <div className="project-image">
-        <motion.img 
-          src={project.image} 
-          alt={project.title} 
+        <motion.img
+          src={project.image}
+          alt={project.title}
           variants={imageVariants}
         />
         <div className="project-overlay">
@@ -191,14 +191,14 @@ const ProjectCard = ({ project, index }) => {
 const BackgroundEye = () => {
   const { scrollYProgress } = useScroll();
   const irisY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
-  
+
   return (
     <div className="background-eye-container">
-      <motion.svg 
-        width="600" 
-        height="300" 
-        viewBox="0 0 600 300" 
-        fill="none" 
+      <motion.svg
+        width="600"
+        height="300"
+        viewBox="0 0 600 300"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
         initial={{ opacity: 0, scaleY: 0 }}
         animate={{ opacity: 0.05, scaleY: 1 }}
@@ -209,15 +209,15 @@ const BackgroundEye = () => {
         {/* Eyelid Lower */}
         <path d="M50 150C50 150 150 250 300 250C450 250 550 150 550 150" stroke="white" strokeWidth="1" />
         {/* Iris */}
-        <motion.circle 
-          cx="300" cy="150" r="60" stroke="white" strokeWidth="1" 
-          style={{ y: irisY }} 
+        <motion.circle
+          cx="300" cy="150" r="60" stroke="white" strokeWidth="1"
+          style={{ y: irisY }}
           animate={{ x: [0, 5, -5, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         {/* Pupil */}
-        <motion.circle 
-          cx="300" cy="150" r="20" fill="white" 
+        <motion.circle
+          cx="300" cy="150" r="20" fill="white"
           style={{ y: irisY }}
           animate={{ x: [0, 8, -8, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -262,10 +262,10 @@ const App = () => {
       <Navbar />
       <main>
         <Hero />
-        
+
         <section className="about-section">
           <div className="section-grid">
-            <motion.div 
+            <motion.div
               className="grid-item education-card"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -300,13 +300,13 @@ const App = () => {
                   <p className="edu-sub">B.Tech in Computer Science (AI)</p>
                   <div className="edu-footer">
                     <span><Calendar size={14} /> 2023 — 2027</span>
-                    <span className="cgpa">CGPA: 7.18</span>
+                    <span className="cgpa">CGPA: 7.47</span>
                   </div>
                 </div>
               </div>
             </motion.div>
-            
-            <motion.div 
+
+            <motion.div
               className="grid-item skills-card"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -319,8 +319,8 @@ const App = () => {
               </div>
               <div className="skills-container">
                 {skillGroups.map((group, i) => (
-                  <motion.div 
-                    key={i} 
+                  <motion.div
+                    key={i}
                     className="skill-group"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -346,7 +346,7 @@ const App = () => {
             >
               SELECTED WORK
             </motion.h2>
-            <motion.div 
+            <motion.div
               className="section-line"
               initial={{ width: 0 }}
               whileInView={{ width: "100%" }}
@@ -370,8 +370,8 @@ const App = () => {
               >
                 READY TO BUILD <br />SOMETHING ICONIC?
               </motion.h2>
-              <motion.a 
-                href="mailto:ashokgumma20@gmail.com" 
+              <motion.a
+                href="mailto:ashokgumma20@gmail.com"
                 className="footer-cta"
                 whileHover={{ x: 20 }}
               >
@@ -385,8 +385,8 @@ const App = () => {
                   { icon: Mail, text: "ashokgumma20@gmail.com" },
                   { icon: MapPin, text: "Markapur, Andhra Pradesh" }
                 ].map((item, i) => (
-                  <motion.div 
-                    key={i} 
+                  <motion.div
+                    key={i}
                     className="info-item"
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
