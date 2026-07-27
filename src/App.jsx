@@ -1,415 +1,446 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
+import React from 'react';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import {
-  ExternalLink,
-  Mail,
-  ChevronDown,
   ArrowUpRight,
-  Globe,
-  Cpu,
-  Code,
-  Smartphone,
-  MapPin,
-  GraduationCap,
-  Calendar,
-  Award,
+  Mail,
+  Zap,
   Terminal,
-  Zap
+  Cpu,
+  Globe,
+  MapPin,
+  Smartphone
 } from 'lucide-react';
+import realPhoto from './assets/ashok_photo.jpg';
+import anvaImg from './assets/anva.png';
+import fridayImg from './assets/friday.png';
 import './App.css';
 
-// Custom Social Icons to avoid version mismatch errors
-const GithubIcon = ({ size = 20, style = {} }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
+// Animated Starfield & Shooting Stars Component with Scroll Parallax
+const StarfieldBackground = ({ starY1, starY2 }) => (
+  <div className="starfield-container">
+    <motion.div className="stars-layer-1" style={{ y: starY1 }}></motion.div>
+    <motion.div className="stars-layer-2" style={{ y: starY2 }}></motion.div>
+    <div className="shooting-star-1"></div>
+    <div className="shooting-star-2"></div>
+  </div>
+);
+
+// Social Icon Components
+const GithubIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
   </svg>
 );
 
-const LinkedinIcon = ({ size = 20, style = {} }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}>
+const LinkedinIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
     <rect x="2" y="9" width="4" height="12"></rect>
     <circle cx="4" cy="4" r="2"></circle>
   </svg>
 );
 
-const LeetCodeIcon = ({ size = 20 }) => (
+const LeetCodeIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
     <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-4.593 4.593a1.381 1.381 0 0 0 0 1.954l1.954 1.954a1.381 1.381 0 0 0 1.954 0L14.717 6.04a1.374 1.374 0 0 0 0-1.953l-4.593-4.593l-.641-.493a1.374 1.374 0 0 0-1.02-.274H13.48zM7.332 5.034a1.374 1.374 0 0 0-.961.414L1.778 10.04a1.381 1.381 0 0 0 0 1.954l1.954 1.954a1.381 1.381 0 0 0 1.954 0l4.593-4.593a1.374 1.374 0 0 0 0-1.953L5.686 5.448l-.641-.414a1.374 1.374 0 0 0-.961.414l-.752.752a1.374 1.374 0 0 0 0 1.953l1.954 1.954a1.374 1.374 0 0 0 1.954 0l1.101-1.101L7.332 5.034z" />
     <path d="M16.668 18.966a1.374 1.374 0 0 0 .961-.414l4.593-4.593a1.381 1.381 0 0 0 0-1.954l-1.954-1.954a1.381 1.381 0 0 0-1.954 0l-4.593 4.593a1.374 1.374 0 0 0 0 1.953l1.954 1.506l.641.414a1.374 1.374 0 0 0 .961.414l.752-.752a1.374 1.374 0 0 0 0-1.953l-1.954-1.954a1.374 1.374 0 0 0-1.954 0l-1.101 1.101l1.101 1.101zM10.517 24a1.374 1.374 0 0 0 .961-.414l4.593-4.593a1.381 1.381 0 0 0 0-1.954l-1.954-1.954a1.381 1.381 0 0 0-1.954 0L7.136 19.345a1.374 1.374 0 0 0 0 1.953l4.593 4.593l.641.493a1.374 1.374 0 0 0 1.02.274H10.517z" />
   </svg>
 );
 
-const Navbar = () => {
-  const [time, setTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      setTime(new Date().toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Kolkata',
-        hour12: false,
-        hour: '2-digit',
-        minute: '2-digit'
-      }));
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <nav className="navbar">
-      <div className="nav-left">
-        <span className="logo">GUMMA ASHOK SHANKAR</span>
-      </div>
-      <div className="nav-right">
-        <div className="status">
-          <span className="status-dot"></span>
-          AVAILABLE FOR WORK
-        </div>
-        <div className="time">IST {time}</div>
-      </div>
-    </nav>
-  );
-};
-
-const Hero = () => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
-  const revealVariants = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
-  };
-
-  return (
-    <section className="hero" ref={containerRef}>
-      <motion.div
-        className="hero-content"
-        style={{ y, opacity }}
-        initial="hidden"
-        animate="visible"
-        variants={revealVariants}
-      >
-        <div className="hero-top">
-          <motion.span className="hero-tag" variants={revealVariants}>AI ENTHUSIAST & FULL STACK DEVELOPER</motion.span>
-          <motion.div className="hero-location" variants={revealVariants}><MapPin size={14} /> MARKAPUR, AP</motion.div>
-        </div>
-        <motion.h1 variants={revealVariants}>
-          I ENGINEER <span className="highlight-red">INTELLIGENT</span><br />
-          EXPERIENCES THROUGH<br />
-          THE <span className="highlight-white">MERN STACK</span>.
-        </motion.h1>
-        <div className="hero-cta">
-          <motion.a href="mailto:ashokgumma20@gmail.com" className="primary-btn" variants={revealVariants}>
-            LET'S TALK <ArrowUpRight size={20} />
-          </motion.a>
-          <motion.p className="hero-desc" variants={revealVariants}>
-            Final Year B.Tech Student (CSE - AI) at Parul University specializing in scalable
-            web solutions, real-time communication, and personalized AI platforms.
-          </motion.p>
-        </div>
-      </motion.div>
-      <div className="scroll-indicator">
-        <ChevronDown size={24} />
-      </div>
-    </section>
-  );
-};
-
-const ProjectCard = ({ project, index }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-  };
-
-  const imageVariants = {
-    hidden: { scale: 1.1, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }
-  };
-
-  return (
-    <motion.div
-      className="project-card"
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={containerVariants}
-    >
-      <motion.div className="project-index" variants={itemVariants}>0{index + 1}</motion.div>
-      <div className="project-image">
-        <motion.img
-          src={project.image}
-          alt={project.title}
-          variants={imageVariants}
-        />
-        <div className="project-overlay">
-          <motion.div className="tags" variants={itemVariants}>
-            {project.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
-          </motion.div>
-        </div>
-      </div>
-      <div className="project-info">
-        <motion.div className="project-header" variants={itemVariants}>
-          <h3>{project.title}</h3>
-          <span className="project-tagline">{project.tagline}</span>
-        </motion.div>
-        <motion.p variants={itemVariants}>{project.description}</motion.p>
-        <motion.div className="project-features" variants={itemVariants}>
-          {project.features.map((feature, i) => (
-            <span key={i} className="feature-item"><Zap size={12} /> {feature}</span>
-          ))}
-        </motion.div>
-        <motion.div className="project-links" variants={itemVariants}>
-          <a href={project.link} className="link-btn" target="_blank" rel="noopener noreferrer"><Globe size={18} /> {project.status || "Live Demo"}</a>
-        </motion.div>
-      </div>
-    </motion.div>
-  );
-};
-
-const BackgroundEye = () => {
-  const { scrollYProgress } = useScroll();
-  const irisY = useTransform(scrollYProgress, [0, 1], [-20, 20]);
-
-  return (
-    <div className="background-eye-container">
-      <motion.svg
-        width="600"
-        height="300"
-        viewBox="0 0 600 300"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        initial={{ opacity: 0, scaleY: 0 }}
-        animate={{ opacity: 0.05, scaleY: 1 }}
-        transition={{ duration: 2, ease: "easeOut", delay: 1 }}
-      >
-        {/* Eyelid Upper */}
-        <path d="M50 150C50 150 150 50 300 50C450 50 550 150 550 150" stroke="white" strokeWidth="1" />
-        {/* Eyelid Lower */}
-        <path d="M50 150C50 150 150 250 300 250C450 250 550 150 550 150" stroke="white" strokeWidth="1" />
-        {/* Iris */}
-        <motion.circle
-          cx="300" cy="150" r="60" stroke="white" strokeWidth="1"
-          style={{ y: irisY }}
-          animate={{ x: [0, 5, -5, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Pupil */}
-        <motion.circle
-          cx="300" cy="150" r="20" fill="white"
-          style={{ y: irisY }}
-          animate={{ x: [0, 8, -8, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </motion.svg>
-    </div>
-  );
-};
-
 const App = () => {
+  // Ultra-Smooth Spring Physics & Parallax Transforms
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 80, damping: 25, restDelta: 0.0001 });
+  const starY1 = useTransform(scrollYProgress, [0, 1], [0, -380]);
+  const starY2 = useTransform(scrollYProgress, [0, 1], [0, -750]);
+
   const projects = [
     {
       title: "Anva",
-      tagline: "Learning & Collaboration",
-      description: "A premium peer-to-peer platform for learning and teaching skills, featuring real-time collaboration and AI assistance. Connecting people through shared knowledge.",
-      features: ["Real-time Chat & Video (Stream)", "Integrated Code Compiler", "AI Learning Assistant"],
-      tags: ["Clerk", "MongoDB", "MERN", "Vite", "Stream Chat"],
-      image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200",
+      scriptTitle: "Skill Sharing",
+      tagline: "Peer-to-Peer Skill Sharing & Collaboration",
+      description: "A full-stack learning platform equipping students and mentors with real-time video collaboration, an integrated code compiler, and an AI learning assistant.",
+      features: [
+        "Real-time Chat & Video (Stream API)",
+        "Multi-language Code Compiler",
+        "Context-Aware AI Assistant"
+      ],
+      tags: ["MongoDB", "Express", "React", "Node.js", "Clerk"],
+      image: anvaImg,
       link: "https://anva-akzm.onrender.com/"
     },
     {
       title: "FRIDAY",
-      tagline: "Personalized AI Assistance",
-      description: "An adaptive AI assistant platform that provides conversational task guidance with natural emotional resonance and secure Google authentication.",
-      features: ["Adaptive User Responses", "Conversational AI Interface", "Google OAuth Integration"],
-      tags: ["MERN", "Vite", "Google OAuth", "REST APIs"],
-      image: "https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&q=80&w=1200",
+      scriptTitle: "AI Guidance",
+      tagline: "Personalized AI Assistance & Guidance",
+      description: "An adaptive conversational AI guidance platform offering real-time assistance, natural voice resonance, and secure Google OAuth integration.",
+      features: [
+        "Adaptive User Response Tuning",
+        "Conversational AI Guidance",
+        "Google OAuth Authentication"
+      ],
+      tags: ["MERN Stack", "Vite", "Google OAuth", "REST APIs"],
+      image: fridayImg,
       link: "https://as-you-wish-q2lj.onrender.com/"
     }
   ];
 
   const skillGroups = [
-    { title: "Languages", skills: ["Java", "JavaScript", "Python", "SQL"] },
+    { title: "Languages", skills: ["Java", "JavaScript", "Python", "SQL", "HTML/CSS"] },
     { title: "Frontend", skills: ["React", "Next.js", "Tailwind CSS", "DaisyUI"] },
-    { title: "Backend", skills: ["Node.js", "Express.js", "MongoDB", "Clerk", "JWT Auth"] },
-    { title: "Cloud & Dev", skills: ["AWS (EC2/S3)", "GitHub", "Postman", "VS Code"] }
+    { title: "Backend", skills: ["Node.js", "Express.js", "MongoDB", "Clerk", "JWT"] },
+    { title: "Tools & Cloud", skills: ["AWS (EC2/S3)", "GitHub", "Postman", "VS Code"] }
   ];
 
-  return (
-    <div className="app-container">
-      <BackgroundEye />
-      <Navbar />
-      <main>
-        <Hero />
+  const scrollFadeUp = {
+    hidden: { opacity: 0, y: 70, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.95, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
 
-        <section className="about-section">
-          <div className="section-grid">
-            <motion.div
-              className="grid-item education-card"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+  const navItemVariant = {
+    hidden: { opacity: 0, x: 25 },
+    visible: { opacity: 1, x: 0 }
+  };
+
+  return (
+    <div className="app">
+      {/* Ultra-Smooth Scroll Progress Bar */}
+      <motion.div className="scroll-progress-bar" style={{ scaleX }} />
+
+      {/* Animated Parallax Starfield Background */}
+      <StarfieldBackground starY1={starY1} starY2={starY2} />
+
+      {/* Top Header Bar */}
+      <motion.header
+        className="top-header-bar"
+        initial={{ opacity: 0, y: -45 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="header-user-badge">
+          <motion.div
+            className="header-avatar-circle"
+            whileHover={{ scale: 1.18, rotate: 8 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <img src={realPhoto} alt="Ashok Gumma Avatar Icon" />
+          </motion.div>
+          <div className="header-user-info">
+            <span className="header-user-name">ASHOK GUMMA</span>
+            <span className="header-user-title">FULL STACK & AI DEVELOPER</span>
+          </div>
+        </div>
+
+        <div className="header-tag-right">
+          PORTFOLIO
+        </div>
+      </motion.header>
+
+      {/* Hero Section */}
+      <section className="showit-hero">
+        <div className="hero-editorial-grid">
+          {/* Extended Yellow Box Block */}
+          <motion.div
+            className="hero-yellow-block"
+            initial={{ opacity: 0, scale: 0.9, y: 35 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.0, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <motion.h1
+              className="giant-hero-title"
+              initial={{ opacity: 0, y: -40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.85, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="experience-section">
-                <div className="card-header">
-                  <Cpu size={24} />
-                  <h2>EXPERIENCE & CERTIFICATIONS</h2>
-                </div>
-                <div className="edu-content">
-                  <div className="exp-item">
-                    <h3>Cognifiz</h3>
-                    <p className="edu-sub">Full Stack Developer Intern (Certified)</p>
+              WHO
+            </motion.h1>
+
+            <motion.div
+              className="script-overlay-text"
+              initial={{ opacity: 0, rotate: -12, scale: 0.8 }}
+              animate={{ opacity: 1, rotate: -3, scale: 1 }}
+              transition={{ duration: 0.95, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            >
+              Full Stack, AI Developer, Community
+            </motion.div>
+
+            <motion.p
+              className="hero-yellow-sub"
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.85, delay: 0.6 }}
+            >
+              Final Year B.Tech CSE (AI) student at Parul University specializing in scalable web platforms, real-time communication, and intelligent systems.
+            </motion.p>
+          </motion.div>
+
+          {/* Right Side Navigation Menu */}
+          <motion.div
+            className="hero-side-menu"
+            initial="hidden"
+            animate="visible"
+            transition={{ staggerChildren: 0.12, delayChildren: 0.4 }}
+          >
+            <span className="menu-label">MENU</span>
+            <motion.a variants={navItemVariant} href="#about" className="side-menu-link">01. about</motion.a>
+            <motion.a variants={navItemVariant} href="#projects" className="side-menu-link">02. featured</motion.a>
+            <motion.a variants={navItemVariant} href="#projects" className="side-menu-link">03. portfolio</motion.a>
+            <motion.a variants={navItemVariant} href="#skills" className="side-menu-link">04. skills</motion.a>
+            <motion.a variants={navItemVariant} href="#contact" className="side-menu-link">05. contact</motion.a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Section 2: DEVELOPER-LED (Ultra-Smooth Viewport Entrance) */}
+      <section id="about" className="artist-led-section">
+        <div className="editorial-container">
+          <motion.h2
+            className="section-bold-title"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={scrollFadeUp}
+          >
+            DEVELOPER-LED
+          </motion.h2>
+
+          <div className="artist-led-content">
+            <motion.div
+              className="artist-led-desc"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              variants={scrollFadeUp}
+            >
+              <p>
+                I am a multi-hyphenate developer who bridges the gap between high-performance backends, reactive user interfaces, and adaptive AI experiences.
+              </p>
+              <motion.a
+                href="#contact"
+                className="outline-cta-btn"
+                whileHover={{ scale: 1.06, y: -5 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                LET'S WORK TOGETHER <ArrowUpRight size={14} />
+              </motion.a>
+            </motion.div>
+
+            <motion.div
+              className="script-annotation-block"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              variants={scrollFadeUp}
+            >
+              full stack • mern • ai • cloud
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3: CODE-CENTERED / FEATURED WORK (Ultra-Smooth Scroll Cards) */}
+      <section id="projects" className="code-centered-section">
+        <div className="editorial-container">
+          <motion.h2
+            className="section-bold-title"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={scrollFadeUp}
+          >
+            JOY _<br />CENTERED
+          </motion.h2>
+
+          <div className="projects-editorial-grid">
+            {projects.map((project, idx) => (
+              <motion.div
+                key={idx}
+                className="project-editorial-card"
+                initial={{ opacity: 0, y: 70, scale: 0.94 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.9, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -12 }}
+              >
+                <div className="project-photo-wrapper">
+                  <div className="project-yellow-frame"></div>
+                  <div className="project-card-img-box">
+                    <img src={project.image} alt={project.title} />
                   </div>
-                  <div className="exp-item" style={{ marginTop: '24px' }}>
-                    <h3>Corizo</h3>
-                    <p className="edu-sub">Web Development Training (Internship Certified)</p>
-                    <span className="cert-date">May 2025 — June 2025</span>
+                </div>
+
+                <div className="project-card-info">
+                  <div>
+                    <div className="project-script-tag">{project.scriptTitle}</div>
+                    <h3 className="project-card-heading">{project.title}</h3>
+                    <span className="project-card-tagline">{project.tagline}</span>
+                    <p className="project-card-desc">{project.description}</p>
+
+                    <div className="project-features-list">
+                      {project.features.map((feat, i) => (
+                        <div key={i} className="feature-point">
+                          <Zap size={14} /> <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="project-tags-group">
+                      {project.tags.map(t => (
+                        <span key={t} className="editorial-tag">{t}</span>
+                      ))}
+                    </div>
+
+                    <motion.a
+                      href={project.link}
+                      className="outline-cta-btn"
+                      target="_blank"
+                      rel="noreferrer"
+                      whileHover={{ scale: 1.06, x: 5 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      LIVE DEMO <Globe size={14} />
+                    </motion.a>
                   </div>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4: COMMUNITY CREATED / EXPERIENCE & EDUCATION */}
+      <section id="skills" className="community-section">
+        <div className="editorial-container">
+          <motion.h2
+            className="section-bold-title"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={scrollFadeUp}
+          >
+            COMMUNITY_<br />CREATED
+          </motion.h2>
+
+          <div className="community-grid">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              variants={scrollFadeUp}
+            >
+              <div className="timeline-block-title">
+                <Cpu size={16} /> EXPERIENCE & EDUCATION
               </div>
 
-              <div className="education-block" style={{ marginTop: '40px', paddingTop: '40px', borderTop: '1px solid var(--border)' }}>
-                <div className="card-header">
-                  <GraduationCap size={24} />
-                  <h2>EDUCATION</h2>
-                </div>
-                <div className="edu-content">
-                  <h3>Parul University</h3>
-                  <p className="edu-sub">B.Tech in Computer Science (AI)</p>
-                  <div className="edu-footer">
-                    <span><Calendar size={14} /> 2023 — 2027</span>
-                    <span className="cgpa">CGPA: 7.47</span>
-                  </div>
-                </div>
+              <div className="editorial-timeline">
+                <motion.div className="editorial-timeline-item" whileHover={{ x: 12 }}>
+                  <h3 className="timeline-item-role">Cognifiz</h3>
+                  <p className="timeline-item-org">Full Stack Developer Intern (Certified)</p>
+                  <span className="timeline-item-date">MERN ARCHITECTURE & DEVELOPMENT</span>
+                </motion.div>
+
+                <motion.div className="editorial-timeline-item" whileHover={{ x: 12 }}>
+                  <h3 className="timeline-item-role">Corizo</h3>
+                  <p className="timeline-item-org">Web Development Training (Internship Certified)</p>
+                  <span className="timeline-item-date">MAY 2025 — JUNE 2025</span>
+                </motion.div>
+
+                <motion.div className="editorial-timeline-item" whileHover={{ x: 12 }}>
+                  <h3 className="timeline-item-role">Parul University</h3>
+                  <p className="timeline-item-org">B.Tech in CSE (Artificial Intelligence)</p>
+                  <span className="timeline-item-date">2023 — 2027 (FINAL YEAR) • CGPA: 7.47</span>
+                </motion.div>
               </div>
             </motion.div>
 
             <motion.div
-              className="grid-item skills-card"
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.2 }}
+              variants={scrollFadeUp}
             >
-              <div className="card-header">
-                <Terminal size={24} />
-                <h2>CORE SKILLS</h2>
+              <div className="timeline-block-title">
+                <Terminal size={16} /> CORE SKILLS & TECH STACK
               </div>
-              <div className="skills-container">
+
+              <div className="skills-category-grid">
                 {skillGroups.map((group, i) => (
-                  <motion.div
-                    key={i}
-                    className="skill-group"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                  >
-                    <h4>{group.title}</h4>
-                    <div className="skill-tags">
-                      {group.skills.map(s => <span key={s}>{s}</span>)}
+                  <motion.div key={i} className="editorial-skill-card" whileHover={{ y: -8 }}>
+                    <h4 className="skill-card-heading">{group.title}</h4>
+                    <div className="skill-badges-wrapper">
+                      {group.skills.map(s => (
+                        <motion.span key={s} className="skill-badge-item" whileHover={{ scale: 1.16 }}>
+                          {s}
+                        </motion.span>
+                      ))}
                     </div>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="projects-section">
-          <div className="section-header">
-            <motion.h2
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-            >
-              SELECTED WORK
-            </motion.h2>
-            <motion.div
-              className="section-line"
-              initial={{ width: 0 }}
-              whileInView={{ width: "100%" }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-            />
-          </div>
-          <div className="projects-list">
-            {projects.map((p, i) => (
-              <ProjectCard key={i} project={p} index={i} />
-            ))}
-          </div>
-        </section>
+      {/* Section 5: FOOTER (Ultra-Smooth Scroll Reveal) */}
+      <footer id="contact" className="showit-footer">
+        <div className="footer-editorial-container">
+          <motion.h2
+            className="footer-giant-title"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={scrollFadeUp}
+          >
+            READY TO<br />CONNECT?
+          </motion.h2>
+          <motion.div
+            className="footer-script-subtitle"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.3 }}
+            variants={scrollFadeUp}
+          >
+            Let's build something extraordinary together.
+          </motion.div>
 
-        <section className="contact-footer">
-          <div className="footer-main">
-            <div className="footer-left">
-              <motion.h2
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                READY TO BUILD <br />SOMETHING ICONIC?
-              </motion.h2>
-              <motion.a
-                href="mailto:ashokgumma20@gmail.com"
-                className="footer-cta"
-                whileHover={{ x: 20 }}
-              >
-                LET'S CONNECT <ArrowUpRight size={48} />
+          <div className="footer-links-row">
+            <a href="mailto:ashokgumma20@gmail.com" className="footer-contact-item">
+              <Mail size={18} /> ashokgumma20@gmail.com
+            </a>
+            <a href="tel:+917680889083" className="footer-contact-item">
+              <Smartphone size={18} /> +91 7680889083
+            </a>
+            <span className="footer-contact-item">
+              <MapPin size={18} /> Markapur, Andhra Pradesh
+            </span>
+
+            <div className="footer-social-box">
+              <motion.a href="https://github.com/Ashok-Gumma" className="footer-social-link" target="_blank" rel="noreferrer" whileHover={{ y: -4, scale: 1.06 }}>
+                GITHUB
+              </motion.a>
+              <motion.a href="https://linkedin.com/in/ashok-gumma1" className="footer-social-link" target="_blank" rel="noreferrer" whileHover={{ y: -4, scale: 1.06 }}>
+                LINKEDIN
+              </motion.a>
+              <motion.a href="https://leetcode.com/u/gummaashok/" className="footer-social-link" target="_blank" rel="noreferrer" whileHover={{ y: -4, scale: 1.06 }}>
+                LEETCODE
               </motion.a>
             </div>
-            <div className="footer-right">
-              <div className="contact-info">
-                {[
-                  { icon: Smartphone, text: "+91 7680889083" },
-                  { icon: Mail, text: "ashokgumma20@gmail.com" },
-                  { icon: MapPin, text: "Markapur, Andhra Pradesh" }
-                ].map((item, i) => (
-                  <motion.div
-                    key={i}
-                    className="info-item"
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                  >
-                    <item.icon size={20} />
-                    <span>{item.text}</span>
-                  </motion.div>
-                ))}
-              </div>
-              <div className="social-grid">
-                <a href="https://github.com/Ashok-Gumma" className="social-link" target="_blank" rel="noopener noreferrer"><GithubIcon /> GITHUB</a>
-                <a href="https://linkedin.com/in/ashok-gumma1" className="social-link" target="_blank" rel="noopener noreferrer"><LinkedinIcon /> LINKEDIN</a>
-                <a href="https://leetcode.com/u/gummaashok/" className="social-link" target="_blank" rel="noopener noreferrer"><LeetCodeIcon /> LEETCODE</a>
-              </div>
-            </div>
           </div>
-          <div className="footer-bottom">
+
+          <div className="footer-bottom-copy">
             <span>© {new Date().getFullYear()} ASHOK GUMMA</span>
-            <span>CRAFTING DIGITAL EXCELLENCE</span>
+            <span></span>
           </div>
-        </section>
-      </main>
+        </div>
+      </footer>
     </div>
   );
 };
