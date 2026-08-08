@@ -8,7 +8,10 @@ import {
   Cpu,
   Globe,
   MapPin,
-  Smartphone
+  Smartphone,
+  Briefcase,
+  GraduationCap,
+  Award
 } from 'lucide-react';
 import realPhoto from './assets/ashok_photo.jpg';
 import anvaImg from './assets/anva.png';
@@ -56,40 +59,42 @@ const App = () => {
 
   const projects = [
     {
-      title: "Anva",
-      scriptTitle: "Skill Sharing",
-      tagline: "Peer-to-Peer Skill Sharing & Collaboration",
-      description: "A full-stack learning platform equipping students and mentors with real-time video collaboration, an integrated code compiler, and an AI learning assistant.",
+      title: "ANVA",
+      scriptTitle: "AI Ecosystem",
+      tagline: "Collaborative learning ecosystem integrating AI",
+      description: "A collaborative learning platform integrating AI, educational networking, coding tools, and real-time communication.",
       features: [
-        "Real-time Chat & Video (Stream API)",
-        "Multi-language Code Compiler",
-        "Context-Aware AI Assistant"
+        "Interactive AI Assistant & Flashcards Studio",
+        "Online Code Compiler, Real-time Chat, Video calling & Screen sharing",
+        "End-to-end admin moderation, RBAC, bug reporting & platform monitoring"
       ],
-      tags: ["MongoDB", "Express", "React", "Node.js", "Clerk"],
+      tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Clerk Authentication", "Stream Chat", "Stream Video", "Tailwind CSS"],
       image: anvaImg,
       link: "https://anva-akzm.onrender.com/"
     },
     {
       title: "FRIDAY",
-      scriptTitle: "AI Guidance",
-      tagline: "Personalized AI Assistance & Guidance",
-      description: "An adaptive conversational AI guidance platform offering real-time assistance, natural voice resonance, and secure Google OAuth integration.",
+      scriptTitle: "Personal AI",
+      tagline: "Adaptive Personal Assistant",
+      description: "A personalized AI assistant that adapts conversations based on user profile, interests, and mood.",
       features: [
-        "Adaptive User Response Tuning",
-        "Conversational AI Guidance",
-        "Google OAuth Authentication"
+        "Personalized onboarding & mood-aware conversations",
+        "Persistent user profiles & interest-based adaptive chat",
+        "Secure Google OAuth Authentication"
       ],
-      tags: ["MERN Stack", "Vite", "Google OAuth", "REST APIs"],
+      tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Google OAuth", "REST APIs"],
       image: fridayImg,
       link: "https://as-you-wish-q2lj.onrender.com/"
     }
   ];
 
   const skillGroups = [
-    { title: "Languages", skills: ["Java", "JavaScript", "Python", "SQL", "HTML/CSS"] },
-    { title: "Frontend", skills: ["React", "Next.js", "Tailwind CSS", "DaisyUI"] },
-    { title: "Backend", skills: ["Node.js", "Express.js", "MongoDB", "Clerk", "JWT"] },
-    { title: "Tools & Cloud", skills: ["AWS (EC2/S3)", "GitHub", "Postman", "VS Code"] }
+    { title: "Languages", skills: ["Java", "JavaScript", "SQL"] },
+    { title: "Frontend", skills: ["React.js", "HTML5", "CSS3", "Tailwind CSS"] },
+    { title: "Backend", skills: ["Node.js", "Express.js", "REST APIs", "JWT", "Clerk Authentication"] },
+    { title: "Database", skills: ["MongoDB", "MySQL"] },
+    { title: "Tools", skills: ["Git", "GitHub", "Postman", "AWS (EC2, S3)", "VS Code"] },
+    { title: "Core Concepts", skills: ["Data Structures & Algorithms", "OOP", "Authentication", "RBAC", "API Integration"] }
   ];
 
   const scrollFadeUp = {
@@ -335,27 +340,41 @@ const App = () => {
               viewport={{ once: false, amount: 0.2 }}
               variants={scrollFadeUp}
             >
+              {/* SECTION: INTERNSHIPS */}
               <div className="timeline-block-title">
-                <Cpu size={16} /> EXPERIENCE & EDUCATION
+                <Briefcase size={16} /> INTERNSHIPS
               </div>
 
-              <div className="editorial-timeline">
+              <div className="editorial-timeline" style={{ marginBottom: '40px' }}>
                 <motion.div className="editorial-timeline-item" whileHover={{ x: 12 }}>
-                  <h3 className="timeline-item-role">Cognifiz</h3>
-                  <p className="timeline-item-org">Full Stack Developer Intern (Certified)</p>
-                  <span className="timeline-item-date">MERN ARCHITECTURE & DEVELOPMENT</span>
+                  <h3 className="timeline-item-role">Zetheta Algorithms Private Limited</h3>
+                  <p className="timeline-item-org">Full Stack Engineer Intern (Remote)</p>
+                  <span className="timeline-item-date">JUL 2026 — AUG 2026</span>
+                  <p className="timeline-item-desc">
+                    Developed a responsive multi-step Loan Application platform using reusable React components, client side validation, and seamless multi-step workflows. Collaborated in a project driven environment, improving UI responsiveness.
+                  </p>
                 </motion.div>
 
                 <motion.div className="editorial-timeline-item" whileHover={{ x: 12 }}>
                   <h3 className="timeline-item-role">Corizo</h3>
-                  <p className="timeline-item-org">Web Development Training (Internship Certified)</p>
-                  <span className="timeline-item-date">MAY 2025 — JUNE 2025</span>
+                  <p className="timeline-item-org">Web Development Trainee (Remote)</p>
+                  <span className="timeline-item-date">MAY 2025 — JUN 2025</span>
+                  <p className="timeline-item-desc">
+                    Completed hands-on Full Stack Web Development training covering MERN stack development, REST APIs, authentication, and responsive web applications.
+                  </p>
                 </motion.div>
+              </div>
 
+              {/* SECTION: WORKSHOPS */}
+              <div className="timeline-block-title">
+                <Award size={16} /> WORKSHOPS
+              </div>
+
+              <div className="editorial-timeline">
                 <motion.div className="editorial-timeline-item" whileHover={{ x: 12 }}>
-                  <h3 className="timeline-item-role">Parul University</h3>
-                  <p className="timeline-item-org">B.Tech in CSE (Artificial Intelligence)</p>
-                  <span className="timeline-item-date">2023 — 2027 (FINAL YEAR) • CGPA: 7.47</span>
+                  <h3 className="timeline-item-role">Parul University Projections</h3>
+                  <p className="timeline-item-org">Full Stack Web Development Workshop</p>
+                  <span className="timeline-item-date">FEB 2026</span>
                 </motion.div>
               </div>
             </motion.div>
@@ -366,6 +385,20 @@ const App = () => {
               viewport={{ once: false, amount: 0.2 }}
               variants={scrollFadeUp}
             >
+              {/* SECTION: EDUCATION */}
+              <div className="timeline-block-title">
+                <GraduationCap size={16} /> EDUCATION
+              </div>
+
+              <div className="editorial-timeline" style={{ marginBottom: '40px' }}>
+                <motion.div className="editorial-timeline-item" whileHover={{ x: 12 }}>
+                  <h3 className="timeline-item-role">Parul University</h3>
+                  <p className="timeline-item-org">B.Tech in Computer Science and Engineering (Artificial Intelligence)</p>
+                  <span className="timeline-item-date">2023 — 2027 • CGPA: 7.47</span>
+                </motion.div>
+              </div>
+
+              {/* SECTION: SKILLS */}
               <div className="timeline-block-title">
                 <Terminal size={16} /> CORE SKILLS & TECH STACK
               </div>

@@ -461,7 +461,6 @@ body {
   position: relative;
   z-index: 1;
   width: 100%;
-  aspect-ratio: 16/10;
   background: var(--black);
   border-radius: 2px;
   overflow: hidden;
@@ -469,8 +468,8 @@ body {
 
 .project-card-img-box img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
   transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -633,6 +632,13 @@ body {
   letter-spacing: 0.05em;
   color: var(--black);
   text-transform: uppercase;
+}
+
+.timeline-item-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-top: 8px;
 }
 
 .skills-category-grid {
