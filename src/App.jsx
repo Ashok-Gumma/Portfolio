@@ -114,18 +114,18 @@ const App = () => {
     {
       id: "anva",
       title: "ANVA",
-      subtitle: "AI-Powered Learning, Community & Placement Platform",
+      subtitle: "AI-Powered Learning, Video Collaboration & Placement Platform",
       badge: "FEATURED PLATFORM",
-      description: "A comprehensive, full-stack educational and career-prep platform that unifies AI study assistance, interactive code compilation, real-time collaboration, and structured placement workflows for aspiring engineers.",
+      description: "A full-stack learning platform combining AI study tools, an interactive multi-language code compiler, and real-time video/chat collaboration.",
       metrics: [
         { label: "Architecture", val: "Full-Stack MERN + Realtime" },
         { label: "AI Engines", val: "Flashcards & Study AI" },
         { label: "Realtime", val: "Stream Video & Chat" }
       ],
       features: [
-        "AI-powered learning studio with smart flashcard generator and contextual study companion",
-        "Integrated multi-language online code compiler with instant execution",
-        "Real-time 1-on-1 & group video calling with screen sharing via Stream SDK",
+        "AI study studio with smart flashcard generation and contextual assistance",
+        "Online multi-language code compiler with instant execution",
+        "Real-time 1-on-1 and group video calling with screen share (Stream SDK)",
         "Role-Based Access Control (RBAC), moderation dashboard, and analytics"
       ],
       tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Clerk Auth", "Stream SDK", "Tailwind CSS"],
@@ -138,17 +138,17 @@ const App = () => {
       title: "SolarGrid",
       subtitle: "Solar Operations ERP & CRM Platform",
       badge: "ENTERPRISE ERP",
-      description: "An end-to-end ERP and CRM operations system built specifically for solar equipment wholesale, commercial distribution, and rooftop installation workflows. It centralizes order tracking, inventory, challans, and service pipelines.",
+      description: "An end-to-end ERP & CRM operations system for solar wholesale and installations, managing client pipelines, inventory tracking, delivery challans, and technician dispatches.",
       metrics: [
         { label: "Backend", val: "Node / Express / Postgres" },
         { label: "Security", val: "Role-Based Access (RBAC)" },
         { label: "Pipeline", val: "Lead-to-Installation" }
       ],
       features: [
-        "Complete customer relationship pipeline from lead qualification to final invoice",
-        "Real-time warehouse inventory tracking with automated delivery challan creation",
-        "Installation lifecycle management, technician dispatching, and service ticketing",
-        "Granular role-based permissions (Admin, Sales, Operations, Field Engineers)"
+        "Complete CRM pipeline from lead qualification to final invoice generation",
+        "Real-time warehouse inventory management with automated delivery challans",
+        "Installation lifecycle management and technician service ticketing",
+        "Granular role-based permissions (Admin, Sales, Operations, Field)"
       ],
       tags: ["React / Next.js", "Node.js", "Express.js", "PostgreSQL", "REST APIs", "RBAC", "Tailwind CSS"],
       image: solargridImg,
@@ -158,17 +158,17 @@ const App = () => {
     {
       id: "friday",
       title: "FRIDAY",
-      subtitle: "Adaptive Personal AI Assistant",
+      subtitle: "Adaptive Contextual AI Assistant",
       badge: "AI APPLICATION",
-      description: "An adaptive conversational AI assistant that dynamically customizes its dialogue flow, tone, and recommendations based on user profiles, sentiment state, and session context.",
+      description: "An adaptive conversational AI assistant that tailors tone, recommendations, and dialogue flows based on persistent user context and memory.",
       metrics: [
         { label: "Core Focus", val: "Contextual AI & Memory" },
         { label: "Auth", val: "Google OAuth 2.0" },
         { label: "Stack", val: "MERN Stack Architecture" }
       ],
       features: [
-        "Personalized user profile onboarding with preference & mood contextualization",
-        "Persistent conversation memory with adaptive prompt engineering",
+        "Context-aware prompt architecture with persistent user session memory",
+        "Personalized onboarding with preference and mood tracking",
         "Secure Google OAuth 2.0 authentication and protected API endpoints"
       ],
       tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Google OAuth", "REST APIs"],
@@ -264,6 +264,16 @@ const App = () => {
                 <span>Available for Full-Stack & Software Engineering Roles</span>
               </motion.div>
 
+              {/* Greeting Tag */}
+              <motion.div
+                className="hero-greeting"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.05 }}
+              >
+                <span>Hey, I'm Ashok Shankar Gumma</span>
+              </motion.div>
+
               {/* Main Headline */}
               <motion.h1
                 className="hero-headline"
@@ -271,7 +281,7 @@ const App = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
               >
-                Building scalable <em>ERP/CRM platforms</em>, real-time collaboration engines, and production-ready <em>AI systems</em>.
+                Full-Stack Developer building modern web apps, scalable backends & AI tools.
               </motion.h1>
 
               {/* Bio Summary */}
@@ -281,7 +291,7 @@ const App = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
               >
-                Hi, I'm <strong>Ashok Shankar Gumma</strong> — a Full-Stack Developer and B.Tech CSE (Artificial Intelligence) student with proven experience architecting full-lifecycle business platforms, database schemas, and intuitive modern web interfaces.
+                B.Tech CSE (AI) student with hands-on experience architecting full-stack platforms like <strong>ANVA</strong> & <strong>SolarGrid</strong>. Passionate about clean code, intuitive UI design, and production-grade systems.
               </motion.p>
 
               {/* Quick Action CTAs */}
@@ -292,7 +302,7 @@ const App = () => {
                 transition={{ duration: 0.7, delay: 0.3 }}
               >
                 <a href="#projects" className="btn-primary">
-                  Explore Featured Work <ArrowRight size={16} />
+                  Explore Projects <ArrowRight size={16} />
                 </a>
                 <a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="btn-secondary">
                   <GithubIcon size={16} /> GitHub Profile
@@ -312,7 +322,7 @@ const App = () => {
                 <div className="metric-card">
                   <div className="metric-icon-wrap"><Layers size={18} /></div>
                   <div className="metric-info">
-                    <span className="metric-title">3+ Production Systems</span>
+                    <span className="metric-title">3+ Full-Stack Apps</span>
                     <span className="metric-sub">ANVA, SolarGrid, FRIDAY</span>
                   </div>
                 </div>
@@ -326,10 +336,10 @@ const App = () => {
                 </div>
 
                 <div className="metric-card">
-                  <div className="metric-icon-wrap"><Award size={18} /></div>
+                  <div className="metric-icon-wrap"><Briefcase size={18} /></div>
                   <div className="metric-info">
-                    <span className="metric-title">Adobe Hackathon</span>
-                    <span className="metric-sub">Round 1 Qualified (Round 2 Done)</span>
+                    <span className="metric-title">Work Experience</span>
+                    <span className="metric-sub">Full Stack Intern @ Zetheta</span>
                   </div>
                 </div>
 
@@ -456,59 +466,19 @@ const App = () => {
         </section>
 
         {/* =========================================================
-            4. EXPERIENCE, COMPETITIONS & EDUCATION
+            4. EXPERIENCE, TRAINING & EDUCATION
             ========================================================= */}
         <section id="experience" className="section-block bg-subtle">
           <div className="main-container">
             <div className="section-header">
               <div className="section-tag-pill">CAREER & TRACK RECORD</div>
-              <h2 className="section-title">Experience & Achievements</h2>
+              <h2 className="section-title">Experience & Education</h2>
               <p className="section-desc">
-                Internship experience, competition track record, and academic background.
+                Internship experience, technical training, and academic background.
               </p>
             </div>
 
             <div className="experience-bento-grid">
-              {/* COMPETITIONS */}
-              <motion.div
-                className="timeline-bento-card"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={fadeUp}
-              >
-                <div className="card-top-icon">
-                  <Award size={20} />
-                  <span className="card-section-label">HACKATHONS & COMPETITIONS</span>
-                </div>
-
-                <div className="timeline-entry highlight-entry">
-                  <div className="entry-header">
-                    <div>
-                      <h4 className="entry-role">Adobe Hackathon</h4>
-                      <p className="entry-org">Adobe Systems • Selected for Round 1</p>
-                    </div>
-                    <span className="status-tag success">ROUND 2 COMPLETED</span>
-                  </div>
-                  <p className="entry-desc">
-                    Participated in the ongoing Adobe Hackathon and successfully advanced through Round 1. Round 2 has been completed and I am currently awaiting results.
-                  </p>
-                </div>
-
-                <div className="timeline-entry">
-                  <div className="entry-header">
-                    <div>
-                      <h4 className="entry-role">Full Stack Web Dev Workshop</h4>
-                      <p className="entry-org">Parul University Projections</p>
-                    </div>
-                    <span className="status-tag">FEB 2026</span>
-                  </div>
-                  <p className="entry-desc">
-                    Hands-on workshop covering modern full-stack web architectural patterns and frontend integration.
-                  </p>
-                </div>
-              </motion.div>
-
               {/* WORK EXPERIENCE */}
               <motion.div
                 className="timeline-bento-card"
@@ -545,6 +515,46 @@ const App = () => {
                   </div>
                   <p className="entry-desc">
                     Completed comprehensive training covering MERN stack development, REST API engineering, secure authentication, and responsive interfaces.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* TECHNICAL TRAINING & WORKSHOPS */}
+              <motion.div
+                className="timeline-bento-card"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                variants={fadeUp}
+              >
+                <div className="card-top-icon">
+                  <Sparkles size={20} />
+                  <span className="card-section-label">TRAINING & WORKSHOPS</span>
+                </div>
+
+                <div className="timeline-entry">
+                  <div className="entry-header">
+                    <div>
+                      <h4 className="entry-role">Full Stack Web Dev Workshop</h4>
+                      <p className="entry-org">Parul University Projections</p>
+                    </div>
+                    <span className="status-tag">FEB 2026</span>
+                  </div>
+                  <p className="entry-desc">
+                    Hands-on workshop covering modern full-stack web architectural patterns, responsive components, and frontend-backend integration.
+                  </p>
+                </div>
+
+                <div className="timeline-entry">
+                  <div className="entry-header">
+                    <div>
+                      <h4 className="entry-role">DSA & System Fundamentals</h4>
+                      <p className="entry-org">LeetCode & Problem Solving</p>
+                    </div>
+                    <span className="status-tag">CONTINUOUS</span>
+                  </div>
+                  <p className="entry-desc">
+                    Regular practice solving Data Structures & Algorithms challenges with a focus on optimal time-complexity and clean code.
                   </p>
                 </div>
               </motion.div>
@@ -591,12 +601,12 @@ const App = () => {
                 variants={fadeUp}
               >
                 <div className="section-tag-pill">ENGINEER PROFILE</div>
-                <h2 className="about-title">Problem-solver with an obsession for end-to-end execution.</h2>
+                <h2 className="about-title">Full-stack developer focused on clean architecture & execution.</h2>
                 <p className="about-paragraph">
-                  I bridge the gap between complex backend architectures and delightful, responsive user experiences. Whether it is modeling multi-tenant PostgreSQL databases for solar supply chains or integrating real-time WebRTC streams for educational platforms, I focus on clean code, reliability, and business impact.
+                  I specialize in building end-to-end web applications, scalable backend APIs, and modern user interfaces. From architecting PostgreSQL schemas for business workflows to integrating real-time collaboration engines, I focus on performance, reliability, and clean code.
                 </p>
                 <p className="about-paragraph">
-                  Outside of coding, I participate actively in hackathons and maintain an active problem-solving streak on LeetCode.
+                  Passionate about solving real-world challenges, building production-ready software, and continuous problem-solving on LeetCode.
                 </p>
 
                 <div className="about-specs-grid">
