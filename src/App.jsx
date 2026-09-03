@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
+import Lenis from 'lenis';
 import {
   ArrowUpRight,
   Mail,
   Zap,
-  Terminal,
-  Globe,
   MapPin,
-  Smartphone,
   Briefcase,
   GraduationCap,
-  Award,
-  Star,
-  CheckCircle2,
-  Code2,
   Layers,
   Sparkles,
   ExternalLink,
@@ -23,59 +17,29 @@ import {
   Database,
   Server,
   Layout,
-  Flame,
-  ArrowRight,
-  FolderGit2
+  FolderGit2,
+  X,
+  Code2,
+  Terminal,
+  Globe
 } from 'lucide-react';
-import realPhoto from './assets/notion_hoodie_avatar.jpg';
-import anvaImg from './assets/notion_minimal_anva.jpg';
-import solargridImg from './assets/notion_minimal_solargrid.jpg';
-import fridayImg from './assets/notion_minimal_friday.jpg';
+
+import ashokPortrait from './assets/ashok_portrait_main.jpg';
+import ashokRecliningHero from './assets/ashok_reclining_sticker_hero.jpg';
+import ashokPolaroidCoding from './assets/ashok_polaroid_coding_desk.jpg';
+import ashokPolaroidSketching from './assets/ashok_polaroid_sketching.jpg';
+import ashokPolaroidFloor from './assets/ashok_polaroid_floor_headphones.jpg';
+import ashokResearchFloor from './assets/ashok_research_papers_floor.jpg';
+import adobeCertificate from './assets/adobe_hackathon_certificate.png';
+import zethetaCertificate from './assets/zetheta_internship_certificate.png';
+import corizoCertificate from './assets/corizo_training_certificate.png';
+import parulWorkshopCertificate from './assets/parul_workshop_certificate.png';
+import anvaImg from './assets/anva.png';
+import solargridImg from './assets/solargrid.jpg';
+import fridayImg from './assets/friday.png';
 import './App.css';
 
-// Notion-Style Page Loader Component
-const NotionPageLoader = ({ onComplete }) => {
-  const [progress, setProgress] = useState(20);
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setProgress(60), 100);
-    const t2 = setTimeout(() => setProgress(90), 250);
-    const t3 = setTimeout(() => {
-      setProgress(100);
-      setTimeout(onComplete, 180);
-    }, 480);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-  }, [onComplete]);
-
-  return (
-    <motion.div
-      className="notion-loader-overlay"
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.3, ease: 'easeInOut' } }}
-    >
-      <div className="notion-top-progress-bar">
-        <div className="notion-progress-indicator" style={{ width: `${progress}%` }}></div>
-      </div>
-
-      <div className="notion-loader-inner">
-        <div className="notion-spinner-wrap">
-          <svg className="notion-cube-svg" viewBox="0 0 100 100" fill="currentColor">
-            <path d="M19.4 16.5l48.8-6.1c5.8-.7 7.7.9 9.8 4.2l12.4 19.2c1.7 2.7 1.2 5.5-1.9 5.8l-40.4 5c-3.1.4-5.3-1.6-6.8-4.3l-10-17.7c-1.5-2.7-.4-4.8 2.2-5.1l25.8-3.2-31.5 3.9c-2.6.3-4.5 2.1-4.8 4.7l-4.2 46.9c-.4 4.5 1.5 6.9 6.2 6.3l52.6-6.6c4.7-.6 7.4-3.5 7.8-8l3.9-44.1c.3-3.6-1.5-5.9-4.8-5.5l-50 6.2c-3.3.4-5.5-1.5-7-4.2l-8.5-14.7z" />
-          </svg>
-          <div className="notion-pulsing-dot"></div>
-        </div>
-        <div className="notion-loader-text">Loading portfolio...</div>
-      </div>
-    </motion.div>
-  );
-};
-
-// Social Icon Components
+// SVG Social Icons
 const GithubIcon = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -97,328 +61,708 @@ const LeetCodeIcon = ({ size = 16 }) => (
   </svg>
 );
 
+// Motion animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.09,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const popIn = {
+  hidden: { opacity: 0, scale: 0.9, y: 16 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { type: 'spring', damping: 20, stiffness: 260 }
+  }
+};
+
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [showHireWidget, setShowHireWidget] = useState(true);
+  const [activeLightbox, setActiveLightbox] = useState(null);
 
   const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 90, damping: 28, restDelta: 0.0001 });
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 32, restDelta: 0.001 });
+
+  // Initialize buttery smooth momentum scrolling with Lenis
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      smoothTouch: false,
+      wheelMultiplier: 1.05,
+    });
+
+    let animationFrameId;
+    function raf(time) {
+      lenis.raf(time);
+      animationFrameId = requestAnimationFrame(raf);
+    }
+    animationFrameId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      lenis.destroy();
+    };
+  }, []);
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText('ashokgumma20@gmail.com');
     setCopiedEmail(true);
-    setTimeout(() => setCopiedEmail(false), 2000);
+    setTimeout(() => setCopiedEmail(false), 2400);
   };
 
   const projects = [
     {
       id: "anva",
+      number: "Project 01 / Placement Arena, AI & Real-time Platform",
+      themeClass: "theme-emerald",
       title: "ANVA",
-      subtitle: "AI-Powered Learning, Video Collaboration & Placement Platform",
-      badge: "FEATURED PLATFORM",
-      description: "A full-stack learning platform combining AI study tools, an interactive multi-language code compiler, and real-time video/chat collaboration.",
-      metrics: [
-        { label: "Architecture", val: "Full-Stack MERN + Realtime" },
-        { label: "AI Engines", val: "Flashcards & Study AI" },
-        { label: "Realtime", val: "Stream Video & Chat" }
-      ],
-      features: [
-        "AI study studio with smart flashcard generation and contextual assistance",
-        "Online multi-language code compiler with instant execution",
-        "Real-time 1-on-1 and group video calling with screen share (Stream SDK)",
-        "Role-Based Access Control (RBAC), moderation dashboard, and analytics"
-      ],
-      tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Clerk Auth", "Stream SDK", "Tailwind CSS"],
+      subtitle: "Where Global Fluency Meets Technical Mastery • Company Placement & Coding Suite",
+      description: "An integrated career and technical mastery platform uniting native language exchange, 24/7 AI tutoring, company placement preparation, and in-browser coding. Features an interactive Placement Arena (aptitude MCQs, Monaco code editor, TCS NQT recruitment tracks), Pomodoro focus timer, AI-generated flashcards, and real-time WebRTC audio/video calling via Stream SDK.",
+      tools: ["React.js", "Node.js", "Express.js", "MongoDB", "Placement Arena", "Mock Tests", "Pomodoro Focus", "Stream SDK", "Clerk Auth", "Monaco Editor"],
+      reviewTitle: "Placement & Coding Suite",
+      reviewRating: "★★★★★",
+      reviewText: "Engineered MNC company-specific aptitude & coding mock test modules, Pomodoro productivity flow, and sub-second multi-language code compilation with real-time WebRTC video calling.",
+      palette: ["#09231B", "#22C55E", "#0F172A", "#FFFFFF"],
       image: anvaImg,
       liveLink: "https://anva-akzm.onrender.com/",
-      githubLink: "https://github.com/Ashok-Gumma/Anva"
+      githubLink: "https://github.com/Ashok-Gumma/Anva",
+      urlLabel: "https://anva.app/workspace"
     },
     {
       id: "solargrid",
+      number: "Project 02 / Solar Operations ERP & CRM",
+      themeClass: "theme-terracotta",
       title: "SolarGrid",
-      subtitle: "Solar Operations ERP & CRM Platform",
-      badge: "ENTERPRISE ERP",
-      description: "An end-to-end ERP & CRM operations system for solar wholesale and installations, managing client pipelines, inventory tracking, delivery challans, and technician dispatches.",
-      metrics: [
-        { label: "Backend", val: "Node / Express / Postgres" },
-        { label: "Security", val: "Role-Based Access (RBAC)" },
-        { label: "Pipeline", val: "Lead-to-Installation" }
-      ],
-      features: [
-        "Complete CRM pipeline from lead qualification to final invoice generation",
-        "Real-time warehouse inventory management with automated delivery challans",
-        "Installation lifecycle management and technician service ticketing",
-        "Granular role-based permissions (Admin, Sales, Operations, Field)"
-      ],
-      tags: ["React / Next.js", "Node.js", "Express.js", "PostgreSQL", "REST APIs", "RBAC", "Tailwind CSS"],
+      subtitle: "Real Hope. Real Light. Powered by SolarGrid ERP.",
+      description: "A mission-critical enterprise operations and CRM platform simplifying solar distribution for rural homes (PM Surya Ghar), village kitchens (Clean Stoves), and agricultural pump installations (PM-KUSUM Irrigation) across developing India. Features warehouse inventory tracking, automated delivery challans, and technician field service dispatching with granular RBAC.",
+      tools: ["React / Next.js", "Node.js", "Express.js", "PostgreSQL", "RBAC", "REST APIs", "Challan Automation"],
+      reviewTitle: "Enterprise Architecture",
+      reviewRating: "★★★★★",
+      reviewText: "Engineered scalable PostgreSQL relational schemas for inventory tracking, automated delivery challan workflows, and technician service ticketing.",
+      palette: ["#221813", "#F97316", "#1E293B", "#F8FAFC"],
       image: solargridImg,
       liveLink: "https://solar-grid-three.vercel.app/",
-      githubLink: "https://github.com/Ashok-Gumma/solarGrid"
+      githubLink: "https://github.com/Ashok-Gumma/solarGrid",
+      urlLabel: "solargrid.erp.app"
     },
     {
       id: "friday",
+      number: "Project 03 / Hybrid AI Mindful Companion",
+      themeClass: "theme-cyber",
       title: "FRIDAY",
-      subtitle: "Adaptive Contextual AI Assistant",
-      badge: "AI APPLICATION",
-      description: "An adaptive conversational AI assistant that tailors tone, recommendations, and dialogue flows based on persistent user context and memory.",
-      metrics: [
-        { label: "Core Focus", val: "Contextual AI & Memory" },
-        { label: "Auth", val: "Google OAuth 2.0" },
-        { label: "Stack", val: "MERN Stack Architecture" }
-      ],
-      features: [
-        "Context-aware prompt architecture with persistent user session memory",
-        "Personalized onboarding with preference and mood tracking",
-        "Secure Google OAuth 2.0 authentication and protected API endpoints"
-      ],
-      tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Google OAuth", "REST APIs"],
+      subtitle: "A Quiet Sanctuary for Your Thoughts and Feelings (Mindful Emotional Companion)",
+      description: "An adaptive conversational intelligence system engineered with a hybrid architecture combining custom-trained Machine Learning models on manual datasets (intent classification & emotional resonance) with Generative LLMs for deep multi-turn reasoning, daily stillness reflections, and persistent memory tracking, secured with Google OAuth 2.0.",
+      tools: ["React.js", "Node.js", "Express.js", "Hybrid ML Models", "Generative LLM", "Manual Datasets", "MongoDB", "Google OAuth 2.0"],
+      reviewTitle: "Hybrid ML + LLM Intelligence",
+      reviewRating: "★★★★★",
+      reviewText: "Combined custom ML classifiers trained on curated manual datasets with high-performance Generative LLMs for contextual intent routing and persistent user memory.",
+      palette: ["#0E1726", "#38BDF8", "#1E293B", "#FFFFFF"],
       image: fridayImg,
       liveLink: "https://as-you-wish-q2lj.onrender.com/",
-      githubLink: "https://github.com/Ashok-Gumma/Friday"
+      githubLink: "https://github.com/Ashok-Gumma/Friday",
+      urlLabel: "friday.mindful.ai"
     }
   ];
 
-  const skillCategories = [
+  const skillMatrix = [
     {
-      title: "Frontend Engineering",
+      category: "Frontend Engineering",
       icon: <Layout size={18} />,
-      skills: ["React.js", "Next.js", "JavaScript (ES6+)", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive Design"]
+      skills: ["React.js", "Next.js", "JavaScript (ES6+)", "TypeScript", "Tailwind CSS", "Framer Motion", "Responsive Layouts"]
     },
     {
-      title: "Backend & Systems",
+      category: "Backend & Systems",
       icon: <Server size={18} />,
-      skills: ["Node.js", "Express.js", "RESTful APIs", "JWT Auth", "Clerk Auth", "Google OAuth", "RBAC Architecture"]
+      skills: ["Node.js", "Express.js", "RESTful APIs", "JWT Auth", "Clerk Auth", "Google OAuth 2.0", "RBAC Security"]
     },
     {
-      title: "Databases & Storage",
+      category: "Databases & Storage",
       icon: <Database size={18} />,
-      skills: ["PostgreSQL", "MongoDB", "MySQL", "Relational Schema Design", "Query Optimization"]
+      skills: ["PostgreSQL", "MongoDB", "MySQL", "Relational Schema Design", "Query Optimization", "Prisma / Mongoose"]
     },
     {
-      title: "Realtime & Workflows",
-      icon: <Zap size={18} />,
-      skills: ["Stream Video / Chat", "WebSockets / WebRTC", "ERP / CRM Workflows", "Business Automation"]
+      category: "DevOps & Cloud (Active Focus)",
+      icon: <Terminal size={18} />,
+      skills: ["Docker & Containers", "Kubernetes Basics", "CI/CD Pipelines", "Linux / Bash", "Nginx", "Git & GitHub Actions", "Cloud Deployments"]
     },
     {
-      title: "DevOps & Tooling",
-      icon: <FolderGit2 size={18} />,
-      skills: ["Git & GitHub", "Postman", "Vercel", "Render", "AWS (EC2/S3)", "Vite"]
+      category: "AI & Hybrid Machine Learning",
+      icon: <Cpu size={18} />,
+      skills: ["Hybrid ML Models", "Generative LLMs", "Manual Dataset Training", "Contextual Prompting", "Stream Video / Chat SDK", "WebSockets"]
+    },
+    {
+      category: "Problem Solving & Core",
+      icon: <Code2 size={18} />,
+      skills: ["Data Structures & Algorithms", "LeetCode Problem Solving", "MNC Placement Preparation", "System Architecture"]
     }
   ];
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 28 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
-  };
 
   return (
-    <div className="portfolio-root">
-      {/* Notion Page Loader */}
-      <AnimatePresence>
-        {isLoading && <NotionPageLoader onComplete={() => setIsLoading(false)} />}
-      </AnimatePresence>
-
-      {/* Top Scroll Indicator */}
+    <div className="portfolio-root graph-paper-bg">
+      {/* Top Scroll Indicator Line */}
       <motion.div className="top-scroll-line" style={{ scaleX }} />
 
-      {/* Modern Sticky Navigation */}
+      {/* =========================================================
+          STICKY STUDIO NAVIGATION BAR
+          ========================================================= */}
       <header className="site-header">
-        <div className="nav-container">
-          <a href="#hero" className="nav-brand">
-            <div className="nav-avatar-wrap">
-              <img src={realPhoto} alt="Ashok Shankar Gumma" />
-            </div>
-            <div className="nav-brand-text">
-              <span className="brand-name">Ashok Shankar Gumma</span>
-              <span className="brand-role">Full-Stack & AI Developer</span>
-            </div>
-          </a>
-
-          <nav className="nav-menu">
-            <a href="#projects" className="nav-link">Projects</a>
-            <a href="#skills" className="nav-link">Skills</a>
-            <a href="#experience" className="nav-link">Experience</a>
-            <a href="#about" className="nav-link">About</a>
-            <a href="#contact" className="nav-cta-btn">
-              Get in touch <ArrowUpRight size={14} />
+        <div className="main-container">
+          <div className="nav-container">
+            <a href="#hero" className="nav-brand">
+              <div className="nav-monogram">AG</div>
+              <div className="nav-brand-text">
+                <span className="brand-name">Ashok Shankar Gumma</span>
+                <span className="brand-role">Full-Stack & DevOps Learner [2026]</span>
+              </div>
             </a>
-          </nav>
+
+            <nav className="nav-menu">
+              <a href="#about" className="nav-link">Overview</a>
+              <a href="#projects" className="nav-link">Selected Works</a>
+              <a href="#skills" className="nav-link">Stack Matrix</a>
+              <a href="#experience" className="nav-link">Journey</a>
+              
+              <div className="nav-availability-badge">
+                <span className="pulse-circle"></span>
+                <span>OPEN FOR ROLES</span>
+              </div>
+
+              <a href="#contact" className="nav-cta-btn">
+                Let's Talk <ArrowUpRight size={14} />
+              </a>
+            </nav>
+          </div>
         </div>
       </header>
 
       <main>
         {/* =========================================================
-            1. HERO SECTION (High-Impact Recruiter First Impression)
+            1. HERO & STUDIO SHEET SECTION (KEVIN LUNA BEHANCE 2026 STYLE)
             ========================================================= */}
-        <section id="hero" className="hero-section">
+        <section id="hero" className="hero-sheet-section">
           <div className="main-container">
-            <div className="hero-content">
-              {/* Availability Badge */}
-              <motion.div
-                className="availability-pill"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <span className="pulse-dot"></span>
-                <span>Available for Full-Stack & Software Engineering Roles</span>
+            <motion.div
+              className="studio-canvas-card"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              {/* Technical Canvas Corners */}
+              <div className="technical-corner tc-top-left"></div>
+              <div className="technical-corner tc-top-right"></div>
+              <div className="technical-corner tc-bottom-left"></div>
+              <div className="technical-corner tc-bottom-right"></div>
+
+              {/* Slanted Stamp Stickers Row */}
+              <motion.div className="stamp-stickers-row" variants={fadeInUp}>
+                <motion.div className="stamp-sticker slanted-left" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
+                  <MapPin size={13} />
+                  <span>ANDHRA PRADESH, INDIA</span>
+                </motion.div>
+                <motion.div className="stamp-sticker slanted-right green-status" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
+                  <span className="pulse-circle"></span>
+                  <span>AVAILABLE FOR FULL-STACK / SDE ROLES</span>
+                </motion.div>
+                <motion.div className="stamp-sticker red-accent slanted-left" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
+                  <span>2026 PORTFOLIO EDITION</span>
+                </motion.div>
+                <motion.div className="stamp-sticker slanted-right" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
+                  <span>B.TECH CSE (AI)</span>
+                </motion.div>
               </motion.div>
 
-              {/* Greeting Tag */}
-              <motion.div
-                className="hero-greeting"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.05 }}
-              >
-                <span>Hey, I'm Ashok Shankar Gumma</span>
+              {/* Top Row: Cutout Avatar with Red Sticker Silhouette + Vector Bounding Box */}
+              <div className="hero-top-row">
+                {/* Profile Portrait with Red Offset Contour */}
+                <motion.div
+                  className="cutout-avatar-wrapper"
+                  variants={popIn}
+                  whileHover={{ scale: 1.03, rotate: [-0.5, 0.5, 0], transition: { duration: 0.3 } }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setActiveLightbox({
+                    img: ashokPortrait,
+                    title: "Ashok Shankar Gumma — Studio Portrait",
+                    tag: "STUDIO PROFILE • 2026",
+                    caption: "Full-Stack Developer & AI Systems Specialist. B.Tech CSE (AI) at Parul University."
+                  })}
+                  title="Click to expand portrait"
+                >
+                  <div className="sticker-contour-shadow"></div>
+                  <div className="cutout-avatar-frame">
+                    <div className="avatar-hud-viewfinder">RAW • 50MM • ISO 100</div>
+                    <img src={ashokPortrait} alt="Ashok Shankar Gumma" className="cutout-avatar-img" />
+                  </div>
+                </motion.div>
+
+                {/* Vector Selection Bounding Box */}
+                <motion.div className="transform-bounding-box" variants={fadeInUp}>
+                  {/* Figma / Illustrator Anchor Handles */}
+                  <div className="anchor-handle ah-tl"></div>
+                  <div className="anchor-handle ah-tr"></div>
+                  <div className="anchor-handle ah-bl"></div>
+                  <div className="anchor-handle ah-br"></div>
+                  <div className="anchor-handle ah-tm"></div>
+                  <div className="anchor-handle ah-bm"></div>
+                  <div className="anchor-handle ah-lm"></div>
+                  <div className="anchor-handle ah-rm"></div>
+                  <div className="dimension-badge">W: 100% • H: AUTO</div>
+
+                  <h1 className="studio-greeting-title">
+                    Hey! I'm <span className="highlight-accent">Ashok</span> <span className="highlight-serif">Shankar Gumma</span>
+                  </h1>
+
+                  <p className="studio-greeting-sub">
+                    Full-Stack Developer building modern web applications, scalable backend systems, and AI platforms. Architecting platforms like <strong>ANVA</strong> & <strong>SolarGrid</strong> with clean code, intuitive UI design, and production reliability.
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* 4-COLUMN EDITORIAL STUDIO BREAKDOWN GRID */}
+              <motion.div id="about" className="studio-4col-grid" variants={staggerContainer}>
+                {/* Column 1: Bio / Story */}
+                <motion.div className="studio-col" variants={fadeInUp}>
+                  <div className="col-header-tag">
+                    <span className="col-title">About Me</span>
+                    <span className="col-lang-switch">PROFILE</span>
+                  </div>
+                  <p className="bio-editorial-text">
+                    Whether it's in my workspace or late night coding sessions, I am always designing or engineering scalable systems. I love to <strong>architect clean databases, write robust backend APIs, and build sleek interactive web apps</strong>.
+                  </p>
+                  <p className="bio-editorial-text">
+                    Full-Stack Engineer & AI specialist. Currently focused on building production-ready web platforms, exploring cloud architecture, and regular problem solving on LeetCode.
+                  </p>
+                  <motion.div className="bio-status-card" whileHover={{ scale: 1.02 }}>
+                    <span className="pulse-circle"></span>
+                    <span>Available for SDE / Full-Stack</span>
+                  </motion.div>
+                </motion.div>
+
+                {/* Column 2: Experience (Career Milestones) */}
+                <motion.div className="studio-col" variants={fadeInUp}>
+                  <div className="col-header-tag">
+                    <span className="col-title">Experience</span>
+                    <span className="col-lang-switch">CAREER</span>
+                  </div>
+
+                  <div className="experience-item">
+                    <span className="exp-year-badge">AUG 2026 • ADOBE</span>
+                    <h4 className="exp-company-title">Adobe University Hackathon</h4>
+                    <p className="exp-role-sub">
+                      Participated in the nationwide Adobe hackathon organised by Adobe & Unstop.
+                    </p>
+                  </div>
+
+                  <div className="experience-item">
+                    <span className="exp-year-badge">2026 • ZETHETA ALGORITHMS</span>
+                    <h4 className="exp-company-title">Full Stack Engineer Intern</h4>
+                    <p className="exp-role-sub">
+                      Engineered multi-step Loan Application platform with reusable React components, robust validation, and fluid UX workflows.
+                    </p>
+                    <p className="exp-clients-list">
+                      React.js • Node.js • Validation • Production UX
+                    </p>
+                  </div>
+
+                  <div className="experience-item">
+                    <span className="exp-year-badge">2025 • CORIZO</span>
+                    <h4 className="exp-company-title">Web Development Trainee</h4>
+                    <p className="exp-role-sub">
+                      Completed intensive training on MERN architecture, secure auth patterns, and REST API optimization.
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Column 3: Education & Focus Areas */}
+                <motion.div className="studio-col" variants={fadeInUp}>
+                  <div className="col-header-tag">
+                    <span className="col-title">Education & Focus</span>
+                    <span className="col-lang-switch">ACADEMICS</span>
+                  </div>
+
+                  <div className="education-box">
+                    <span className="edu-year-tag">2023 — 2027</span>
+                    <h4 className="edu-degree-title">B.Tech CSE (Artificial Intelligence)</h4>
+                    <p className="edu-institute">Parul University • Vadodara, Gujarat</p>
+                    <span className="edu-cgpa-pill">CGPA: 7.47</span>
+                  </div>
+
+                  <ul className="focus-list">
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                      <span className="focus-arrow">▶</span> DevOps & Cloud (Active Focus)
+                    </motion.li>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                      <span className="focus-arrow">▶</span> Full-Stack Platforms (MERN/Next)
+                    </motion.li>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                      <span className="focus-arrow">▶</span> Placement Engines & Mock Tests
+                    </motion.li>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                      <span className="focus-arrow">▶</span> Hybrid ML + LLM Architectures
+                    </motion.li>
+                  </ul>
+                </motion.div>
+
+                {/* Column 4: Tech Stack (Tools / Badges) */}
+                <motion.div className="studio-col" variants={fadeInUp}>
+                  <div className="col-header-tag">
+                    <span className="col-title">Tech Stack</span>
+                    <span className="col-lang-switch">TOOLS</span>
+                  </div>
+
+                  <div className="tools-app-grid">
+                    <motion.div className="tool-app-badge react-badge" title="React.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>⚛</span>
+                      <small>React</small>
+                    </motion.div>
+                    <motion.div className="tool-app-badge node-badge" title="Node.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>⚡</span>
+                      <small>Node</small>
+                    </motion.div>
+                    <motion.div className="tool-app-badge pg-badge" title="PostgreSQL" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>🐘</span>
+                      <small>Postgres</small>
+                    </motion.div>
+                    <motion.div className="tool-app-badge figma-badge" title="Docker (DevOps)" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>🐳</span>
+                      <small>Docker</small>
+                    </motion.div>
+                    <motion.div className="tool-app-badge py-badge" title="Linux & Bash" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>🐧</span>
+                      <small>Linux</small>
+                    </motion.div>
+                    <motion.div className="tool-app-badge ps-badge" title="MongoDB" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>🍃</span>
+                      <small>Mongo</small>
+                    </motion.div>
+                    <motion.div className="tool-app-badge ai-badge" title="Tailwind CSS" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>🎨</span>
+                      <small>Tailwind</small>
+                    </motion.div>
+                    <motion.div className="tool-app-badge ae-badge" title="Git & GitHub" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                      <span>🐙</span>
+                      <small>Git</small>
+                    </motion.div>
+                  </div>
+
+                  <p className="tools-footer-text">
+                    Production stack spanning modern client interfaces, scalable APIs, database modeling, and active DevOps containerization.
+                  </p>
+                </motion.div>
               </motion.div>
 
-              {/* Main Headline */}
-              <motion.h1
-                className="hero-headline"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.1 }}
-              >
-                Full-Stack Developer building modern web apps, scalable backends & AI tools.
-              </motion.h1>
-
-              {/* Bio Summary */}
-              <motion.p
-                className="hero-description"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-              >
-                B.Tech CSE (AI) student with hands-on experience architecting full-stack platforms like <strong>ANVA</strong> & <strong>SolarGrid</strong>. Passionate about clean code, intuitive UI design, and production-grade systems.
-              </motion.p>
-
-              {/* Quick Action CTAs */}
+              {/* EDITORIAL SNAPSHOTS & STORY POLAROIDS (BEHANCE STYLE) */}
               <motion.div
-                className="hero-actions-row"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.3 }}
+                className="editorial-snapshots-row"
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
               >
-                <a href="#projects" className="btn-primary">
-                  Explore Projects <ArrowRight size={16} />
-                </a>
-                <a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="btn-secondary">
-                  <GithubIcon size={16} /> GitHub Profile
-                </a>
-                <a href="#contact" className="btn-subtle">
-                  <Mail size={16} /> Contact Me
-                </a>
+                <motion.div
+                  className="polaroid-card tilt-left"
+                  variants={popIn}
+                  whileHover={{ scale: 1.05, y: -10, rotate: 0, transition: { type: "spring", stiffness: 350, damping: 18 } }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setActiveLightbox({
+                    img: ashokPolaroidFloor,
+                    title: "Late-Night Flow & Creative Sound — <3",
+                    tag: "FOCUS • 2026",
+                    caption: "Late night deep focus, reading system documentation and hardware flow."
+                  })}
+                  title="Click to view full photo"
+                >
+                  <div className="washi-tape green-tape"></div>
+                  <div className="polaroid-img-wrapper">
+                    
+                    <img src={ashokPolaroidFloor} alt="Ashok Creative Focus" loading="lazy" />
+                  </div>
+                  <div className="polaroid-caption-block">
+                    <span className="polaroid-tag-label">FOCUS • &lt;3</span>
+                    <h4 className="polaroid-title">Late-Night Flow</h4>
+                    <p className="polaroid-sub">Ambient deep focus, reading architecture & hardware flow.</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="polaroid-card tilt-subtle"
+                  variants={popIn}
+                  whileHover={{ scale: 1.05, y: -10, rotate: 0, transition: { type: "spring", stiffness: 350, damping: 18 } }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setActiveLightbox({
+                    img: ashokPolaroidSketching,
+                    title: "System Design & Schemas — Ashok",
+                    tag: "ARCHITECTURE • ASHOK",
+                    caption: "Sketching database schemas, API contracts, and user journey flowcharts."
+                  })}
+                  title="Click to view full photo"
+                >
+                  <div className="washi-tape red-tape"></div>
+                  <div className="polaroid-img-wrapper">
+                    
+                    <img src={ashokPolaroidSketching} alt="Ashok System Architecture Sketching" loading="lazy" />
+                  </div>
+                  <div className="polaroid-caption-block">
+                    <span className="polaroid-tag-label">ARCHITECTURE • ASHOK</span>
+                    <h4 className="polaroid-title">System Schemas</h4>
+                    <p className="polaroid-sub">Mapping database models, state machines & REST flowcharts.</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="polaroid-card tilt-right"
+                  variants={popIn}
+                  whileHover={{ scale: 1.05, y: -10, rotate: 0, transition: { type: "spring", stiffness: 350, damping: 18 } }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setActiveLightbox({
+                    img: ashokResearchFloor,
+                    title: "Deep Research & Problem Solving",
+                    tag: "RESEARCH • ARCHIVE",
+                    caption: "Unravelling complex problem domains, algorithmic design, and architecture papers."
+                  })}
+                  title="Click to view full photo"
+                >
+                  <div className="washi-tape blue-tape"></div>
+                  <div className="polaroid-img-wrapper">
+                    
+                    <img src={ashokResearchFloor} alt="Deep Research & Problem Solving" loading="lazy" />
+                  </div>
+                  <div className="polaroid-caption-block">
+                    <span className="polaroid-tag-label">RESEARCH • ARCHIVE</span>
+                    <h4 className="polaroid-title">Deep Research</h4>
+                    <p className="polaroid-sub">Analyzing system documentation, algorithmic papers & schemas.</p>
+                  </div>
+                </motion.div>
               </motion.div>
-
-              {/* Recruiter Quick Metrics Bento */}
-              <motion.div
-                className="hero-metrics-grid"
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <div className="metric-card">
-                  <div className="metric-icon-wrap"><Layers size={18} /></div>
-                  <div className="metric-info">
-                    <span className="metric-title">3+ Full-Stack Apps</span>
-                    <span className="metric-sub">ANVA, SolarGrid, FRIDAY</span>
-                  </div>
-                </div>
-
-                <div className="metric-card">
-                  <div className="metric-icon-wrap"><Cpu size={18} /></div>
-                  <div className="metric-info">
-                    <span className="metric-title">Full-Stack Architecture</span>
-                    <span className="metric-sub">React, Next.js, Node, PostgreSQL</span>
-                  </div>
-                </div>
-
-                <div className="metric-card">
-                  <div className="metric-icon-wrap"><Briefcase size={18} /></div>
-                  <div className="metric-info">
-                    <span className="metric-title">Work Experience</span>
-                    <span className="metric-sub">Full Stack Intern @ Zetheta</span>
-                  </div>
-                </div>
-
-                <div className="metric-card">
-                  <div className="metric-icon-wrap"><GraduationCap size={18} /></div>
-                  <div className="metric-info">
-                    <span className="metric-title">Parul University</span>
-                    <span className="metric-sub">B.Tech CSE (AI) • 2023 — 2027</span>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* =========================================================
-            2. FEATURED PROJECTS SECTION (Direct Visual Proof)
+            2. DARK STUDIO TRANSITION BANNER (BEHANCE 2026 DEVELOPER HERO)
             ========================================================= */}
-        <section id="projects" className="section-block bg-subtle">
-          <div className="main-container">
-            <div className="section-header">
-              <div className="section-tag-pill">PORTFOLIO WORK</div>
-              <h2 className="section-title">Featured Systems & Applications</h2>
-              <p className="section-desc">
-                Production-ready full-stack applications engineered to automate business workflows, facilitate real-time collaboration, and provide intelligent user experiences.
-              </p>
-            </div>
+        <motion.section
+          className="dark-technical-bg studio-break-banner"
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Technical Corner Crosshairs */}
+          <div className="technical-corner tc-top-left"></div>
+          <div className="technical-corner tc-top-right"></div>
+          <div className="technical-corner tc-bottom-left"></div>
+          <div className="technical-corner tc-bottom-right"></div>
 
-            <div className="projects-stack">
+          <div className="main-container">
+            <div className="studio-break-layout">
+              {/* Left Typography & Discipline Details */}
+              <div className="banner-left-typography">
+                <span className="banner-badge-tag">FULL-STACK & AI SYSTEMS ARCHITECT</span>
+                <h2 className="banner-headline-text">
+                  Systems <span className="highlight-serif">Architecture</span> & Real-Time Engines
+                </h2>
+                <p className="banner-subtext">
+                  Bridging intuitive modern user interfaces with resilient backend infrastructure. From high-speed PostgreSQL relational design to AI contextual prompt architectures.
+                </p>
+                <div className="banner-action-pills">
+                  <span className="banner-pill">⚡ MERN & Next.js</span>
+                  <span className="banner-pill">🐘 PostgreSQL / Prisma</span>
+                  <span className="banner-pill">🤖 Contextual AI / LLMs</span>
+                  <span className="banner-pill">🎥 Stream Video & WebRTC</span>
+                </div>
+              </div>
+
+              {/* Right Hero Visual: Coding Workspace */}
+              <motion.div
+                className="banner-reclining-cutout-wrap"
+                whileHover={{ scale: 1.02 }}
+                onClick={() => setActiveLightbox({
+                  img: ashokPolaroidCoding,
+                  title: "Ashok Shankar Gumma — Production Engineering",
+                  tag: "WORKSPACE • 2026",
+                  caption: "Full-Stack Developer & AI Systems Engineer at the coding workspace."
+                })}
+                title="Click to expand workspace visual"
+              >
+                <img
+                  src={ashokPolaroidCoding}
+                  alt="Ashok Coding Workspace Studio Hero"
+                  className="banner-cutout-img"
+                />
+              </motion.div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* =========================================================
+            3. EDITORIAL MARQUEE TICKER (INTERMEZZO)
+            ========================================================= */}
+        <div className="marquee-ribbon-section">
+          <div className="marquee-track">
+            <div className="marquee-item">FULL-STACK ARCHITECTURE <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item accent">AI-POWERED PLATFORMS <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item">ERP & CRM ENTERPRISE SYSTEMS <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item accent">REAL-TIME VIDEO & COMPILER <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item">POSTGRESQL & SCALABLE BACKENDS <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item accent">2026 EDITION <span className="marquee-bullet">✦</span></div>
+            
+            {/* Duplicate for infinite loop */}
+            <div className="marquee-item">FULL-STACK ARCHITECTURE <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item accent">AI-POWERED PLATFORMS <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item">ERP & CRM ENTERPRISE SYSTEMS <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item accent">REAL-TIME VIDEO & COMPILER <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item">POSTGRESQL & SCALABLE BACKENDS <span className="marquee-bullet">✦</span></div>
+            <div className="marquee-item accent">2026 EDITION <span className="marquee-bullet">✦</span></div>
+          </div>
+        </div>
+
+        {/* =========================================================
+            3. BESPOKE PROJECT SHOWCASE BOARDS (CIUDADES Y SABORES STYLE)
+            ========================================================= */}
+        <section id="projects" className="projects-showcase-section">
+          <div className="main-container">
+            <motion.div
+              className="section-editorial-header"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="section-label-stamp">SELECTED WORKS • 2026</span>
+              <h2 className="section-main-heading">Featured Systems & Production Applications</h2>
+              <p className="section-desc-text">
+                Explore fully engineered platforms combining modern UI design, backend infrastructure, and AI features.
+              </p>
+            </motion.div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '64px' }}>
               {projects.map((project, idx) => (
                 <motion.article
                   key={project.id}
-                  className="project-showcase-card"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.2 }}
-                  variants={fadeUp}
+                  className={`project-board-card ${project.themeClass}`}
+                  initial={{ opacity: 0, y: 55, scale: 0.98 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.14 }}
+                  whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="project-preview-side">
-                    <div className="project-img-wrapper">
-                      <img src={project.image} alt={project.title} loading="lazy" />
-                    </div>
-                  </div>
+                  {/* Technical Corners */}
+                  <div className="technical-corner tc-top-left"></div>
+                  <div className="technical-corner tc-top-right"></div>
+                  <div className="technical-corner tc-bottom-left"></div>
+                  <div className="technical-corner tc-bottom-right"></div>
 
-                  <div className="project-detail-side">
-                    <div className="project-header-top">
-                      <span className="project-category-badge">{project.badge}</span>
-                      <span className="project-index">0{idx + 1}</span>
-                    </div>
+                  <div className="project-board-layout">
+                    {/* Left: Editorial Details */}
+                    <div className="project-info-side">
+                      <div className="project-meta-pill-row">
+                        <span className="project-number-badge">{project.number}</span>
+                        <span className="project-tag-pill">PRODUCTION GRADE</span>
+                      </div>
 
-                    <h3 className="project-name">{project.title}</h3>
-                    <p className="project-tagline-text">{project.subtitle}</p>
-                    <p className="project-body-desc">{project.description}</p>
+                      <h3 className="project-main-title">{project.title}</h3>
+                      <p className="project-serif-subtitle">{project.subtitle}</p>
+                      <p className="project-narrative-desc">{project.description}</p>
 
-                    {/* Highlights Checklist */}
-                    <div className="project-highlights-box">
-                      {project.features.map((feat, fIdx) => (
-                        <div key={fIdx} className="highlight-row">
-                          <CheckCircle2 size={15} className="highlight-icon" />
-                          <span>{feat}</span>
+                      {/* Technologies & Tools used */}
+                      <div className="project-tools-used-box">
+                        <span className="tools-used-label">Technologies & Tools Used</span>
+                        <div className="project-tech-badges-list">
+                          {project.tools.map(tool => (
+                            <motion.span
+                              key={tool}
+                              className="tech-pill-badge"
+                              whileHover={{ scale: 1.08, y: -2 }}
+                            >
+                              {tool}
+                            </motion.span>
+                          ))}
                         </div>
-                      ))}
+                      </div>
+
+                      {/* Review Quote Box */}
+                      <div className="project-review-quote-box">
+                        <div className="review-quote-head">
+                          <span className="review-title">{project.reviewTitle}</span>
+                          <span className="review-stars">{project.reviewRating}</span>
+                        </div>
+                        <p className="review-quote-text">{project.reviewText}</p>
+                      </div>
+
+                      {/* Footer Actions & Swatches */}
+                      <div className="project-footer-actions">
+                        <div className="palette-swatches-row">
+                          {project.palette.map((color, cIdx) => (
+                            <motion.div
+                              key={cIdx}
+                              className="palette-dot"
+                              style={{ backgroundColor: color }}
+                              title={color}
+                              whileHover={{ scale: 1.3 }}
+                            />
+                          ))}
+                        </div>
+
+                        <div className="project-action-btns-row">
+                          <motion.a
+                            href={project.liveLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="btn-project-cta"
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            Live Demo <ExternalLink size={14} />
+                          </motion.a>
+                          <motion.a
+                            href={project.githubLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="btn-project-ghost"
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <GithubIcon size={14} /> Code
+                          </motion.a>
+                        </div>
+                      </div>
                     </div>
 
-                    {/* Tech Stack Pills */}
-                    <div className="project-tags-wrap">
-                      {project.tags.map(t => (
-                        <span key={t} className="tech-badge">{t}</span>
-                      ))}
-                    </div>
-
-                    {/* Action Links */}
-                    <div className="project-buttons-row">
-                      <a href={project.liveLink} target="_blank" rel="noreferrer" className="btn-project-live">
-                        Live Demo <ExternalLink size={14} />
-                      </a>
-                      <a href={project.githubLink} target="_blank" rel="noreferrer" className="btn-project-code">
-                        <GithubIcon size={14} /> View Code
-                      </a>
+                    {/* Right: Mockup Frame Composition */}
+                    <div className="project-visual-side">
+                      <motion.div className="mockup-display-card" whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}>
+                        <div className="mockup-browser-header">
+                          <div className="browser-dot"></div>
+                          <div className="browser-dot"></div>
+                          <div className="browser-dot"></div>
+                          <div className="browser-url-pill">{project.urlLabel}</div>
+                        </div>
+                        <div className="mockup-img-wrap">
+                          <img src={project.image} alt={project.title} loading="lazy" />
+                        </div>
+                        <div className="floating-mockup-badge">
+                          <Sparkles size={14} color="#FBBF24" />
+                          <span>0{idx + 1} • {project.title}</span>
+                        </div>
+                      </motion.div>
                     </div>
                   </div>
                 </motion.article>
@@ -428,35 +772,49 @@ const App = () => {
         </section>
 
         {/* =========================================================
-            3. TECHNICAL SKILLS & STACK MATRIX
+            4. SKILLS & ARCHITECTURE BENTO MATRIX
             ========================================================= */}
-        <section id="skills" className="section-block">
+        <section id="skills" className="skills-matrix-section">
           <div className="main-container">
-            <div className="section-header">
-              <div className="section-tag-pill">TECHNICAL EXPERTISE</div>
-              <h2 className="section-title">Core Skills & Architecture Matrix</h2>
-              <p className="section-desc">
-                Technologies, frameworks, and system design principles utilized in building scalable client-side and server-side applications.
+            <motion.div
+              className="section-editorial-header"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="section-label-stamp">TECHNICAL CAPABILITIES</span>
+              <h2 className="section-main-heading">Core Skills & Architecture Matrix</h2>
+              <p className="section-desc-text">
+                Full-stack toolkit spanning modern client-side engineering, scalable backend APIs, database modeling, and real-time systems.
               </p>
-            </div>
+            </motion.div>
 
             <div className="skills-bento-grid">
-              {skillCategories.map((cat, cIdx) => (
+              {skillMatrix.map((item, idx) => (
                 <motion.div
-                  key={cIdx}
-                  className="skill-category-card"
-                  initial="hidden"
-                  whileInView="visible"
+                  key={idx}
+                  className="skill-matrix-card"
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
-                  variants={fadeUp}
+                  whileHover={{ y: -6, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
+                  transition={{ duration: 0.5, delay: idx * 0.08 }}
                 >
                   <div className="skill-card-head">
-                    <div className="skill-icon-box">{cat.icon}</div>
-                    <h3 className="skill-group-title">{cat.title}</h3>
+                    <div className="skill-icon-wrap">{item.icon}</div>
+                    <h3 className="skill-cat-title">{item.category}</h3>
                   </div>
-                  <div className="skill-pills-list">
-                    {cat.skills.map(s => (
-                      <span key={s} className="matrix-pill">{s}</span>
+
+                  <div className="skill-tags-flex">
+                    {item.skills.map(s => (
+                      <motion.span
+                        key={s}
+                        className="matrix-skill-badge"
+                        whileHover={{ scale: 1.06, y: -2 }}
+                      >
+                        {s}
+                      </motion.span>
                     ))}
                   </div>
                 </motion.div>
@@ -466,121 +824,184 @@ const App = () => {
         </section>
 
         {/* =========================================================
-            4. EXPERIENCE, TRAINING & EDUCATION
+            5. CAREER JOURNEY & EDUCATION TIMELINE
             ========================================================= */}
-        <section id="experience" className="section-block bg-subtle">
+        <section id="experience" className="timeline-section">
           <div className="main-container">
-            <div className="section-header">
-              <div className="section-tag-pill">CAREER & TRACK RECORD</div>
-              <h2 className="section-title">Experience & Education</h2>
-              <p className="section-desc">
-                Internship experience, technical training, and academic background.
+            <motion.div
+              className="section-editorial-header"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="section-label-stamp">BACKGROUND & TIMELINE</span>
+              <h2 className="section-main-heading">Experience, Training & Education</h2>
+              <p className="section-desc-text">
+                Hands-on professional internship experience, technical workshops, and formal computer science education.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="experience-bento-grid">
-              {/* WORK EXPERIENCE */}
+            <div className="timeline-editorial-grid">
+              {/* Experience Card */}
               <motion.div
-                className="timeline-bento-card"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={fadeUp}
+                className="timeline-column-card"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6 }}
               >
-                <div className="card-top-icon">
-                  <Briefcase size={20} />
-                  <span className="card-section-label">INTERNSHIPS & WORK</span>
+                <div className="timeline-card-header">
+                  <Briefcase size={22} color="#FF3B1D" />
+                  <h3 className="timeline-card-title">Professional Experience</h3>
                 </div>
 
-                <div className="timeline-entry">
-                  <div className="entry-header">
+                {/* Zetheta Algorithms Certificate Card */}
+                <motion.div
+                  className="certificate-feature-card"
+                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveLightbox({
+                    img: zethetaCertificate,
+                    title: "Zetheta Algorithms — Certificate of Project Work Experience",
+                    tag: "ZETHETA • 06 AUG 2026",
+                    caption: "Full Stack Engineer Intern on Front End Developer Multi Step Loan Application Form. Managing Director: Suketu Sanghvi."
+                  })}
+                  style={{ cursor: 'pointer', marginBottom: '18px' }}
+                  title="Click to view official certificate"
+                >
+                  <div className="certificate-header-row">
                     <div>
-                      <h4 className="entry-role">Full Stack Engineer Intern</h4>
-                      <p className="entry-org">Zetheta Algorithms Private Limited (Remote)</p>
+                      <span className="record-date-badge">JUL 2026 — AUG 2026</span>
+                      <h4 className="record-role-heading" style={{ marginTop: '4px' }}>Full Stack Engineer Intern</h4>
+                      <p className="record-organization">Zetheta Algorithms Private Limited</p>
                     </div>
-                    <span className="status-tag">JUL 2026 — AUG 2026</span>
+                    <div className="certificate-mini-thumb">
+                      <img src={zethetaCertificate} alt="Zetheta Certificate" />
+                    </div>
                   </div>
-                  <p className="entry-desc">
-                    Developed a responsive multi-step Loan Application platform using reusable React components, robust client-side validation, and smooth multi-step workflows.
+                  <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                    Engineered a scalable multi-step Loan Application portal with modular React components, client-side data validation, responsive layouts, and state management.
                   </p>
-                </div>
+                </motion.div>
 
-                <div className="timeline-entry">
-                  <div className="entry-header">
+                {/* Corizo Training Certificate Card */}
+                <motion.div
+                  className="certificate-feature-card"
+                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveLightbox({
+                    img: corizoCertificate,
+                    title: "Corizo — Certificate of Training in Web Development",
+                    tag: "CORIZO • 05 MAY — 05 JUNE 2025",
+                    caption: "Web Development Training certified to Gumma Ashok Shankar by Academic Head Hemant Ingle. ISO 9001:2015 & NSDC accredited."
+                  })}
+                  style={{ cursor: 'pointer', marginBottom: '18px' }}
+                  title="Click to view official certificate"
+                >
+                  <div className="certificate-header-row">
                     <div>
-                      <h4 className="entry-role">Web Development Trainee</h4>
-                      <p className="entry-org">Corizo (Remote)</p>
+                      <span className="record-date-badge">MAY 2025 — JUN 2025</span>
+                      <h4 className="record-role-heading" style={{ marginTop: '4px' }}>Web Development Trainee</h4>
+                      <p className="record-organization">Corizo (Remote Training)</p>
                     </div>
-                    <span className="status-tag">MAY 2025 — JUN 2025</span>
+                    <div className="certificate-mini-thumb">
+                      <img src={corizoCertificate} alt="Corizo Certificate" />
+                    </div>
                   </div>
-                  <p className="entry-desc">
-                    Completed comprehensive training covering MERN stack development, REST API engineering, secure authentication, and responsive interfaces.
+                  <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                    Completed intensive MERN stack curriculum covering MongoDB, Express, React, Node.js, JWT authentication, and REST API optimization.
                   </p>
-                </div>
+                </motion.div>
+
+                {/* Parul University Projections Workshop Certificate Card */}
+                <motion.div
+                  className="certificate-feature-card"
+                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveLightbox({
+                    img: parulWorkshopCertificate,
+                    title: "Parul University Projections — Full Stack Web Development Workshop",
+                    tag: "PROJECTIONS • FEB 2026",
+                    caption: "Certificate of Participation awarded to Gumma Ashok Shankar at Gujarat's Largest Technical Festival (12th-14th Feb 2026)."
+                  })}
+                  style={{ cursor: 'pointer' }}
+                  title="Click to view official certificate"
+                >
+                  <div className="certificate-header-row">
+                    <div>
+                      <span className="record-date-badge">FEB 2026 • WORKSHOP</span>
+                      <h4 className="record-role-heading" style={{ marginTop: '4px' }}>Full Stack Web Dev Workshop</h4>
+                      <p className="record-organization">Parul University Projections</p>
+                    </div>
+                    <div className="certificate-mini-thumb">
+                      <img src={parulWorkshopCertificate} alt="Parul University Projections Certificate" />
+                    </div>
+                  </div>
+                  <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                    Participated in hands-on sessions covering modern full-stack application architecture and end-to-end frontend-backend integration during Gujarat's largest tech festival.
+                  </p>
+                </motion.div>
               </motion.div>
 
-              {/* TECHNICAL TRAINING & WORKSHOPS */}
+              {/* Education & Achievements Card */}
               <motion.div
-                className="timeline-bento-card"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={fadeUp}
+                className="timeline-column-card"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: 0.12 }}
               >
-                <div className="card-top-icon">
-                  <Sparkles size={20} />
-                  <span className="card-section-label">TRAINING & WORKSHOPS</span>
+                <div className="timeline-card-header">
+                  <GraduationCap size={22} color="#059669" />
+                  <h3 className="timeline-card-title">Education & Milestones</h3>
                 </div>
 
-                <div className="timeline-entry">
-                  <div className="entry-header">
-                    <div>
-                      <h4 className="entry-role">Full Stack Web Dev Workshop</h4>
-                      <p className="entry-org">Parul University Projections</p>
-                    </div>
-                    <span className="status-tag">FEB 2026</span>
-                  </div>
-                  <p className="entry-desc">
-                    Hands-on workshop covering modern full-stack web architectural patterns, responsive components, and frontend-backend integration.
+                <div className="timeline-record">
+                  <span className="record-date-badge" style={{ background: '#059669' }}>2023 — 2027</span>
+                  <h4 className="record-role-heading">B.Tech in Computer Science & Engineering (AI)</h4>
+                  <p className="record-organization">Parul University • Vadodara, Gujarat</p>
+                  <p className="record-bullet-text">
+                    Focused on Artificial Intelligence, Core Computer Science Fundamentals, Database Management Systems, Operating Systems, and Object-Oriented Programming. <strong>CGPA: 7.47</strong>
                   </p>
                 </div>
 
-                <div className="timeline-entry">
-                  <div className="entry-header">
+                {/* Adobe University Hackathon Interactive Certificate Card */}
+                <motion.div
+                  className="certificate-feature-card"
+                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveLightbox({
+                    img: adobeCertificate,
+                    title: "Adobe University Hackathon — Certificate of Participation",
+                    tag: "ADOBE • 9TH AUG 2026",
+                    caption: "Organized by Adobe & Unstop. Certified to Ashok Shankar Gumma from Parul University (PU), Vadodara."
+                  })}
+                  style={{ cursor: 'pointer' }}
+                  title="Click to expand official certificate"
+                >
+                  <div className="certificate-header-row">
                     <div>
-                      <h4 className="entry-role">DSA & System Fundamentals</h4>
-                      <p className="entry-org">LeetCode & Problem Solving</p>
+                      <span className="record-date-badge" style={{ background: '#FF0000', color: '#FFFFFF' }}>AUG 2026 • ADOBE</span>
+                      <h4 className="record-role-heading" style={{ marginTop: '4px' }}>Adobe University Hackathon</h4>
+                      <p className="record-organization">Organised by Adobe & Unstop</p>
                     </div>
-                    <span className="status-tag">CONTINUOUS</span>
+                    <div className="certificate-mini-thumb">
+                      <img src={adobeCertificate} alt="Adobe Certificate" />
+                    </div>
                   </div>
-                  <p className="entry-desc">
-                    Regular practice solving Data Structures & Algorithms challenges with a focus on optimal time-complexity and clean code.
+                  <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                    Participated in the national-level 24-hour developer hackathon creating innovative digital workflows and modern full-stack web solutions.
                   </p>
-                </div>
-              </motion.div>
+                </motion.div>
 
-              {/* EDUCATION */}
-              <motion.div
-                className="timeline-bento-card full-span"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={fadeUp}
-              >
-                <div className="card-top-icon">
-                  <GraduationCap size={20} />
-                  <span className="card-section-label">EDUCATION</span>
-                </div>
-
-                <div className="education-row">
-                  <div>
-                    <h4 className="entry-role">B.Tech in Computer Science & Engineering (Artificial Intelligence)</h4>
-                    <p className="entry-org">Parul University • Vadodara, Gujarat</p>
-                  </div>
-                  <div className="edu-badge-box">
-                    <span className="edu-cgpa">CGPA: 7.47</span>
-                    <span className="edu-years">2023 — 2027</span>
-                  </div>
+                <div className="timeline-record" style={{ marginTop: '20px' }}>
+                  <span className="record-date-badge" style={{ background: '#059669' }}>2024 — 2026</span>
+                  <h4 className="record-role-heading">Independent System Architectures</h4>
+                  <p className="record-organization">Self-Directed Production Apps</p>
+                  <p className="record-bullet-text">
+                    Built and shipped multiple full-stack systems including <strong>ANVA</strong>, <strong>SolarGrid</strong>, and <strong>FRIDAY</strong>.
+                  </p>
                 </div>
               </motion.div>
             </div>
@@ -588,97 +1009,178 @@ const App = () => {
         </section>
 
         {/* =========================================================
-            5. ABOUT ME & ENGINEERING PHILOSOPHY
-            ========================================================= */}
-        <section id="about" className="section-block">
-          <div className="main-container">
-            <div className="about-bento-container">
-              <motion.div
-                className="about-bio-side"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                variants={fadeUp}
-              >
-                <div className="section-tag-pill">ENGINEER PROFILE</div>
-                <h2 className="about-title">Full-stack developer focused on clean architecture & execution.</h2>
-                <p className="about-paragraph">
-                  I specialize in building end-to-end web applications, scalable backend APIs, and modern user interfaces. From architecting PostgreSQL schemas for business workflows to integrating real-time collaboration engines, I focus on performance, reliability, and clean code.
-                </p>
-                <p className="about-paragraph">
-                  Passionate about solving real-world challenges, building production-ready software, and continuous problem-solving on LeetCode.
-                </p>
-
-                <div className="about-specs-grid">
-                  <div className="spec-box">
-                    <span className="spec-label">Primary Stack</span>
-                    <span className="spec-val">React, Node, Express, PostgreSQL, MongoDB</span>
-                  </div>
-                  <div className="spec-box">
-                    <span className="spec-label">Core Domains</span>
-                    <span className="spec-val">ERP/CRM Systems, Real-time Apps, AI Platforms</span>
-                  </div>
-                  <div className="spec-box">
-                    <span className="spec-label">Location</span>
-                    <span className="spec-val">Markapur, Andhra Pradesh, India</span>
-                  </div>
-                  <div className="spec-box">
-                    <span className="spec-label">Status</span>
-                    <span className="spec-val">🟢 Open to Full-Stack / SDE roles</span>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* =========================================================
-            6. CONTACT & CONNECT FOOTER
+            6. EDITORIAL FOOTER & DIRECT CONTACT
             ========================================================= */}
         <footer id="contact" className="site-footer">
           <div className="main-container">
-            <div className="footer-cta-box">
-              <span className="footer-small-tag">LET'S CONNECT</span>
-              <h2 className="footer-headline">Ready to build something impactful together?</h2>
-              <p className="footer-subtext">
-                Whether you have an open engineering role, a platform to build, or want to discuss full-stack & AI architecture, feel free to connect with me.
+            <div className="footer-card">
+              <span className="footer-tag-pill">LET'S COLLABORATE • 2026</span>
+              <h2 className="footer-headline">Let's Build Something Meaningful Together.</h2>
+              <p className="footer-desc">
+                Currently open to full-time Software Development Engineer (SDE), Full-Stack, and Backend roles. Available immediately.
               </p>
 
-              {/* Primary Connect Actions */}
-              <div className="footer-primary-actions">
-                <a href="https://linkedin.com/in/ashok-gumma1" target="_blank" rel="noreferrer" className="btn-primary-connect">
-                  <LinkedinIcon size={16} /> Connect on LinkedIn
-                </a>
-                <a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="btn-secondary-connect">
-                  <GithubIcon size={16} /> View GitHub Repositories
-                </a>
+              {/* Action Buttons */}
+              <div className="footer-cta-row">
+                <motion.a
+                  href="mailto:ashokgumma20@gmail.com"
+                  className="btn-footer-primary"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  <Mail size={18} />
+                  <span>Send Direct Email</span>
+                </motion.a>
+
+                <motion.button
+                  onClick={handleCopyEmail}
+                  className="btn-footer-secondary"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  {copiedEmail ? <Check size={18} color="#22C55E" /> : <Copy size={18} />}
+                  <span>{copiedEmail ? "Email Copied!" : "Copy Email"}</span>
+                </motion.button>
+
+                <motion.a
+                  href="https://linkedin.com/in/ashok-gumma1"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn-footer-secondary"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  <LinkedinIcon size={18} />
+                  <span>Connect on LinkedIn</span>
+                </motion.a>
               </div>
 
-              {/* Contact / Social Links */}
+              {/* Social Links Row */}
               <div className="footer-social-row">
-                <a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="social-pill-btn">
-                  <GithubIcon size={16} /> GitHub
-                </a>
-                <a href="https://linkedin.com/in/ashok-gumma1" target="_blank" rel="noreferrer" className="social-pill-btn">
-                  <LinkedinIcon size={16} /> LinkedIn
-                </a>
-                <a href="https://leetcode.com/u/gummaashok/" target="_blank" rel="noreferrer" className="social-pill-btn">
-                  <LeetCodeIcon size={16} /> LeetCode
-                </a>
-                <span className="footer-pill-link static">
-                  <MapPin size={14} /> Andhra Pradesh, India
+                <motion.a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
+                  <GithubIcon size={15} /> GitHub Profile
+                </motion.a>
+                <motion.a href="https://linkedin.com/in/ashok-gumma1" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
+                  <LinkedinIcon size={15} /> LinkedIn
+                </motion.a>
+                <motion.a href="https://leetcode.com/u/gummaashok/" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
+                  <LeetCodeIcon size={15} /> LeetCode Profile
+                </motion.a>
+                <span className="footer-social-pill" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
+                  <MapPin size={15} /> Andhra Pradesh, India
                 </span>
               </div>
 
-              {/* Footer Copyright */}
-              <div className="footer-copyright-row">
-                <span>© {new Date().getFullYear()} Ashok Shankar Gumma. Built with React & Vite.</span>
-                <span>Full-Stack & AI Systems Developer</span>
+              {/* Bottom Copyright Bar */}
+              <div className="footer-bottom-bar">
+                <span>© {new Date().getFullYear()} Ashok Shankar Gumma. All rights reserved.</span>
+                <span>Designed & Engineered • Behance 2026 Edition</span>
               </div>
             </div>
           </div>
         </footer>
       </main>
+
+      {/* Copy Email Toast */}
+      <AnimatePresence>
+        {copiedEmail && (
+          <motion.div
+            className="copy-toast"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+          >
+            ✓ Email copied to clipboard: ashokgumma20@gmail.com
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* =========================================================
+          BEHANCE-STYLE FLOATING "AVAILABLE FOR HIRE" POPUP
+          ========================================================= */}
+      <AnimatePresence>
+        {showHireWidget && (
+          <motion.div
+            className="floating-hire-widget"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{
+              opacity: 1,
+              y: [0, -6, 0]
+            }}
+            exit={{ opacity: 0, y: 30 }}
+            transition={{
+              opacity: { duration: 0.4 },
+              y: { repeat: Infinity, duration: 3.2, ease: "easeInOut" }
+            }}
+          >
+            <div className="widget-avatar-circle">
+              <img src={ashokPortrait} alt="Ashok Shankar Gumma" />
+            </div>
+            
+            <div className="widget-text-block">
+              <span className="pulse-circle"></span>
+              <span className="widget-title">Ashok is available for hire</span>
+            </div>
+
+            <a href="#contact" className="widget-cta-btn">
+              Hire Ashok
+            </a>
+
+            <button
+              onClick={() => setShowHireWidget(false)}
+              className="widget-close-btn"
+              title="Dismiss"
+              aria-label="Dismiss"
+            >
+              <X size={16} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* =========================================================
+          AESTHETIC FILM LIGHTBOX MODAL
+          ========================================================= */}
+      <AnimatePresence>
+        {activeLightbox && (
+          <motion.div
+            className="lightbox-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveLightbox(null)}
+          >
+            <motion.div
+              className="lightbox-content-card"
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button
+                className="lightbox-close-btn"
+                onClick={() => setActiveLightbox(null)}
+                aria-label="Close modal"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="lightbox-img-frame">
+                <img src={activeLightbox.img} alt={activeLightbox.title} />
+              </div>
+
+              <div className="lightbox-info-row">
+                <div>
+                  <h3 className="lightbox-caption-text">{activeLightbox.title}</h3>
+                  <p className="polaroid-sub">{activeLightbox.caption}</p>
+                </div>
+                <span className="lightbox-tag-text">{activeLightbox.tag}</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
