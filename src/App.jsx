@@ -283,7 +283,7 @@ const App = () => {
                   <span>AVAILABLE FOR FULL-STACK / SDE ROLES</span>
                 </motion.div>
                 <motion.div className="stamp-sticker red-accent slanted-left" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
-                  <span>2026 PORTFOLIO EDITION</span>
+                  <span> PORTFOLIO EDITION</span>
                 </motion.div>
                 <motion.div className="stamp-sticker slanted-right" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
                   <span>B.TECH CSE (AI)</span>
@@ -1074,7 +1074,7 @@ const App = () => {
               {/* Bottom Copyright Bar */}
               <div className="footer-bottom-bar">
                 <span>© {new Date().getFullYear()} Ashok Shankar Gumma. All rights reserved.</span>
-                <span>Designed & Engineered • Behance 2026 Edition</span>
+                <span>Designed & Engineered • Ashok Shankar Gumma </span>
               </div>
             </div>
           </div>
