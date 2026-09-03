@@ -1772,7 +1772,8 @@ html.lenis, html.lenis body {
 /* --------------------------------------------------------------------------
    EDITORIAL CONTACT & CONNECT STUDIO FOOTER
    -------------------------------------------------------------------------- */
-.contact-footer-section {
+.contact-footer-section,
+.site-footer {
   padding: 90px 0 60px;
   background: var(--dark-bg);
   color: #FFFFFF;
@@ -1780,7 +1781,8 @@ html.lenis, html.lenis body {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.footer-studio-card {
+.footer-studio-card,
+.footer-card {
   text-align: center;
   max-width: 840px;
   margin: 0 auto;
@@ -1803,16 +1805,19 @@ html.lenis, html.lenis body {
   margin-bottom: 20px;
 }
 
-.footer-big-title {
+.footer-big-title,
+.footer-headline {
   font-family: var(--font-headline);
   font-size: clamp(2.4rem, 5vw, 4.2rem);
   font-weight: 900;
   letter-spacing: -1.5px;
   line-height: 1.05;
   margin-bottom: 18px;
+  color: #FFFFFF;
 }
 
-.footer-sub-paragraph {
+.footer-sub-paragraph,
+.footer-desc {
   font-size: 1.15rem;
   color: var(--dark-muted);
   line-height: 1.6;
@@ -1820,7 +1825,8 @@ html.lenis, html.lenis body {
   margin: 0 auto 36px;
 }
 
-.footer-action-buttons-group {
+.footer-action-buttons-group,
+.footer-cta-row {
   display: flex;
   align-items: center;
   justify-content: center;
