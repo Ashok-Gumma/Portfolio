@@ -570,7 +570,7 @@ html.lenis, html.lenis body {
    HERO / STUDIO SHEET SECTION
    -------------------------------------------------------------------------- */
 .hero-sheet-section {
-  padding: 50px 0 80px;
+  padding: 36px 0 60px;
   position: relative;
   overflow: hidden;
 }
@@ -580,14 +580,14 @@ html.lenis, html.lenis body {
   background: rgba(255, 255, 255, 0.65);
   border: 1px solid rgba(30, 30, 30, 0.12);
   border-radius: var(--radius-lg);
-  padding: 48px 40px;
+  padding: 34px 30px;
   backdrop-filter: blur(12px);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
 }
 
 @media (max-width: 768px) {
   .studio-canvas-card {
-    padding: 28px 20px;
+    padding: 24px 16px;
   }
 }
 
@@ -595,23 +595,23 @@ html.lenis, html.lenis body {
 .stamp-stickers-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 36px;
+  gap: 10px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
 .stamp-sticker {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
+  gap: 5px;
+  padding: 4.5px 11px;
   background: #FFFFFF;
   border: 1.5px solid #1E1E1E;
   border-radius: 4px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   text-transform: uppercase;
   color: #1E1E1E;
   box-shadow: 2px 2px 0px #1E1E1E;
@@ -620,7 +620,7 @@ html.lenis, html.lenis body {
 }
 
 .stamp-sticker:hover {
-  box-shadow: 4px 4px 0px #1E1E1E;
+  box-shadow: 3px 3px 0px #1E1E1E;
 }
 
 .stamp-sticker.slanted-left {
@@ -646,27 +646,28 @@ html.lenis, html.lenis body {
 /* Hero Top Row */
 .hero-top-row {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 40px;
+  grid-template-columns: 200px 1fr;
+  gap: 28px;
   align-items: center;
-  margin-bottom: 48px;
+  margin-bottom: 34px;
 }
 
 @media (max-width: 960px) {
   .hero-top-row {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
   }
 }
 
 .cutout-avatar-wrapper {
   position: relative;
   cursor: pointer;
+  max-width: 200px;
 }
 
 .sticker-contour-shadow {
   position: absolute;
-  inset: -6px;
+  inset: -4px;
   background: var(--accent-red);
   border-radius: var(--radius-md);
   transform: rotate(-2deg);
@@ -681,37 +682,37 @@ html.lenis, html.lenis body {
   border: 2px solid #1E1E1E;
   overflow: hidden;
   aspect-ratio: 1 / 1.15;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
 .avatar-hud-viewfinder {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 6px;
+  left: 6px;
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: 7.5px;
   font-weight: 800;
   color: #FFFFFF;
   background: rgba(0, 0, 0, 0.7);
-  padding: 2px 6px;
+  padding: 2px 5px;
   border-radius: 2px;
   z-index: 3;
 }
 
 .hover-expand-pill {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
+  bottom: 6px;
+  right: 6px;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 8px;
   font-weight: 800;
   color: #FFFFFF;
   background: var(--accent-red);
-  padding: 3px 8px;
+  padding: 2px 6px;
   border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   z-index: 3;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
@@ -732,38 +733,38 @@ html.lenis, html.lenis body {
   position: relative;
   border: 1.5px dashed rgba(255, 59, 29, 0.6);
   border-radius: var(--radius-md);
-  padding: 36px 32px;
+  padding: 24px 24px;
   background: rgba(255, 255, 255, 0.5);
 }
 
 /* Vector Handles */
 .anchor-handle {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   background: #FFFFFF;
   border: 1.5px solid var(--accent-red);
   border-radius: 1px;
 }
-.ah-tl { top: -4px; left: -4px; }
-.ah-tr { top: -4px; right: -4px; }
-.ah-bl { bottom: -4px; left: -4px; }
-.ah-br { bottom: -4px; right: -4px; }
-.ah-tm { top: -4px; left: calc(50% - 4px); }
-.ah-bm { bottom: -4px; left: calc(50% - 4px); }
-.ah-lm { top: calc(50% - 4px); left: -4px; }
-.ah-rm { top: calc(50% - 4px); right: -4px; }
+.ah-tl { top: -3.5px; left: -3.5px; }
+.ah-tr { top: -3.5px; right: -3.5px; }
+.ah-bl { bottom: -3.5px; left: -3.5px; }
+.ah-br { bottom: -3.5px; right: -3.5px; }
+.ah-tm { top: -3.5px; left: calc(50% - 3.5px); }
+.ah-bm { bottom: -3.5px; left: calc(50% - 3.5px); }
+.ah-lm { top: calc(50% - 3.5px); left: -3.5px; }
+.ah-rm { top: calc(50% - 3.5px); right: -3.5px; }
 
 .dimension-badge {
   position: absolute;
-  bottom: -10px;
-  right: 16px;
+  bottom: -9px;
+  right: 14px;
   background: var(--accent-red);
   color: #FFFFFF;
   font-family: var(--font-mono);
-  font-size: 8.5px;
+  font-size: 8px;
   font-weight: 800;
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 2px;
   letter-spacing: 0.5px;
 }
@@ -771,16 +772,16 @@ html.lenis, html.lenis body {
 .studio-greeting-title {
   font-family: var(--font-headline);
   font-weight: 800;
-  font-size: 42px;
-  letter-spacing: -1.2px;
-  line-height: 1.15;
+  font-size: 32px;
+  letter-spacing: -0.8px;
+  line-height: 1.18;
   color: var(--text-main);
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 @media (max-width: 600px) {
   .studio-greeting-title {
-    font-size: 30px;
+    font-size: 24px;
   }
 }
 
@@ -796,31 +797,31 @@ html.lenis, html.lenis body {
 
 .studio-greeting-sub {
   font-family: var(--font-kalam), var(--font-curly), cursive;
-  font-size: 18.5px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.55;
   color: #3E424B;
-  letter-spacing: 0.15px;
-  max-width: 680px;
-  margin-bottom: 24px;
+  letter-spacing: 0.1px;
+  max-width: 640px;
+  margin-bottom: 18px;
 }
 
 .hero-quick-action-strip {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .hero-pill-cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 20px;
+  gap: 7px;
+  padding: 7.5px 16px;
   background: #141518;
   color: #FFFFFF;
   border-radius: var(--radius-pill);
   font-family: var(--font-display);
-  font-size: 13.5px;
+  font-size: 12.5px;
   font-weight: 700;
   text-decoration: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -834,14 +835,14 @@ html.lenis, html.lenis body {
 .hero-pill-ghost {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
+  gap: 7px;
+  padding: 7.5px 15px;
   background: #FFFFFF;
   color: var(--text-main);
   border: 1.5px solid rgba(0, 0, 0, 0.15);
   border-radius: var(--radius-pill);
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 11.5px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
