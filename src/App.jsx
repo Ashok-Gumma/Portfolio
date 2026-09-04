@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 import Lenis from 'lenis';
 import {
@@ -21,7 +21,16 @@ import {
   X,
   Code2,
   Terminal,
-  Globe
+  Globe,
+  Volume2,
+  VolumeX,
+  Search,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Menu,
+  Award
 } from 'lucide-react';
 
 import ashokPortrait from './assets/ashok_portrait_main.jpg';
@@ -37,6 +46,13 @@ import parulWorkshopCertificate from './assets/parul_workshop_certificate.png';
 import anvaImg from './assets/anva.png';
 import solargridImg from './assets/solargrid.jpg';
 import fridayImg from './assets/friday.png';
+
+import { TiltCard } from './components/TiltCard';
+import { Preloader } from './components/Preloader';
+import { AmbientGlow } from './components/AmbientGlow';
+import { ScrollToTop } from './components/ScrollToTop';
+import { playSound } from './utils/soundEffects';
+
 import './App.css';
 
 // SVG Social Icons
@@ -76,8 +92,8 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.09,
-      delayChildren: 0.1
+      staggerChildren: 0.08,
+      delayChildren: 0.05
     }
   }
 };
@@ -93,12 +109,45 @@ const popIn = {
 };
 
 const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [showHireWidget, setShowHireWidget] = useState(true);
-  const [activeLightbox, setActiveLightbox] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [skillSearchQuery, setSkillSearchQuery] = useState('');
+  const [activeLightboxIndex, setActiveLightboxIndex] = useState(null);
+  const [currentTime, setCurrentTime] = useState('');
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 32, restDelta: 0.001 });
+
+  // Master safety timeout to guarantee the portfolio always loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Update live Indian Standard Time clock
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      });
+      setCurrentTime(timeString);
+    };
+
+    updateTime();
+    const timer = setInterval(updateTime, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   // Initialize buttery smooth momentum scrolling with Lenis
   useEffect(() => {
@@ -124,14 +173,24 @@ const App = () => {
   }, []);
 
   const handleCopyEmail = () => {
+    playSound('success', soundEnabled);
     navigator.clipboard.writeText('ashokgumma20@gmail.com');
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2400);
   };
 
+  const toggleSound = () => {
+    const nextState = !soundEnabled;
+    setSoundEnabled(nextState);
+    if (nextState) {
+      playSound('success', true);
+    }
+  };
+
   const projects = [
     {
       id: "anva",
+      category: ["ai", "fullstack", "realtime"],
       number: "Project 01 / Placement Arena, AI & Real-time Platform",
       themeClass: "theme-emerald",
       title: "ANVA",
@@ -149,6 +208,7 @@ const App = () => {
     },
     {
       id: "solargrid",
+      category: ["fullstack", "enterprise"],
       number: "Project 02 / Solar Operations ERP & CRM",
       themeClass: "theme-terracotta",
       title: "SolarGrid",
@@ -166,6 +226,7 @@ const App = () => {
     },
     {
       id: "friday",
+      category: ["ai", "fullstack"],
       number: "Project 03 / Hybrid AI Mindful Companion",
       themeClass: "theme-cyber",
       title: "FRIDAY",
@@ -182,6 +243,11 @@ const App = () => {
       urlLabel: "friday.mindful.ai"
     }
   ];
+
+  const filteredProjects = useMemo(() => {
+    if (selectedCategory === 'all') return projects;
+    return projects.filter(p => p.category.includes(selectedCategory));
+  }, [selectedCategory, projects]);
 
   const skillMatrix = [
     {
@@ -216,10 +282,153 @@ const App = () => {
     }
   ];
 
+  // Gallery items for sequential modal lightbox
+  const galleryItems = useMemo(() => [
+    {
+      id: "portrait",
+      img: ashokPortrait,
+      title: "Ashok Shankar Gumma — Studio Portrait",
+      tag: "STUDIO PROFILE • 2026",
+      caption: "Full-Stack Developer & AI Systems Specialist. B.Tech CSE (AI) at Parul University."
+    },
+    {
+      id: "polaroid-floor",
+      img: ashokPolaroidFloor,
+      title: "Late-Night Flow & Creative Sound — <3",
+      tag: "FOCUS • 2026",
+      caption: "Late night deep focus, reading system documentation and hardware flow."
+    },
+    {
+      id: "polaroid-sketching",
+      img: ashokPolaroidSketching,
+      title: "System Design & Schemas — Ashok",
+      tag: "ARCHITECTURE • ASHOK",
+      caption: "Sketching database schemas, API contracts, and user journey flowcharts."
+    },
+    {
+      id: "research-floor",
+      img: ashokResearchFloor,
+      title: "Deep Research & Problem Solving",
+      tag: "RESEARCH • ARCHIVE",
+      caption: "Unravelling complex problem domains, algorithmic design, and architecture papers."
+    },
+    {
+      id: "coding-desk",
+      img: ashokPolaroidCoding,
+      title: "Production Engineering & Workspace",
+      tag: "WORKSPACE • 2026",
+      caption: "Full-Stack Developer & AI Systems Engineer at the coding workspace."
+    },
+    {
+      id: "cert-zetheta",
+      img: zethetaCertificate,
+      title: "Zetheta Algorithms — Certificate of Project Work Experience",
+      tag: "ZETHETA • 06 AUG 2026",
+      caption: "Full Stack Engineer Intern on Front End Developer Multi Step Loan Application Form. Managing Director: Suketu Sanghvi."
+    },
+    {
+      id: "cert-corizo",
+      img: corizoCertificate,
+      title: "Corizo — Certificate of Training in Web Development",
+      tag: "CORIZO • 05 MAY — 05 JUNE 2025",
+      caption: "Web Development Training certified to Gumma Ashok Shankar by Academic Head Hemant Ingle. ISO 9001:2015 & NSDC accredited."
+    },
+    {
+      id: "cert-parul",
+      img: parulWorkshopCertificate,
+      title: "Parul University Projections — Full Stack Web Development Workshop",
+      tag: "PROJECTIONS • FEB 2026",
+      caption: "Certificate of Participation awarded to Gumma Ashok Shankar at Gujarat's Largest Technical Festival."
+    },
+    {
+      id: "cert-adobe",
+      img: adobeCertificate,
+      title: "Adobe University Hackathon — Certificate of Participation",
+      tag: "ADOBE • 9TH AUG 2026",
+      caption: "Organized by Adobe & Unstop. Certified to Ashok Shankar Gumma from Parul University (PU), Vadodara."
+    }
+  ], []);
+
+  const openLightboxById = useCallback((id) => {
+    playSound('click', soundEnabled);
+    const idx = galleryItems.findIndex(item => item.id === id);
+    if (idx !== -1) setActiveLightboxIndex(idx);
+  }, [galleryItems, soundEnabled]);
+
+  const nextLightbox = useCallback((e) => {
+    if (e) e.stopPropagation();
+    playSound('whoosh', soundEnabled);
+    setActiveLightboxIndex(prev => (prev + 1) % galleryItems.length);
+  }, [galleryItems.length, soundEnabled]);
+
+  const prevLightbox = useCallback((e) => {
+    if (e) e.stopPropagation();
+    playSound('whoosh', soundEnabled);
+    setActiveLightboxIndex(prev => (prev - 1 + galleryItems.length) % galleryItems.length);
+  }, [galleryItems.length, soundEnabled]);
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (activeLightboxIndex === null) return;
+      if (e.key === 'Escape') setActiveLightboxIndex(null);
+      if (e.key === 'ArrowRight') nextLightbox();
+      if (e.key === 'ArrowLeft') prevLightbox();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeLightboxIndex, nextLightbox, prevLightbox]);
+
   return (
     <div className="portfolio-root graph-paper-bg">
+      {/* Interactive Studio Preloader with Exit Curtain */}
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <Preloader onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Subtle Ambient Mouse Spotlight for Desktop */}
+      <AmbientGlow />
+
+      {/* Floating Scroll to Top with Circular Depth Ring */}
+      <ScrollToTop soundEnabled={soundEnabled} />
+
       {/* Top Scroll Indicator Line */}
       <motion.div className="top-scroll-line" style={{ scaleX }} />
+
+      {/* =========================================================
+          LIVE TELEMETRY HUD BAR (TOP SYSTEM STATUS)
+          ========================================================= */}
+      <div className="telemetry-top-strip">
+        <div className="main-container">
+          <div className="telemetry-content">
+            <div className="telemetry-left">
+              <span className="telemetry-dot"></span>
+              <span className="telemetry-label">SYSTEM STATUS:</span>
+              <span className="telemetry-val">ONLINE • 2026 EDITION</span>
+            </div>
+
+            <div className="telemetry-center">
+              <Clock size={12} className="telemetry-icon" />
+              <span className="telemetry-time">{currentTime || "11:38 AM IST"} (ANDHRA PRADESH)</span>
+            </div>
+
+            <div className="telemetry-right">
+              <button
+                className={`sfx-toggle-pill ${soundEnabled ? 'active' : ''}`}
+                onClick={toggleSound}
+                title={soundEnabled ? "Disable UI Sound Effects" : "Enable UI Sound Effects"}
+                aria-label="Toggle sound effects"
+              >
+                {soundEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
+                <span>SFX: {soundEnabled ? "ON" : "OFF"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* =========================================================
           STICKY STUDIO NAVIGATION BAR
@@ -227,7 +436,11 @@ const App = () => {
       <header className="site-header">
         <div className="main-container">
           <div className="nav-container">
-            <a href="#hero" className="nav-brand">
+            <a
+              href="#hero"
+              className="nav-brand"
+              onClick={() => playSound('hover', soundEnabled)}
+            >
               <div className="nav-monogram">AG</div>
               <div className="nav-brand-text">
                 <span className="brand-name">Ashok Shankar Gumma</span>
@@ -235,23 +448,62 @@ const App = () => {
               </div>
             </a>
 
-            <nav className="nav-menu">
-              <a href="#about" className="nav-link">Overview</a>
-              <a href="#projects" className="nav-link">Selected Works</a>
-              <a href="#skills" className="nav-link">Stack Matrix</a>
-              <a href="#experience" className="nav-link">Journey</a>
+            {/* Desktop Navigation */}
+            <nav className="nav-menu desktop-nav">
+              <a href="#about" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Overview</a>
+              <a href="#projects" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Selected Works</a>
+              <a href="#skills" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Stack Matrix</a>
+              <a href="#experience" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Journey</a>
               
-              <div className="nav-availability-badge">
+              <div className="nav-availability-badge" title="Actively interviewing for 2026 roles">
                 <span className="pulse-circle"></span>
                 <span>OPEN FOR ROLES</span>
               </div>
 
-              <a href="#contact" className="nav-cta-btn">
+              <a
+                href="#contact"
+                className="nav-cta-btn"
+                onClick={() => playSound('click', soundEnabled)}
+                onMouseEnter={() => playSound('hover', soundEnabled)}
+              >
                 Let's Talk <ArrowUpRight size={14} />
               </a>
             </nav>
+
+            {/* Mobile Menu Trigger */}
+            <button
+              className="mobile-hamburger-btn"
+              onClick={() => {
+                playSound('click', soundEnabled);
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              className="mobile-nav-drawer"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="mobile-nav-links">
+                <a href="#about" onClick={() => setMobileMenuOpen(false)}>Overview</a>
+                <a href="#projects" onClick={() => setMobileMenuOpen(false)}>Selected Works</a>
+                <a href="#skills" onClick={() => setMobileMenuOpen(false)}>Stack Matrix</a>
+                <a href="#experience" onClick={() => setMobileMenuOpen(false)}>Journey</a>
+                <a href="#contact" className="mobile-cta-link" onClick={() => setMobileMenuOpen(false)}>Let's Talk →</a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <main>
@@ -274,18 +526,43 @@ const App = () => {
 
               {/* Slanted Stamp Stickers Row */}
               <motion.div className="stamp-stickers-row" variants={fadeInUp}>
-                <motion.div className="stamp-sticker slanted-left" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  className="stamp-sticker slanted-left"
+                  whileHover={{ scale: 1.08, rotate: 0 }}
+                  whileTap={{ scale: 0.95 }}
+                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                >
                   <MapPin size={13} />
                   <span>ANDHRA PRADESH, INDIA</span>
                 </motion.div>
-                <motion.div className="stamp-sticker slanted-right green-status" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
+
+                <motion.div
+                  className="stamp-sticker slanted-right green-status"
+                  whileHover={{ scale: 1.08, rotate: 0 }}
+                  whileTap={{ scale: 0.95 }}
+                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                >
                   <span className="pulse-circle"></span>
                   <span>AVAILABLE FOR FULL-STACK / SDE ROLES</span>
                 </motion.div>
-                <motion.div className="stamp-sticker red-accent slanted-left" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
-                  <span> PORTFOLIO EDITION</span>
+
+                <motion.div
+                  className="stamp-sticker red-accent slanted-left"
+                  whileHover={{ scale: 1.08, rotate: 0 }}
+                  whileTap={{ scale: 0.95 }}
+                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                >
+                  <Sparkles size={13} />
+                  <span>PORTFOLIO EDITION 2026</span>
                 </motion.div>
-                <motion.div className="stamp-sticker slanted-right" whileHover={{ scale: 1.08, rotate: 0 }} whileTap={{ scale: 0.95 }}>
+
+                <motion.div
+                  className="stamp-sticker slanted-right"
+                  whileHover={{ scale: 1.08, rotate: 0 }}
+                  whileTap={{ scale: 0.95 }}
+                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                >
+                  <Award size={13} />
                   <span>B.TECH CSE (AI)</span>
                 </motion.div>
               </motion.div>
@@ -298,18 +575,16 @@ const App = () => {
                   variants={popIn}
                   whileHover={{ scale: 1.03, rotate: [-0.5, 0.5, 0], transition: { duration: 0.3 } }}
                   whileTap={{ scale: 0.97 }}
-                  onClick={() => setActiveLightbox({
-                    img: ashokPortrait,
-                    title: "Ashok Shankar Gumma — Studio Portrait",
-                    tag: "STUDIO PROFILE • 2026",
-                    caption: "Full-Stack Developer & AI Systems Specialist. B.Tech CSE (AI) at Parul University."
-                  })}
+                  onClick={() => openLightboxById('portrait')}
                   title="Click to expand portrait"
                 >
                   <div className="sticker-contour-shadow"></div>
                   <div className="cutout-avatar-frame">
                     <div className="avatar-hud-viewfinder">RAW • 50MM • ISO 100</div>
                     <img src={ashokPortrait} alt="Ashok Shankar Gumma" className="cutout-avatar-img" />
+                    <div className="hover-expand-pill">
+                      <Sparkles size={11} /> Expand
+                    </div>
                   </div>
                 </motion.div>
 
@@ -333,6 +608,31 @@ const App = () => {
                   <p className="studio-greeting-sub">
                     Full-Stack Developer building modern web applications, scalable backend systems, and AI platforms. Architecting platforms like <strong>ANVA</strong> & <strong>SolarGrid</strong> with clean code, intuitive UI design, and production reliability.
                   </p>
+
+                  <div className="hero-quick-action-strip">
+                    <motion.a
+                      href="#projects"
+                      className="hero-pill-cta"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => playSound('click', soundEnabled)}
+                      onMouseEnter={() => playSound('hover', soundEnabled)}
+                    >
+                      <span>Explore Works (3)</span>
+                      <ArrowUpRight size={14} />
+                    </motion.a>
+
+                    <motion.button
+                      onClick={handleCopyEmail}
+                      className="hero-pill-ghost"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      onMouseEnter={() => playSound('hover', soundEnabled)}
+                    >
+                      {copiedEmail ? <Check size={14} color="#22C55E" /> : <Copy size={14} />}
+                      <span>{copiedEmail ? "Copied to Clipboard!" : "Copy Email"}</span>
+                    </motion.button>
+                  </div>
                 </motion.div>
               </div>
 
@@ -350,7 +650,11 @@ const App = () => {
                   <p className="bio-editorial-text">
                     Full-Stack Engineer & AI specialist. Currently focused on building production-ready web platforms, exploring cloud architecture, and regular problem solving on LeetCode.
                   </p>
-                  <motion.div className="bio-status-card" whileHover={{ scale: 1.02 }}>
+                  <motion.div
+                    className="bio-status-card"
+                    whileHover={{ scale: 1.02 }}
+                    onMouseEnter={() => playSound('hover', soundEnabled)}
+                  >
                     <span className="pulse-circle"></span>
                     <span>Available for SDE / Full-Stack</span>
                   </motion.div>
@@ -406,16 +710,16 @@ const App = () => {
                   </div>
 
                   <ul className="focus-list">
-                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span className="focus-arrow">▶</span> DevOps & Cloud (Active Focus)
                     </motion.li>
-                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span className="focus-arrow">▶</span> Full-Stack Platforms (MERN/Next)
                     </motion.li>
-                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span className="focus-arrow">▶</span> Placement Engines & Mock Tests
                     </motion.li>
-                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span className="focus-arrow">▶</span> Hybrid ML + LLM Architectures
                     </motion.li>
                   </ul>
@@ -429,35 +733,35 @@ const App = () => {
                   </div>
 
                   <div className="tools-app-grid">
-                    <motion.div className="tool-app-badge react-badge" title="React.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge react-badge" title="React.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>⚛</span>
                       <small>React</small>
                     </motion.div>
-                    <motion.div className="tool-app-badge node-badge" title="Node.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge node-badge" title="Node.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>⚡</span>
                       <small>Node</small>
                     </motion.div>
-                    <motion.div className="tool-app-badge pg-badge" title="PostgreSQL" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge pg-badge" title="PostgreSQL" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>🐘</span>
                       <small>Postgres</small>
                     </motion.div>
-                    <motion.div className="tool-app-badge figma-badge" title="Docker (DevOps)" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge figma-badge" title="Docker (DevOps)" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>🐳</span>
                       <small>Docker</small>
                     </motion.div>
-                    <motion.div className="tool-app-badge py-badge" title="Linux & Bash" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge py-badge" title="Linux & Bash" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>🐧</span>
                       <small>Linux</small>
                     </motion.div>
-                    <motion.div className="tool-app-badge ps-badge" title="MongoDB" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge ps-badge" title="MongoDB" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>🍃</span>
                       <small>Mongo</small>
                     </motion.div>
-                    <motion.div className="tool-app-badge ai-badge" title="Tailwind CSS" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge ai-badge" title="Tailwind CSS" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>🎨</span>
                       <small>Tailwind</small>
                     </motion.div>
-                    <motion.div className="tool-app-badge ae-badge" title="Git & GitHub" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+                    <motion.div className="tool-app-badge ae-badge" title="Git & GitHub" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                       <span>🐙</span>
                       <small>Git</small>
                     </motion.div>
@@ -469,87 +773,69 @@ const App = () => {
                 </motion.div>
               </motion.div>
 
-              {/* EDITORIAL SNAPSHOTS & STORY POLAROIDS (BEHANCE STYLE) */}
+              {/* EDITORIAL SNAPSHOTS & STORY POLAROIDS (WITH 3D TILT EFFECT) */}
               <motion.div
                 className="editorial-snapshots-row"
                 variants={staggerContainer}
                 initial="hidden"
                 animate="visible"
               >
-                <motion.div
+                <TiltCard
                   className="polaroid-card tilt-left"
-                  variants={popIn}
-                  whileHover={{ scale: 1.05, y: -10, rotate: 0, transition: { type: "spring", stiffness: 350, damping: 18 } }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setActiveLightbox({
-                    img: ashokPolaroidFloor,
-                    title: "Late-Night Flow & Creative Sound — <3",
-                    tag: "FOCUS • 2026",
-                    caption: "Late night deep focus, reading system documentation and hardware flow."
-                  })}
+                  onClick={() => openLightboxById('polaroid-floor')}
                   title="Click to view full photo"
                 >
                   <div className="washi-tape green-tape"></div>
                   <div className="polaroid-img-wrapper">
-                    
                     <img src={ashokPolaroidFloor} alt="Ashok Creative Focus" loading="lazy" />
+                    <div className="polaroid-overlay-badge">
+                      <Sparkles size={12} /> VIEW RAW
+                    </div>
                   </div>
                   <div className="polaroid-caption-block">
                     <span className="polaroid-tag-label">FOCUS • &lt;3</span>
                     <h4 className="polaroid-title">Late-Night Flow</h4>
                     <p className="polaroid-sub">Ambient deep focus, reading architecture & hardware flow.</p>
                   </div>
-                </motion.div>
+                </TiltCard>
 
-                <motion.div
+                <TiltCard
                   className="polaroid-card tilt-subtle"
-                  variants={popIn}
-                  whileHover={{ scale: 1.05, y: -10, rotate: 0, transition: { type: "spring", stiffness: 350, damping: 18 } }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setActiveLightbox({
-                    img: ashokPolaroidSketching,
-                    title: "System Design & Schemas — Ashok",
-                    tag: "ARCHITECTURE • ASHOK",
-                    caption: "Sketching database schemas, API contracts, and user journey flowcharts."
-                  })}
+                  onClick={() => openLightboxById('polaroid-sketching')}
                   title="Click to view full photo"
                 >
                   <div className="washi-tape red-tape"></div>
                   <div className="polaroid-img-wrapper">
-                    
                     <img src={ashokPolaroidSketching} alt="Ashok System Architecture Sketching" loading="lazy" />
+                    <div className="polaroid-overlay-badge">
+                      <Sparkles size={12} /> VIEW RAW
+                    </div>
                   </div>
                   <div className="polaroid-caption-block">
                     <span className="polaroid-tag-label">ARCHITECTURE • ASHOK</span>
                     <h4 className="polaroid-title">System Schemas</h4>
                     <p className="polaroid-sub">Mapping database models, state machines & REST flowcharts.</p>
                   </div>
-                </motion.div>
+                </TiltCard>
 
-                <motion.div
+                <TiltCard
                   className="polaroid-card tilt-right"
-                  variants={popIn}
-                  whileHover={{ scale: 1.05, y: -10, rotate: 0, transition: { type: "spring", stiffness: 350, damping: 18 } }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setActiveLightbox({
-                    img: ashokResearchFloor,
-                    title: "Deep Research & Problem Solving",
-                    tag: "RESEARCH • ARCHIVE",
-                    caption: "Unravelling complex problem domains, algorithmic design, and architecture papers."
-                  })}
+                  onClick={() => openLightboxById('research-floor')}
                   title="Click to view full photo"
                 >
                   <div className="washi-tape blue-tape"></div>
                   <div className="polaroid-img-wrapper">
-                    
                     <img src={ashokResearchFloor} alt="Deep Research & Problem Solving" loading="lazy" />
+                    <div className="polaroid-overlay-badge">
+                      <Sparkles size={12} /> VIEW RAW
+                    </div>
                   </div>
                   <div className="polaroid-caption-block">
                     <span className="polaroid-tag-label">RESEARCH • ARCHIVE</span>
                     <h4 className="polaroid-title">Deep Research</h4>
                     <p className="polaroid-sub">Analyzing system documentation, algorithmic papers & schemas.</p>
                   </div>
-                </motion.div>
+                </TiltCard>
               </motion.div>
             </motion.div>
           </div>
@@ -583,23 +869,17 @@ const App = () => {
                   Bridging intuitive modern user interfaces with resilient backend infrastructure. From high-speed PostgreSQL relational design to AI contextual prompt architectures.
                 </p>
                 <div className="banner-action-pills">
-                  <span className="banner-pill">⚡ MERN & Next.js</span>
-                  <span className="banner-pill">🐘 PostgreSQL / Prisma</span>
-                  <span className="banner-pill">🤖 Contextual AI / LLMs</span>
-                  <span className="banner-pill">🎥 Stream Video & WebRTC</span>
+                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>⚡ MERN & Next.js</span>
+                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>🐘 PostgreSQL / Prisma</span>
+                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>🤖 Contextual AI / LLMs</span>
+                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>🎥 Stream Video & WebRTC</span>
                 </div>
               </div>
 
               {/* Right Hero Visual: Coding Workspace */}
-              <motion.div
+              <TiltCard
                 className="banner-reclining-cutout-wrap"
-                whileHover={{ scale: 1.02 }}
-                onClick={() => setActiveLightbox({
-                  img: ashokPolaroidCoding,
-                  title: "Ashok Shankar Gumma — Production Engineering",
-                  tag: "WORKSPACE • 2026",
-                  caption: "Full-Stack Developer & AI Systems Engineer at the coding workspace."
-                })}
+                onClick={() => openLightboxById('coding-desk')}
                 title="Click to expand workspace visual"
               >
                 <img
@@ -607,7 +887,11 @@ const App = () => {
                   alt="Ashok Coding Workspace Studio Hero"
                   className="banner-cutout-img"
                 />
-              </motion.div>
+                <div className="workspace-badge-pill">
+                  <Terminal size={12} />
+                  <span>DEV WORKSPACE • 2026</span>
+                </div>
+              </TiltCard>
             </div>
           </div>
         </motion.section>
@@ -635,7 +919,7 @@ const App = () => {
         </div>
 
         {/* =========================================================
-            3. BESPOKE PROJECT SHOWCASE BOARDS (CIUDADES Y SABORES STYLE)
+            4. BESPOKE PROJECT SHOWCASE BOARDS WITH INTERACTIVE FILTER
             ========================================================= */}
         <section id="projects" className="projects-showcase-section">
           <div className="main-container">
@@ -651,128 +935,173 @@ const App = () => {
               <p className="section-desc-text">
                 Explore fully engineered platforms combining modern UI design, backend infrastructure, and AI features.
               </p>
+
+              {/* Interactive Category Filter Pills */}
+              <div className="project-filter-pills-row">
+                {[
+                  { id: 'all', label: 'All Projects (3)' },
+                  { id: 'ai', label: 'AI & Hybrid ML (2)' },
+                  { id: 'fullstack', label: 'Full-Stack & Systems (3)' },
+                  { id: 'enterprise', label: 'Enterprise ERP & CRM (1)' },
+                  { id: 'realtime', label: 'Real-Time & Coding (1)' }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    className={`filter-pill-btn ${selectedCategory === tab.id ? 'active' : ''}`}
+                    onClick={() => {
+                      playSound('click', soundEnabled);
+                      setSelectedCategory(tab.id);
+                    }}
+                    onMouseEnter={() => playSound('hover', soundEnabled)}
+                  >
+                    {tab.label}
+                    {selectedCategory === tab.id && (
+                      <motion.div
+                        className="active-pill-glow"
+                        layoutId="activeFilterPill"
+                        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                      />
+                    )}
+                  </button>
+                ))}
+              </div>
             </motion.div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '64px' }}>
-              {projects.map((project, idx) => (
-                <motion.article
-                  key={project.id}
-                  className={`project-board-card ${project.themeClass}`}
-                  initial={{ opacity: 0, y: 55, scale: 0.98 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true, amount: 0.14 }}
-                  whileHover={{ y: -6, transition: { type: 'spring', stiffness: 300, damping: 20 } }}
-                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {/* Technical Corners */}
-                  <div className="technical-corner tc-top-left"></div>
-                  <div className="technical-corner tc-top-right"></div>
-                  <div className="technical-corner tc-bottom-left"></div>
-                  <div className="technical-corner tc-bottom-right"></div>
+            <motion.div
+              layout
+              style={{ display: 'flex', flexDirection: 'column', gap: '64px' }}
+            >
+              <AnimatePresence>
+                {filteredProjects.map((project, idx) => (
+                  <motion.article
+                    key={project.id}
+                    layout
+                    className={`project-board-card ${project.themeClass}`}
+                    initial={{ opacity: 0, y: 40, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {/* Technical Corners */}
+                    <div className="technical-corner tc-top-left"></div>
+                    <div className="technical-corner tc-top-right"></div>
+                    <div className="technical-corner tc-bottom-left"></div>
+                    <div className="technical-corner tc-bottom-right"></div>
 
-                  <div className="project-board-layout">
-                    {/* Left: Editorial Details */}
-                    <div className="project-info-side">
-                      <div className="project-meta-pill-row">
-                        <span className="project-number-badge">{project.number}</span>
-                        <span className="project-tag-pill">PRODUCTION GRADE</span>
-                      </div>
+                    <div className="project-board-layout">
+                      {/* Left: Editorial Details */}
+                      <div className="project-info-side">
+                        <div className="project-meta-pill-row">
+                          <span className="project-number-badge">{project.number}</span>
+                          <span className="project-tag-pill">PRODUCTION GRADE</span>
+                        </div>
 
-                      <h3 className="project-main-title">{project.title}</h3>
-                      <p className="project-serif-subtitle">{project.subtitle}</p>
-                      <p className="project-narrative-desc">{project.description}</p>
+                        <h3 className="project-main-title">{project.title}</h3>
+                        <p className="project-serif-subtitle">{project.subtitle}</p>
+                        <p className="project-narrative-desc">{project.description}</p>
 
-                      {/* Technologies & Tools used */}
-                      <div className="project-tools-used-box">
-                        <span className="tools-used-label">Technologies & Tools Used</span>
-                        <div className="project-tech-badges-list">
-                          {project.tools.map(tool => (
-                            <motion.span
-                              key={tool}
-                              className="tech-pill-badge"
-                              whileHover={{ scale: 1.08, y: -2 }}
+                        {/* Technologies & Tools used */}
+                        <div className="project-tools-used-box">
+                          <span className="tools-used-label">Technologies & Tools Used</span>
+                          <div className="project-tech-badges-list">
+                            {project.tools.map(tool => (
+                              <motion.span
+                                key={tool}
+                                className="tech-pill-badge"
+                                whileHover={{ scale: 1.08, y: -2 }}
+                                onMouseEnter={() => playSound('hover', soundEnabled)}
+                              >
+                                {tool}
+                              </motion.span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Review Quote Box */}
+                        <div className="project-review-quote-box">
+                          <div className="review-quote-head">
+                            <span className="review-title">{project.reviewTitle}</span>
+                            <span className="review-stars">{project.reviewRating}</span>
+                          </div>
+                          <p className="review-quote-text">{project.reviewText}</p>
+                        </div>
+
+                        {/* Footer Actions & Swatches */}
+                        <div className="project-footer-actions">
+                          <div className="palette-swatches-row">
+                            {project.palette.map((color, cIdx) => (
+                              <motion.div
+                                key={cIdx}
+                                className="palette-dot"
+                                style={{ backgroundColor: color }}
+                                title={color}
+                                whileHover={{ scale: 1.35 }}
+                                onMouseEnter={() => playSound('hover', soundEnabled)}
+                              />
+                            ))}
+                          </div>
+
+                          <div className="project-action-btns-row">
+                            <motion.a
+                              href={project.liveLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="btn-project-cta"
+                              whileHover={{ scale: 1.05, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => playSound('click', soundEnabled)}
+                              onMouseEnter={() => playSound('hover', soundEnabled)}
                             >
-                              {tool}
-                            </motion.span>
-                          ))}
+                              Live Demo <ExternalLink size={14} />
+                            </motion.a>
+                            <motion.a
+                              href={project.githubLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="btn-project-ghost"
+                              whileHover={{ scale: 1.05, y: -2 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => playSound('click', soundEnabled)}
+                              onMouseEnter={() => playSound('hover', soundEnabled)}
+                            >
+                              <GithubIcon size={14} /> Code
+                            </motion.a>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Review Quote Box */}
-                      <div className="project-review-quote-box">
-                        <div className="review-quote-head">
-                          <span className="review-title">{project.reviewTitle}</span>
-                          <span className="review-stars">{project.reviewRating}</span>
-                        </div>
-                        <p className="review-quote-text">{project.reviewText}</p>
-                      </div>
-
-                      {/* Footer Actions & Swatches */}
-                      <div className="project-footer-actions">
-                        <div className="palette-swatches-row">
-                          {project.palette.map((color, cIdx) => (
-                            <motion.div
-                              key={cIdx}
-                              className="palette-dot"
-                              style={{ backgroundColor: color }}
-                              title={color}
-                              whileHover={{ scale: 1.3 }}
-                            />
-                          ))}
-                        </div>
-
-                        <div className="project-action-btns-row">
-                          <motion.a
-                            href={project.liveLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="btn-project-cta"
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            Live Demo <ExternalLink size={14} />
-                          </motion.a>
-                          <motion.a
-                            href={project.githubLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="btn-project-ghost"
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <GithubIcon size={14} /> Code
-                          </motion.a>
-                        </div>
+                      {/* Right: Mockup Frame Composition with 3D Tilt */}
+                      <div className="project-visual-side">
+                        <TiltCard
+                          className="mockup-display-card"
+                          maxTilt={6}
+                        >
+                          <div className="mockup-browser-header">
+                            <div className="browser-dot dot-red"></div>
+                            <div className="browser-dot dot-yellow"></div>
+                            <div className="browser-dot dot-green"></div>
+                            <div className="browser-url-pill">{project.urlLabel}</div>
+                          </div>
+                          <div className="mockup-img-wrap">
+                            <img src={project.image} alt={project.title} loading="lazy" />
+                            <div className="mockup-sheen-effect"></div>
+                          </div>
+                          <div className="floating-mockup-badge">
+                            <Sparkles size={14} color="#FBBF24" />
+                            <span>0{idx + 1} • {project.title}</span>
+                          </div>
+                        </TiltCard>
                       </div>
                     </div>
-
-                    {/* Right: Mockup Frame Composition */}
-                    <div className="project-visual-side">
-                      <motion.div className="mockup-display-card" whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}>
-                        <div className="mockup-browser-header">
-                          <div className="browser-dot"></div>
-                          <div className="browser-dot"></div>
-                          <div className="browser-dot"></div>
-                          <div className="browser-url-pill">{project.urlLabel}</div>
-                        </div>
-                        <div className="mockup-img-wrap">
-                          <img src={project.image} alt={project.title} loading="lazy" />
-                        </div>
-                        <div className="floating-mockup-badge">
-                          <Sparkles size={14} color="#FBBF24" />
-                          <span>0{idx + 1} • {project.title}</span>
-                        </div>
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
+                  </motion.article>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           </div>
         </section>
 
         {/* =========================================================
-            4. SKILLS & ARCHITECTURE BENTO MATRIX
+            5. SKILLS & ARCHITECTURE BENTO MATRIX WITH LIVE SEARCH
             ========================================================= */}
         <section id="skills" className="skills-matrix-section">
           <div className="main-container">
@@ -788,43 +1117,75 @@ const App = () => {
               <p className="section-desc-text">
                 Full-stack toolkit spanning modern client-side engineering, scalable backend APIs, database modeling, and real-time systems.
               </p>
+
+              {/* Stack Search Filter Input */}
+              <div className="skills-search-bar-wrap">
+                <Search size={16} className="search-icon-inside" />
+                <input
+                  type="text"
+                  placeholder="Filter skills (e.g., React, PostgreSQL, Docker, AI, LeetCode)..."
+                  value={skillSearchQuery}
+                  onChange={(e) => setSkillSearchQuery(e.target.value)}
+                  className="skills-search-input"
+                />
+                {skillSearchQuery && (
+                  <button
+                    className="clear-search-btn"
+                    onClick={() => setSkillSearchQuery('')}
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
             </motion.div>
 
             <div className="skills-bento-grid">
-              {skillMatrix.map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  className="skill-matrix-card"
-                  initial={{ opacity: 0, y: 28 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  whileHover={{ y: -6, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
-                  transition={{ duration: 0.5, delay: idx * 0.08 }}
-                >
-                  <div className="skill-card-head">
-                    <div className="skill-icon-wrap">{item.icon}</div>
-                    <h3 className="skill-cat-title">{item.category}</h3>
-                  </div>
+              {skillMatrix.map((item, idx) => {
+                const query = skillSearchQuery.toLowerCase().trim();
+                const matchesCategory = item.category.toLowerCase().includes(query);
+                const matchingSkills = item.skills.filter(s => s.toLowerCase().includes(query));
+                const isFiltered = query.length > 0;
+                const isHighlighted = isFiltered && (matchesCategory || matchingSkills.length > 0);
 
-                  <div className="skill-tags-flex">
-                    {item.skills.map(s => (
-                      <motion.span
-                        key={s}
-                        className="matrix-skill-badge"
-                        whileHover={{ scale: 1.06, y: -2 }}
-                      >
-                        {s}
-                      </motion.span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
+                return (
+                  <motion.div
+                    key={idx}
+                    className={`skill-matrix-card ${isHighlighted ? 'highlighted-card' : ''} ${isFiltered && !isHighlighted ? 'dimmed-card' : ''}`}
+                    initial={{ opacity: 0, y: 28 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    whileHover={{ y: -6, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
+                    transition={{ duration: 0.5, delay: idx * 0.06 }}
+                  >
+                    <div className="skill-card-head">
+                      <div className="skill-icon-wrap">{item.icon}</div>
+                      <h3 className="skill-cat-title">{item.category}</h3>
+                    </div>
+
+                    <div className="skill-tags-flex">
+                      {item.skills.map(s => {
+                        const isSkillMatch = isFiltered && s.toLowerCase().includes(query);
+                        return (
+                          <motion.span
+                            key={s}
+                            className={`matrix-skill-badge ${isSkillMatch ? 'active-match' : ''}`}
+                            whileHover={{ scale: 1.08, y: -2 }}
+                            onMouseEnter={() => playSound('hover', soundEnabled)}
+                          >
+                            {s}
+                          </motion.span>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* =========================================================
-            5. CAREER JOURNEY & EDUCATION TIMELINE
+            6. CAREER JOURNEY & EDUCATION TIMELINE WITH CERTIFICATE LIGHTBOX
             ========================================================= */}
         <section id="experience" className="timeline-section">
           <div className="main-container">
@@ -856,18 +1217,10 @@ const App = () => {
                   <h3 className="timeline-card-title">Professional Experience</h3>
                 </div>
 
-                {/* Zetheta Algorithms Certificate Card */}
-                <motion.div
+                {/* Zetheta Algorithms Certificate Card with 3D Tilt */}
+                <TiltCard
                   className="certificate-feature-card"
-                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveLightbox({
-                    img: zethetaCertificate,
-                    title: "Zetheta Algorithms — Certificate of Project Work Experience",
-                    tag: "ZETHETA • 06 AUG 2026",
-                    caption: "Full Stack Engineer Intern on Front End Developer Multi Step Loan Application Form. Managing Director: Suketu Sanghvi."
-                  })}
-                  style={{ cursor: 'pointer', marginBottom: '18px' }}
+                  onClick={() => openLightboxById('cert-zetheta')}
                   title="Click to view official certificate"
                 >
                   <div className="certificate-header-row">
@@ -878,25 +1231,18 @@ const App = () => {
                     </div>
                     <div className="certificate-mini-thumb">
                       <img src={zethetaCertificate} alt="Zetheta Certificate" />
+                      <span className="cert-zoom-badge">🔍 VIEW</span>
                     </div>
                   </div>
                   <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
                     Engineered a scalable multi-step Loan Application portal with modular React components, client-side data validation, responsive layouts, and state management.
                   </p>
-                </motion.div>
+                </TiltCard>
 
                 {/* Corizo Training Certificate Card */}
-                <motion.div
+                <TiltCard
                   className="certificate-feature-card"
-                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveLightbox({
-                    img: corizoCertificate,
-                    title: "Corizo — Certificate of Training in Web Development",
-                    tag: "CORIZO • 05 MAY — 05 JUNE 2025",
-                    caption: "Web Development Training certified to Gumma Ashok Shankar by Academic Head Hemant Ingle. ISO 9001:2015 & NSDC accredited."
-                  })}
-                  style={{ cursor: 'pointer', marginBottom: '18px' }}
+                  onClick={() => openLightboxById('cert-corizo')}
                   title="Click to view official certificate"
                 >
                   <div className="certificate-header-row">
@@ -907,25 +1253,18 @@ const App = () => {
                     </div>
                     <div className="certificate-mini-thumb">
                       <img src={corizoCertificate} alt="Corizo Certificate" />
+                      <span className="cert-zoom-badge">🔍 VIEW</span>
                     </div>
                   </div>
                   <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
                     Completed intensive MERN stack curriculum covering MongoDB, Express, React, Node.js, JWT authentication, and REST API optimization.
                   </p>
-                </motion.div>
+                </TiltCard>
 
                 {/* Parul University Projections Workshop Certificate Card */}
-                <motion.div
+                <TiltCard
                   className="certificate-feature-card"
-                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveLightbox({
-                    img: parulWorkshopCertificate,
-                    title: "Parul University Projections — Full Stack Web Development Workshop",
-                    tag: "PROJECTIONS • FEB 2026",
-                    caption: "Certificate of Participation awarded to Gumma Ashok Shankar at Gujarat's Largest Technical Festival (12th-14th Feb 2026)."
-                  })}
-                  style={{ cursor: 'pointer' }}
+                  onClick={() => openLightboxById('cert-parul')}
                   title="Click to view official certificate"
                 >
                   <div className="certificate-header-row">
@@ -936,12 +1275,13 @@ const App = () => {
                     </div>
                     <div className="certificate-mini-thumb">
                       <img src={parulWorkshopCertificate} alt="Parul University Projections Certificate" />
+                      <span className="cert-zoom-badge">🔍 VIEW</span>
                     </div>
                   </div>
                   <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
                     Participated in hands-on sessions covering modern full-stack application architecture and end-to-end frontend-backend integration during Gujarat's largest tech festival.
                   </p>
-                </motion.div>
+                </TiltCard>
               </motion.div>
 
               {/* Education & Achievements Card */}
@@ -967,17 +1307,9 @@ const App = () => {
                 </div>
 
                 {/* Adobe University Hackathon Interactive Certificate Card */}
-                <motion.div
+                <TiltCard
                   className="certificate-feature-card"
-                  whileHover={{ scale: 1.02, y: -4, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveLightbox({
-                    img: adobeCertificate,
-                    title: "Adobe University Hackathon — Certificate of Participation",
-                    tag: "ADOBE • 9TH AUG 2026",
-                    caption: "Organized by Adobe & Unstop. Certified to Ashok Shankar Gumma from Parul University (PU), Vadodara."
-                  })}
-                  style={{ cursor: 'pointer' }}
+                  onClick={() => openLightboxById('cert-adobe')}
                   title="Click to expand official certificate"
                 >
                   <div className="certificate-header-row">
@@ -988,12 +1320,13 @@ const App = () => {
                     </div>
                     <div className="certificate-mini-thumb">
                       <img src={adobeCertificate} alt="Adobe Certificate" />
+                      <span className="cert-zoom-badge">🔍 VIEW</span>
                     </div>
                   </div>
                   <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
                     Participated in the national-level 24-hour developer hackathon creating innovative digital workflows and modern full-stack web solutions.
                   </p>
-                </motion.div>
+                </TiltCard>
 
                 <div className="timeline-record" style={{ marginTop: '20px' }}>
                   <span className="record-date-badge" style={{ background: '#059669' }}>2024 — 2026</span>
@@ -1009,7 +1342,7 @@ const App = () => {
         </section>
 
         {/* =========================================================
-            6. EDITORIAL FOOTER & DIRECT CONTACT
+            7. EDITORIAL FOOTER & DIRECT CONTACT
             ========================================================= */}
         <footer id="contact" className="site-footer">
           <div className="main-container">
@@ -1027,6 +1360,8 @@ const App = () => {
                   className="btn-footer-primary"
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.96 }}
+                  onClick={() => playSound('click', soundEnabled)}
+                  onMouseEnter={() => playSound('hover', soundEnabled)}
                 >
                   <Mail size={18} />
                   <span>Send Direct Email</span>
@@ -1037,6 +1372,7 @@ const App = () => {
                   className="btn-footer-secondary"
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.96 }}
+                  onMouseEnter={() => playSound('hover', soundEnabled)}
                 >
                   {copiedEmail ? <Check size={18} color="#22C55E" /> : <Copy size={18} />}
                   <span>{copiedEmail ? "Email Copied!" : "Copy Email"}</span>
@@ -1049,6 +1385,8 @@ const App = () => {
                   className="btn-footer-secondary"
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.96 }}
+                  onClick={() => playSound('click', soundEnabled)}
+                  onMouseEnter={() => playSound('hover', soundEnabled)}
                 >
                   <LinkedinIcon size={18} />
                   <span>Connect on LinkedIn</span>
@@ -1057,13 +1395,13 @@ const App = () => {
 
               {/* Social Links Row */}
               <div className="footer-social-row">
-                <motion.a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
+                <motion.a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                   <GithubIcon size={15} /> GitHub Profile
                 </motion.a>
-                <motion.a href="https://linkedin.com/in/ashok-gumma1" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
+                <motion.a href="https://linkedin.com/in/ashok-gumma1" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                   <LinkedinIcon size={15} /> LinkedIn
                 </motion.a>
-                <motion.a href="https://leetcode.com/u/gummaashok/" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
+                <motion.a href="https://leetcode.com/u/gummaashok/" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
                   <LeetCodeIcon size={15} /> LeetCode Profile
                 </motion.a>
                 <span className="footer-social-pill" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
@@ -1081,16 +1419,17 @@ const App = () => {
         </footer>
       </main>
 
-      {/* Copy Email Toast */}
+      {/* Copy Email Toast with Confetti Sparkle */}
       <AnimatePresence>
         {copiedEmail && (
           <motion.div
             className="copy-toast"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
           >
-            ✓ Email copied to clipboard: ashokgumma20@gmail.com
+            <div className="toast-sparkle-dot"></div>
+            <span>✓ Email copied to clipboard: <strong>ashokgumma20@gmail.com</strong></span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -1122,12 +1461,20 @@ const App = () => {
               <span className="widget-title">Ashok is available for hire</span>
             </div>
 
-            <a href="#contact" className="widget-cta-btn">
+            <a
+              href="#contact"
+              className="widget-cta-btn"
+              onClick={() => playSound('click', soundEnabled)}
+              onMouseEnter={() => playSound('hover', soundEnabled)}
+            >
               Hire Ashok
             </a>
 
             <button
-              onClick={() => setShowHireWidget(false)}
+              onClick={() => {
+                playSound('click', soundEnabled);
+                setShowHireWidget(false);
+              }}
               className="widget-close-btn"
               title="Dismiss"
               aria-label="Dismiss"
@@ -1139,16 +1486,16 @@ const App = () => {
       </AnimatePresence>
 
       {/* =========================================================
-          AESTHETIC FILM LIGHTBOX MODAL
+          AESTHETIC FILM LIGHTBOX MODAL WITH NEXT/PREV CONTROLS
           ========================================================= */}
       <AnimatePresence>
-        {activeLightbox && (
+        {activeLightboxIndex !== null && galleryItems[activeLightboxIndex] && (
           <motion.div
             className="lightbox-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setActiveLightbox(null)}
+            onClick={() => setActiveLightboxIndex(null)}
           >
             <motion.div
               className="lightbox-content-card"
@@ -1160,22 +1507,48 @@ const App = () => {
             >
               <button
                 className="lightbox-close-btn"
-                onClick={() => setActiveLightbox(null)}
+                onClick={() => {
+                  playSound('click', soundEnabled);
+                  setActiveLightboxIndex(null);
+                }}
                 aria-label="Close modal"
               >
                 <X size={20} />
               </button>
 
+              {/* Navigation Arrows */}
+              <button
+                className="lightbox-nav-btn nav-prev"
+                onClick={prevLightbox}
+                aria-label="Previous image"
+              >
+                <ChevronLeft size={22} />
+              </button>
+
+              <button
+                className="lightbox-nav-btn nav-next"
+                onClick={nextLightbox}
+                aria-label="Next image"
+              >
+                <ChevronRight size={22} />
+              </button>
+
               <div className="lightbox-img-frame">
-                <img src={activeLightbox.img} alt={activeLightbox.title} />
+                <img
+                  src={galleryItems[activeLightboxIndex].img}
+                  alt={galleryItems[activeLightboxIndex].title}
+                />
               </div>
 
               <div className="lightbox-info-row">
                 <div>
-                  <h3 className="lightbox-caption-text">{activeLightbox.title}</h3>
-                  <p className="polaroid-sub">{activeLightbox.caption}</p>
+                  <div className="lightbox-counter-pill">
+                    INDEX {activeLightboxIndex + 1} / {galleryItems.length}
+                  </div>
+                  <h3 className="lightbox-caption-text">{galleryItems[activeLightboxIndex].title}</h3>
+                  <p className="polaroid-sub">{galleryItems[activeLightboxIndex].caption}</p>
                 </div>
-                <span className="lightbox-tag-text">{activeLightbox.tag}</span>
+                <span className="lightbox-tag-text">{galleryItems[activeLightboxIndex].tag}</span>
               </div>
             </motion.div>
           </motion.div>

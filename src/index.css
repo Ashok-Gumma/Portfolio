@@ -4,6 +4,10 @@
   --font-headline: 'Syne', sans-serif;
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-curly: 'Caveat', cursive;
+  --font-kalam: 'Kalam', cursive;
+  --font-itim: 'Itim', cursive;
+  --font-editorial: 'Newsreader', Georgia, serif;
 
   /* Behance 2026 Core Palette */
   --bg-cream: #F3EFE9;
