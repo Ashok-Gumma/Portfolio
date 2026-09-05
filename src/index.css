@@ -9,16 +9,16 @@
   --font-itim: 'Itim', cursive;
   --font-editorial: 'Newsreader', Georgia, serif;
 
-  /* Modern High-End Editorial Palette */
-  --bg-cream: #F5F1EB;
-  --bg-cream-surface: #FCFAF6;
-  --bg-cream-dark: #EAE4DA;
-  --grid-line: rgba(20, 21, 24, 0.06);
-  --grid-dot: rgba(20, 21, 24, 0.12);
+  /* Modern High-End Technical Black Palette */
+  --bg-cream: #0B0C10;
+  --bg-cream-surface: #141519;
+  --bg-cream-dark: #060709;
+  --grid-line: rgba(255, 255, 255, 0.055);
+  --grid-dot: rgba(255, 255, 255, 0.1);
   
-  --text-main: #111215;
-  --text-muted: #555861;
-  --text-light: #848995;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --text-light: #64748B;
 
   --accent-red: #FF3825;
   --accent-red-hover: #E32D1B;
@@ -98,11 +98,11 @@ body {
   background: var(--bg-cream);
 }
 ::-webkit-scrollbar-thumb {
-  background: #C4BEB3;
+  background: #2D313D;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #A09A8F;
+  background: #3E4454;
 }
 
 #root {
