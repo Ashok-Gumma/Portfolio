@@ -1,7 +1,7 @@
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Plus Jakarta Sans', sans-serif;
-  --font-headline: 'Syne', sans-serif;
+  --font-headline: 'Caveat', cursive;
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
   --font-curly: 'Caveat', cursive;
@@ -9,43 +9,55 @@
   --font-itim: 'Itim', cursive;
   --font-editorial: 'Newsreader', Georgia, serif;
 
-  /* Behance 2026 Core Palette */
-  --bg-cream: #F3EFE9;
-  --bg-cream-dark: #E8E3DA;
-  --grid-line: rgba(30, 30, 30, 0.08);
-  --grid-dot: rgba(30, 30, 30, 0.15);
+  /* Modern High-End Editorial Palette */
+  --bg-cream: #F5F1EB;
+  --bg-cream-surface: #FCFAF6;
+  --bg-cream-dark: #EAE4DA;
+  --grid-line: rgba(20, 21, 24, 0.06);
+  --grid-dot: rgba(20, 21, 24, 0.12);
   
-  --text-main: #141518;
-  --text-muted: #5A5D66;
-  --text-light: #8E929E;
+  --text-main: #111215;
+  --text-muted: #555861;
+  --text-light: #848995;
 
-  --accent-red: #FF3B1D;
-  --accent-red-hover: #E63114;
-  --accent-red-subtle: rgba(255, 59, 29, 0.1);
+  --accent-red: #FF3825;
+  --accent-red-hover: #E32D1B;
+  --accent-red-subtle: rgba(255, 56, 37, 0.1);
+  --accent-glow: rgba(255, 56, 37, 0.25);
 
-  --dark-bg: #121316;
-  --dark-surface: #1B1C22;
-  --dark-border: rgba(255, 255, 255, 0.1);
-  --dark-text: #F5F5F7;
-  --dark-muted: #9BA1B0;
+  --accent-emerald: #10B981;
+  --accent-emerald-glow: rgba(16, 185, 129, 0.2);
+  --accent-cyan: #38BDF8;
+  --accent-amber: #F59E0B;
 
-  --color-anva: #09231B;
-  --color-anva-accent: #22C55E;
-  --color-solar: #221813;
+  --dark-bg: #0C0D10;
+  --dark-surface: #141519;
+  --dark-surface-hover: #1C1D24;
+  --dark-border: rgba(255, 255, 255, 0.08);
+  --dark-border-subtle: rgba(255, 255, 255, 0.04);
+  --dark-text: #F8FAFC;
+  --dark-muted: #94A3B8;
+
+  --color-anva: #071E17;
+  --color-anva-accent: #10B981;
+  --color-solar: #1C140F;
   --color-solar-accent: #F97316;
-  --color-friday: #0E1726;
+  --color-friday: #0B1320;
   --color-friday-accent: #38BDF8;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
   --radius-pill: 9999px;
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
-  --shadow-red: 0 8px 24px rgba(255, 59, 29, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 12px 32px -4px rgba(0, 0, 0, 0.06), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  --shadow-red: 0 8px 24px rgba(255, 56, 37, 0.22);
+  --shadow-emerald: 0 8px 24px rgba(16, 185, 129, 0.2);
 }
 
 *, *::before, *::after {
@@ -78,19 +90,19 @@ body {
   color: #FFFFFF;
 }
 
-/* Custom Scrollbar */
+/* Custom Sleek Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-cream);
 }
 ::-webkit-scrollbar-thumb {
-  background: #C8C3BA;
+  background: #C4BEB3;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #A8A39A;
+  background: #A09A8F;
 }
 
 #root {

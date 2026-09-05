@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowUp } from 'lucide-react';
-import { playSound } from '../utils/soundEffects';
 
-export const ScrollToTop = ({ soundEnabled }) => {
+export const ScrollToTop = () => {
   const [visible, setVisible] = useState(false);
   const [scrollPercent, setScrollPercent] = useState(0);
 
@@ -22,7 +21,6 @@ export const ScrollToTop = ({ soundEnabled }) => {
   }, []);
 
   const scrollToTop = () => {
-    playSound('click', soundEnabled);
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -39,12 +37,11 @@ export const ScrollToTop = ({ soundEnabled }) => {
         <motion.button
           className="scroll-to-top-btn"
           onClick={scrollToTop}
-          onMouseEnter={() => playSound('hover', soundEnabled)}
           initial={{ opacity: 0, scale: 0.5, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
-          whileHover={{ scale: 1.12, y: -4 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.1, y: -4 }}
+          whileTap={{ scale: 0.92 }}
           title="Back to top"
           aria-label="Scroll back to top"
         >

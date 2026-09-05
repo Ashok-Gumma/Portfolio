@@ -1,150 +1,61 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { playPaperTear, playFullPaperRip } from '../utils/soundEffects';
+
+// Minimal black & white GIF animation
+import catCoderGif from '../assets/cat-coder.gif';
 
 export const Preloader = ({ onComplete }) => {
-  const [progress, setProgress] = useState(0);
-  const [isCuttingDone, setIsCuttingDone] = useState(false);
-  const tearCountRef = useRef(0);
+  const [isExiting, setIsExiting] = useState(false);
   const completedRef = useRef(false);
 
+  const handleFinish = () => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setIsExiting(true);
+    setTimeout(() => {
+      onComplete();
+    }, 300);
+  };
+
   useEffect(() => {
-    const startTime = performance.now();
-    const duration = 1200; // 1.2 seconds smooth cut
-
-    const finishCut = () => {
-      if (completedRef.current) return;
-      completedRef.current = true;
-      setProgress(100);
-      playFullPaperRip();
-      setIsCuttingDone(true);
-
-      setTimeout(() => {
-        if (onComplete) onComplete();
-      }, 500);
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') handleFinish();
     };
+    window.addEventListener('keydown', handleKeyDown);
 
-    let animFrame;
-    const animate = (time) => {
-      const elapsed = time - startTime;
-      const pct = Math.min((elapsed / duration) * 100, 100);
-      setProgress(pct);
-
-      // Play intense granular paper tearing sound as the scissors cuts across
-      const currentStep = Math.floor(pct / 8);
-      if (currentStep > tearCountRef.current && pct < 96) {
-        tearCountRef.current = currentStep;
-        playPaperTear(0.14, 0.88);
-      }
-
-      if (pct < 100) {
-        animFrame = requestAnimationFrame(animate);
-      } else {
-        finishCut();
-      }
-    };
-
-    animFrame = requestAnimationFrame(animate);
-
-    // Guaranteed fail-safe timer: will NEVER get stuck under any circumstances
-    const fallbackTimer = setTimeout(() => {
-      finishCut();
-    }, 1400);
+    // Snappy, fast loader duration (~750ms) - "just like that"
+    const timer = setTimeout(() => {
+      handleFinish();
+    }, 750);
 
     return () => {
-      cancelAnimationFrame(animFrame);
-      clearTimeout(fallbackTimer);
+      clearTimeout(timer);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onComplete]);
+  }, []);
 
   return (
-    <div className={`paper-loader-wrapper ${isCuttingDone ? 'cutting-complete' : ''}`}>
-      {/* Top Half of Paper Sheet */}
-      <motion.div
-        className="paper-half paper-top-half graph-paper-bg"
-        initial={{ y: 0, rotate: 0 }}
-        animate={isCuttingDone ? { y: '-105%', rotate: -1.2, opacity: 0.95 } : { y: 0, rotate: 0 }}
-        transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-      />
-
-      {/* Bottom Half of Paper Sheet */}
-      <motion.div
-        className="paper-half paper-bottom-half graph-paper-bg"
-        initial={{ y: 0, rotate: 0 }}
-        animate={isCuttingDone ? { y: '105%', rotate: 1.2, opacity: 0.95 } : { y: 0, rotate: 0 }}
-        transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-      />
-
-      {/* Center Dashed Seam & Animated Cutting Scissors */}
-      {!isCuttingDone && (
-        <div className="paper-cut-seam-container">
-          {/* Dashed Cutting Line */}
-          <div className="cut-dashed-line">
-            <div
-              className="cut-opened-track"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          {/* Animated Scissors moving automatically across the dotted line */}
-          <motion.div
-            className="moving-scissors-wrap"
-            style={{
-              left: `${progress}%`,
-            }}
-          >
-            <svg
-              className="scissors-svg"
-              width="68"
-              height="68"
-              viewBox="0 0 64 64"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Top Blade & Handle */}
-              <motion.g
-                className="scissor-top-blade"
-                animate={{
-                  rotate: [ -18, 4, -18 ],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 0.18,
-                  ease: "easeInOut"
-                }}
-                style={{ originX: '28px', originY: '32px' }}
-              >
-                <ellipse cx="14" cy="20" rx="9" ry="8" stroke="#141518" strokeWidth="3" fill="#FAF8F5" />
-                <path d="M21 24 L28 32" stroke="#141518" strokeWidth="4" strokeLinecap="round" />
-                <path d="M28 32 L58 40 L30 34 Z" fill="#141518" stroke="#141518" strokeWidth="1.5" strokeLinejoin="round" />
-              </motion.g>
-
-              {/* Bottom Blade & Handle */}
-              <motion.g
-                className="scissor-bottom-blade"
-                animate={{
-                  rotate: [ 18, -4, 18 ],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 0.18,
-                  ease: "easeInOut"
-                }}
-                style={{ originX: '28px', originY: '32px' }}
-              >
-                <ellipse cx="14" cy="44" rx="9" ry="8" stroke="#141518" strokeWidth="3" fill="#FAF8F5" />
-                <path d="M21 40 L28 32" stroke="#141518" strokeWidth="4" strokeLinecap="round" />
-                <path d="M28 32 L58 24 L30 30 Z" fill="#141518" stroke="#141518" strokeWidth="1.5" strokeLinejoin="round" />
-              </motion.g>
-
-              {/* Pivot Screw Pin */}
-              <circle cx="28" cy="32" r="3.5" fill="#FF3B1D" stroke="#141518" strokeWidth="1.5" />
-            </svg>
-          </motion.div>
+    <div
+      className={`minimal-bw-loader ${isExiting ? 'loader-fade-out' : ''}`}
+      onClick={handleFinish}
+    >
+      <div className="minimal-bw-container" onClick={(e) => e.stopPropagation()}>
+        {/* Centered Minimal B&W GIF Animation */}
+        <div className="minimal-gif-frame">
+          <img
+            src={catCoderGif}
+            alt="Coding animation"
+            className="minimal-bw-gif"
+            loading="eager"
+          />
         </div>
-      )}
+
+        {/* Minimal Typography in Clean Curly Font */}
+        <div className="minimal-text-wrap">
+          <h1 className="minimal-curly-name">Ashok Shankar Gumma</h1>
+          <p className="minimal-curly-role">~ full-stack &amp; ai systems ~</p>
+          <span className="minimal-curly-note">loading portfolio... ✨</span>
+        </div>
+      </div>
     </div>
   );
 };
-
-export default Preloader;

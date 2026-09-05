@@ -8,7 +8,6 @@ import {
   MapPin,
   Briefcase,
   GraduationCap,
-  Layers,
   Sparkles,
   ExternalLink,
   Copy,
@@ -17,24 +16,20 @@ import {
   Database,
   Server,
   Layout,
-  FolderGit2,
   X,
   Code2,
   Terminal,
-  Globe,
-  Volume2,
-  VolumeX,
   Search,
-  Filter,
   ChevronLeft,
   ChevronRight,
   Clock,
   Menu,
-  Award
+  Award,
+  ShieldCheck,
+  Radio
 } from 'lucide-react';
 
 import ashokPortrait from './assets/ashok_portrait_main.jpg';
-import ashokRecliningHero from './assets/ashok_reclining_sticker_hero.jpg';
 import ashokPolaroidCoding from './assets/ashok_polaroid_coding_desk.jpg';
 import ashokPolaroidSketching from './assets/ashok_polaroid_sketching.jpg';
 import ashokPolaroidFloor from './assets/ashok_polaroid_floor_headphones.jpg';
@@ -48,10 +43,9 @@ import solargridImg from './assets/solargrid.jpg';
 import fridayImg from './assets/friday.png';
 
 import { TiltCard } from './components/TiltCard';
-import { Preloader } from './components/Preloader';
 import { AmbientGlow } from './components/AmbientGlow';
 import { ScrollToTop } from './components/ScrollToTop';
-import { playSound } from './utils/soundEffects';
+import { Preloader } from './components/Preloader';
 
 import './App.css';
 
@@ -79,11 +73,11 @@ const LeetCodeIcon = ({ size = 16 }) => (
 
 // Motion animation variants
 const fadeInUp = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
   }
 };
 
@@ -92,25 +86,24 @@ const staggerContainer = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.05
+      staggerChildren: 0.07,
+      delayChildren: 0.04
     }
   }
 };
 
 const popIn = {
-  hidden: { opacity: 0, scale: 0.9, y: 16 },
+  hidden: { opacity: 0, scale: 0.92, y: 14 },
   visible: {
     opacity: 1,
     scale: 1,
     y: 0,
-    transition: { type: 'spring', damping: 20, stiffness: 260 }
+    transition: { type: 'spring', damping: 22, stiffness: 280 }
   }
 };
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [soundEnabled, setSoundEnabled] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [showHireWidget, setShowHireWidget] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -121,14 +114,6 @@ const App = () => {
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 32, restDelta: 0.001 });
-
-  // Master safety timeout to guarantee the portfolio always loads
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1800);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Update live Indian Standard Time clock
   useEffect(() => {
@@ -149,10 +134,10 @@ const App = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Initialize buttery smooth momentum scrolling with Lenis
+  // Initialize smooth momentum scrolling with Lenis
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.15,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       smoothTouch: false,
@@ -173,18 +158,9 @@ const App = () => {
   }, []);
 
   const handleCopyEmail = () => {
-    playSound('success', soundEnabled);
     navigator.clipboard.writeText('ashokgumma20@gmail.com');
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2400);
-  };
-
-  const toggleSound = () => {
-    const nextState = !soundEnabled;
-    setSoundEnabled(nextState);
-    if (nextState) {
-      playSound('success', true);
-    }
   };
 
   const projects = [
@@ -200,11 +176,11 @@ const App = () => {
       reviewTitle: "Placement & Coding Suite",
       reviewRating: "★★★★★",
       reviewText: "Engineered MNC company-specific aptitude & coding mock test modules, Pomodoro productivity flow, and sub-second multi-language code compilation with real-time WebRTC video calling.",
-      palette: ["#09231B", "#22C55E", "#0F172A", "#FFFFFF"],
+      palette: ["#071E17", "#10B981", "#0F172A", "#FFFFFF"],
       image: anvaImg,
       liveLink: "https://anva-akzm.onrender.com/",
       githubLink: "https://github.com/Ashok-Gumma/Anva",
-      urlLabel: "https://anva.app/workspace"
+      urlLabel: "anva.app/workspace"
     },
     {
       id: "solargrid",
@@ -218,7 +194,7 @@ const App = () => {
       reviewTitle: "Enterprise Architecture",
       reviewRating: "★★★★★",
       reviewText: "Engineered scalable PostgreSQL relational schemas for inventory tracking, automated delivery challan workflows, and technician service ticketing.",
-      palette: ["#221813", "#F97316", "#1E293B", "#F8FAFC"],
+      palette: ["#1C140F", "#F97316", "#1E293B", "#F8FAFC"],
       image: solargridImg,
       liveLink: "https://solar-grid-three.vercel.app/",
       githubLink: "https://github.com/Ashok-Gumma/solarGrid",
@@ -236,7 +212,7 @@ const App = () => {
       reviewTitle: "Hybrid ML + LLM Intelligence",
       reviewRating: "★★★★★",
       reviewText: "Combined custom ML classifiers trained on curated manual datasets with high-performance Generative LLMs for contextual intent routing and persistent user memory.",
-      palette: ["#0E1726", "#38BDF8", "#1E293B", "#FFFFFF"],
+      palette: ["#0B1320", "#38BDF8", "#1E293B", "#FFFFFF"],
       image: fridayImg,
       liveLink: "https://as-you-wish-q2lj.onrender.com/",
       githubLink: "https://github.com/Ashok-Gumma/Friday",
@@ -273,7 +249,7 @@ const App = () => {
     {
       category: "AI & Hybrid Machine Learning",
       icon: <Cpu size={18} />,
-      skills: ["Hybrid ML Models", "Generative LLMs", "Manual Dataset Training", "Contextual Prompting", "Stream Video / Chat SDK", "WebSockets"]
+      skills: ["Google Antigravity", "Agentic AI Workflows", "Genkit", "Hybrid ML Models", "Generative LLMs", "Manual Dataset Training", "Contextual Prompting", "Stream Video / Chat SDK", "WebSockets"]
     },
     {
       category: "Problem Solving & Core",
@@ -294,14 +270,14 @@ const App = () => {
     {
       id: "polaroid-floor",
       img: ashokPolaroidFloor,
-      title: "Late-Night Flow & Creative Sound — <3",
+      title: "Late-Night Flow & Creative Focus",
       tag: "FOCUS • 2026",
-      caption: "Late night deep focus, reading system documentation and hardware flow."
+      caption: "Late night deep focus, reading system architecture and hardware flow."
     },
     {
       id: "polaroid-sketching",
       img: ashokPolaroidSketching,
-      title: "System Design & Schemas — Ashok",
+      title: "System Design & Schemas",
       tag: "ARCHITECTURE • ASHOK",
       caption: "Sketching database schemas, API contracts, and user journey flowcharts."
     },
@@ -315,7 +291,7 @@ const App = () => {
     {
       id: "coding-desk",
       img: ashokPolaroidCoding,
-      title: "Production Engineering & Workspace",
+      title: "Production Engineering Workspace",
       tag: "WORKSPACE • 2026",
       caption: "Full-Stack Developer & AI Systems Engineer at the coding workspace."
     },
@@ -350,22 +326,19 @@ const App = () => {
   ], []);
 
   const openLightboxById = useCallback((id) => {
-    playSound('click', soundEnabled);
     const idx = galleryItems.findIndex(item => item.id === id);
     if (idx !== -1) setActiveLightboxIndex(idx);
-  }, [galleryItems, soundEnabled]);
+  }, [galleryItems]);
 
   const nextLightbox = useCallback((e) => {
     if (e) e.stopPropagation();
-    playSound('whoosh', soundEnabled);
     setActiveLightboxIndex(prev => (prev + 1) % galleryItems.length);
-  }, [galleryItems.length, soundEnabled]);
+  }, [galleryItems.length]);
 
   const prevLightbox = useCallback((e) => {
     if (e) e.stopPropagation();
-    playSound('whoosh', soundEnabled);
     setActiveLightboxIndex(prev => (prev - 1 + galleryItems.length) % galleryItems.length);
-  }, [galleryItems.length, soundEnabled]);
+  }, [galleryItems.length]);
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -382,18 +355,16 @@ const App = () => {
 
   return (
     <div className="portfolio-root graph-paper-bg">
-      {/* Interactive Studio Preloader with Exit Curtain */}
+      {/* 2-Stage Retro Typographic Page Tearing Loader */}
       <AnimatePresence mode="wait">
-        {isLoading && (
-          <Preloader onComplete={() => setIsLoading(false)} />
-        )}
+        {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
 
       {/* Subtle Ambient Mouse Spotlight for Desktop */}
       <AmbientGlow />
 
       {/* Floating Scroll to Top with Circular Depth Ring */}
-      <ScrollToTop soundEnabled={soundEnabled} />
+      <ScrollToTop />
 
       {/* Top Scroll Indicator Line */}
       <motion.div className="top-scroll-line" style={{ scaleX }} />
@@ -406,25 +377,20 @@ const App = () => {
           <div className="telemetry-content">
             <div className="telemetry-left">
               <span className="telemetry-dot"></span>
-              <span className="telemetry-label">SYSTEM STATUS:</span>
-              <span className="telemetry-val">ONLINE • 2026 EDITION</span>
+              <span className="telemetry-label">SYSTEM:</span>
+              <span className="telemetry-val">ONLINE • 2026 PORTFOLIO</span>
             </div>
 
             <div className="telemetry-center">
               <Clock size={12} className="telemetry-icon" />
-              <span className="telemetry-time">{currentTime || "11:38 AM IST"} (ANDHRA PRADESH)</span>
+              <span className="telemetry-time">{currentTime || "11:38 AM IST"} • ANDHRA PRADESH, INDIA</span>
             </div>
 
             <div className="telemetry-right">
-              <button
-                className={`sfx-toggle-pill ${soundEnabled ? 'active' : ''}`}
-                onClick={toggleSound}
-                title={soundEnabled ? "Disable UI Sound Effects" : "Enable UI Sound Effects"}
-                aria-label="Toggle sound effects"
-              >
-                {soundEnabled ? <Volume2 size={13} /> : <VolumeX size={13} />}
-                <span>SFX: {soundEnabled ? "ON" : "OFF"}</span>
-              </button>
+              <div className="telemetry-status-pill">
+                <span className="pulse-green-mini"></span>
+                <span>OPEN FOR ROLES</span>
+              </div>
             </div>
           </div>
         </div>
@@ -436,36 +402,22 @@ const App = () => {
       <header className="site-header">
         <div className="main-container">
           <div className="nav-container">
-            <a
-              href="#hero"
-              className="nav-brand"
-              onClick={() => playSound('hover', soundEnabled)}
-            >
+            <a href="#hero" className="nav-brand">
               <div className="nav-monogram">AG</div>
               <div className="nav-brand-text">
                 <span className="brand-name">Ashok Shankar Gumma</span>
-                <span className="brand-role">Full-Stack & DevOps Learner [2026]</span>
+                <span className="brand-role">Full-Stack & AI Systems [2026]</span>
               </div>
             </a>
 
             {/* Desktop Navigation */}
             <nav className="nav-menu desktop-nav">
-              <a href="#about" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Overview</a>
-              <a href="#projects" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Selected Works</a>
-              <a href="#skills" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Stack Matrix</a>
-              <a href="#experience" className="nav-link" onMouseEnter={() => playSound('hover', soundEnabled)}>Journey</a>
-              
-              <div className="nav-availability-badge" title="Actively interviewing for 2026 roles">
-                <span className="pulse-circle"></span>
-                <span>OPEN FOR ROLES</span>
-              </div>
+              <a href="#about" className="nav-link">Overview</a>
+              <a href="#projects" className="nav-link">Selected Works</a>
+              <a href="#skills" className="nav-link">Stack Matrix</a>
+              <a href="#experience" className="nav-link">Journey</a>
 
-              <a
-                href="#contact"
-                className="nav-cta-btn"
-                onClick={() => playSound('click', soundEnabled)}
-                onMouseEnter={() => playSound('hover', soundEnabled)}
-              >
+              <a href="#contact" className="nav-cta-btn">
                 Let's Talk <ArrowUpRight size={14} />
               </a>
             </nav>
@@ -473,10 +425,7 @@ const App = () => {
             {/* Mobile Menu Trigger */}
             <button
               className="mobile-hamburger-btn"
-              onClick={() => {
-                playSound('click', soundEnabled);
-                setMobileMenuOpen(!mobileMenuOpen);
-              }}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -508,7 +457,7 @@ const App = () => {
 
       <main>
         {/* =========================================================
-            1. HERO & STUDIO SHEET SECTION (KEVIN LUNA BEHANCE 2026 STYLE)
+            1. HERO & STUDIO SHEET SECTION (EDITORIAL & TECHNICAL AESTHETIC)
             ========================================================= */}
         <section id="hero" className="hero-sheet-section">
           <div className="main-container">
@@ -524,99 +473,91 @@ const App = () => {
               <div className="technical-corner tc-bottom-left"></div>
               <div className="technical-corner tc-bottom-right"></div>
 
-              {/* Slanted Stamp Stickers Row */}
+              {/* Aesthetic Stamp Stickers Row */}
               <motion.div className="stamp-stickers-row" variants={fadeInUp}>
                 <motion.div
-                  className="stamp-sticker slanted-left"
-                  whileHover={{ scale: 1.08, rotate: 0 }}
-                  whileTap={{ scale: 0.95 }}
-                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                  className="stamp-sticker"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
                 >
                   <MapPin size={13} />
                   <span>ANDHRA PRADESH, INDIA</span>
                 </motion.div>
 
                 <motion.div
-                  className="stamp-sticker slanted-right green-status"
-                  whileHover={{ scale: 1.08, rotate: 0 }}
-                  whileTap={{ scale: 0.95 }}
-                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                  className="stamp-sticker green-status"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
                 >
                   <span className="pulse-circle"></span>
                   <span>AVAILABLE FOR FULL-STACK / SDE ROLES</span>
                 </motion.div>
 
                 <motion.div
-                  className="stamp-sticker red-accent slanted-left"
-                  whileHover={{ scale: 1.08, rotate: 0 }}
-                  whileTap={{ scale: 0.95 }}
-                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                  className="stamp-sticker red-accent"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
                 >
                   <Sparkles size={13} />
                   <span>PORTFOLIO EDITION 2026</span>
                 </motion.div>
 
                 <motion.div
-                  className="stamp-sticker slanted-right"
-                  whileHover={{ scale: 1.08, rotate: 0 }}
-                  whileTap={{ scale: 0.95 }}
-                  onMouseEnter={() => playSound('hover', soundEnabled)}
+                  className="stamp-sticker"
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
                 >
                   <Award size={13} />
                   <span>B.TECH CSE (AI)</span>
                 </motion.div>
               </motion.div>
 
-              {/* Top Row: Cutout Avatar with Red Sticker Silhouette + Vector Bounding Box */}
+              {/* Top Row: Aesthetic Portrait + High-End Editorial Greeting */}
               <div className="hero-top-row">
-                {/* Profile Portrait with Red Offset Contour */}
+                {/* Aesthetic Portrait Frame */}
                 <motion.div
-                  className="cutout-avatar-wrapper"
+                  className="aesthetic-avatar-wrapper"
                   variants={popIn}
-                  whileHover={{ scale: 1.03, rotate: [-0.5, 0.5, 0], transition: { duration: 0.3 } }}
-                  whileTap={{ scale: 0.97 }}
+                  whileHover={{ scale: 1.02, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => openLightboxById('portrait')}
                   title="Click to expand portrait"
                 >
-                  <div className="sticker-contour-shadow"></div>
-                  <div className="cutout-avatar-frame">
-                    <div className="avatar-hud-viewfinder">RAW • 50MM • ISO 100</div>
-                    <img src={ashokPortrait} alt="Ashok Shankar Gumma" className="cutout-avatar-img" />
+                  <div className="aesthetic-avatar-glow"></div>
+                  <div className="aesthetic-avatar-frame">
+                    <img src={ashokPortrait} alt="Ashok Shankar Gumma" className="aesthetic-avatar-img" />
+                    <div className="avatar-ambient-sheen"></div>
+                    <div className="avatar-status-pill">
+                      <span className="pulse-circle"></span>
+                      <span>Available • SDE</span>
+                    </div>
                     <div className="hover-expand-pill">
                       <Sparkles size={11} /> Expand
                     </div>
                   </div>
                 </motion.div>
 
-                {/* Vector Selection Bounding Box */}
-                <motion.div className="transform-bounding-box" variants={fadeInUp}>
-                  {/* Figma / Illustrator Anchor Handles */}
-                  <div className="anchor-handle ah-tl"></div>
-                  <div className="anchor-handle ah-tr"></div>
-                  <div className="anchor-handle ah-bl"></div>
-                  <div className="anchor-handle ah-br"></div>
-                  <div className="anchor-handle ah-tm"></div>
-                  <div className="anchor-handle ah-bm"></div>
-                  <div className="anchor-handle ah-lm"></div>
-                  <div className="anchor-handle ah-rm"></div>
-                  <div className="dimension-badge">W: 100% • H: AUTO</div>
+                {/* Editorial Greeting Container (Clean, Luxury, No Figma Bounding Box) */}
+                <motion.div className="hero-greeting-container" variants={fadeInUp}>
+                  <div className="greeting-eyebrow-tag">
+                    <Sparkles size={13} color="var(--accent-red)" />
+                    <span>FULL-STACK ENGINEER &amp; AI SPECIALIST</span>
+                  </div>
 
                   <h1 className="studio-greeting-title">
                     Hey! I'm <span className="highlight-accent">Ashok</span> <span className="highlight-serif">Shankar Gumma</span>
                   </h1>
 
                   <p className="studio-greeting-sub">
-                    Full-Stack Developer building modern web applications, scalable backend systems, and AI platforms. Architecting platforms like <strong>ANVA</strong> & <strong>SolarGrid</strong> with clean code, intuitive UI design, and production reliability.
+                    Full-Stack Developer building modern web applications, scalable backend systems, and AI platforms. Architecting platforms like <strong>ANVA</strong> &amp; <strong>SolarGrid</strong> with clean code, intuitive UI design, and production reliability.
                   </p>
 
                   <div className="hero-quick-action-strip">
                     <motion.a
                       href="#projects"
                       className="hero-pill-cta"
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => playSound('click', soundEnabled)}
-                      onMouseEnter={() => playSound('hover', soundEnabled)}
+                      whileHover={{ scale: 1.04, y: -2 }}
+                      whileTap={{ scale: 0.96 }}
                     >
                       <span>Explore Works (3)</span>
                       <ArrowUpRight size={14} />
@@ -625,11 +566,10 @@ const App = () => {
                     <motion.button
                       onClick={handleCopyEmail}
                       className="hero-pill-ghost"
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      onMouseEnter={() => playSound('hover', soundEnabled)}
+                      whileHover={{ scale: 1.04, y: -2 }}
+                      whileTap={{ scale: 0.96 }}
                     >
-                      {copiedEmail ? <Check size={14} color="#22C55E" /> : <Copy size={14} />}
+                      {copiedEmail ? <Check size={14} color="#10B981" /> : <Copy size={14} />}
                       <span>{copiedEmail ? "Copied to Clipboard!" : "Copy Email"}</span>
                     </motion.button>
                   </div>
@@ -653,14 +593,13 @@ const App = () => {
                   <motion.div
                     className="bio-status-card"
                     whileHover={{ scale: 1.02 }}
-                    onMouseEnter={() => playSound('hover', soundEnabled)}
                   >
                     <span className="pulse-circle"></span>
                     <span>Available for SDE / Full-Stack</span>
                   </motion.div>
                 </motion.div>
 
-                {/* Column 2: Experience (Career Milestones) */}
+                {/* Column 2: Experience */}
                 <motion.div className="studio-col" variants={fadeInUp}>
                   <div className="col-header-tag">
                     <span className="col-title">Experience</span>
@@ -710,65 +649,104 @@ const App = () => {
                   </div>
 
                   <ul className="focus-list">
-                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span className="focus-arrow">▶</span> DevOps & Cloud (Active Focus)
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                      <span className="focus-arrow">▶</span> Google Antigravity &amp; Agentic AI
                     </motion.li>
-                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
+                      <span className="focus-arrow">▶</span> DevOps &amp; Cloud (Active Focus)
+                    </motion.li>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
                       <span className="focus-arrow">▶</span> Full-Stack Platforms (MERN/Next)
                     </motion.li>
-                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span className="focus-arrow">▶</span> Placement Engines & Mock Tests
-                    </motion.li>
-                    <motion.li className="focus-item" whileHover={{ x: 5 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
+                    <motion.li className="focus-item" whileHover={{ x: 5 }}>
                       <span className="focus-arrow">▶</span> Hybrid ML + LLM Architectures
                     </motion.li>
                   </ul>
                 </motion.div>
 
-                {/* Column 4: Tech Stack (Tools / Badges) */}
+                {/* Column 4: Tech Stack (Aesthetic Modern Cards) */}
                 <motion.div className="studio-col" variants={fadeInUp}>
                   <div className="col-header-tag">
                     <span className="col-title">Tech Stack</span>
                     <span className="col-lang-switch">TOOLS</span>
                   </div>
 
-                  <div className="tools-app-grid">
-                    <motion.div className="tool-app-badge react-badge" title="React.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>⚛</span>
-                      <small>React</small>
+                  <div className="tech-pills-grid">
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">⚛</span>
+                      <span className="tech-pill-name">React</span>
                     </motion.div>
-                    <motion.div className="tool-app-badge node-badge" title="Node.js" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>⚡</span>
-                      <small>Node</small>
+
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">⚡</span>
+                      <span className="tech-pill-name">Node.js</span>
                     </motion.div>
-                    <motion.div className="tool-app-badge pg-badge" title="PostgreSQL" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>🐘</span>
-                      <small>Postgres</small>
+
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">🐘</span>
+                      <span className="tech-pill-name">PostgreSQL</span>
                     </motion.div>
-                    <motion.div className="tool-app-badge figma-badge" title="Docker (DevOps)" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>🐳</span>
-                      <small>Docker</small>
+
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">🐳</span>
+                      <span className="tech-pill-name">Docker</span>
                     </motion.div>
-                    <motion.div className="tool-app-badge py-badge" title="Linux & Bash" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>🐧</span>
-                      <small>Linux</small>
+
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">🪐</span>
+                      <span className="tech-pill-name">Antigravity</span>
                     </motion.div>
-                    <motion.div className="tool-app-badge ps-badge" title="MongoDB" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>🍃</span>
-                      <small>Mongo</small>
+
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">🍃</span>
+                      <span className="tech-pill-name">MongoDB</span>
                     </motion.div>
-                    <motion.div className="tool-app-badge ai-badge" title="Tailwind CSS" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>🎨</span>
-                      <small>Tailwind</small>
+
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">🎨</span>
+                      <span className="tech-pill-name">Tailwind</span>
                     </motion.div>
-                    <motion.div className="tool-app-badge ae-badge" title="Git & GitHub" whileHover={{ y: -6, scale: 1.15 }} whileTap={{ scale: 0.9 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
-                      <span>🐙</span>
-                      <small>Git</small>
+
+                    <motion.div
+                      className="tech-pill-badge"
+                      whileHover={{ y: -2, scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span className="tech-pill-icon">🐙</span>
+                      <span className="tech-pill-name">Git</span>
                     </motion.div>
                   </div>
 
                   <p className="tools-footer-text">
-                    Production stack spanning modern client interfaces, scalable APIs, database modeling, and active DevOps containerization.
+                    Production stack spanning modern client interfaces, scalable APIs, database modeling, active DevOps containerization, and Google Antigravity AI agent orchestration.
                   </p>
                 </motion.div>
               </motion.div>
@@ -793,7 +771,7 @@ const App = () => {
                     </div>
                   </div>
                   <div className="polaroid-caption-block">
-                    <span className="polaroid-tag-label">FOCUS • &lt;3</span>
+                    <span className="polaroid-tag-label">FOCUS • 2026</span>
                     <h4 className="polaroid-title">Late-Night Flow</h4>
                     <p className="polaroid-sub">Ambient deep focus, reading architecture & hardware flow.</p>
                   </div>
@@ -842,11 +820,11 @@ const App = () => {
         </section>
 
         {/* =========================================================
-            2. DARK STUDIO TRANSITION BANNER (BEHANCE 2026 DEVELOPER HERO)
+            2. DARK STUDIO TRANSITION BANNER (DEVELOPER HERO)
             ========================================================= */}
         <motion.section
           className="dark-technical-bg studio-break-banner"
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -869,10 +847,10 @@ const App = () => {
                   Bridging intuitive modern user interfaces with resilient backend infrastructure. From high-speed PostgreSQL relational design to AI contextual prompt architectures.
                 </p>
                 <div className="banner-action-pills">
-                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>⚡ MERN & Next.js</span>
-                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>🐘 PostgreSQL / Prisma</span>
-                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>🤖 Contextual AI / LLMs</span>
-                  <span className="banner-pill" onMouseEnter={() => playSound('hover', soundEnabled)}>🎥 Stream Video & WebRTC</span>
+                  <span className="banner-pill">⚡ MERN & Next.js</span>
+                  <span className="banner-pill">🐘 PostgreSQL / Prisma</span>
+                  <span className="banner-pill">🤖 Contextual AI / LLMs</span>
+                  <span className="banner-pill">🎥 Stream Video & WebRTC</span>
                 </div>
               </div>
 
@@ -948,11 +926,7 @@ const App = () => {
                   <button
                     key={tab.id}
                     className={`filter-pill-btn ${selectedCategory === tab.id ? 'active' : ''}`}
-                    onClick={() => {
-                      playSound('click', soundEnabled);
-                      setSelectedCategory(tab.id);
-                    }}
-                    onMouseEnter={() => playSound('hover', soundEnabled)}
+                    onClick={() => setSelectedCategory(tab.id)}
                   >
                     {tab.label}
                     {selectedCategory === tab.id && (
@@ -969,7 +943,7 @@ const App = () => {
 
             <motion.div
               layout
-              style={{ display: 'flex', flexDirection: 'column', gap: '64px' }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '56px' }}
             >
               <AnimatePresence>
                 {filteredProjects.map((project, idx) => (
@@ -977,10 +951,10 @@ const App = () => {
                     key={project.id}
                     layout
                     className={`project-board-card ${project.themeClass}`}
-                    initial={{ opacity: 0, y: 40, scale: 0.98 }}
+                    initial={{ opacity: 0, y: 35, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                   >
                     {/* Technical Corners */}
                     <div className="technical-corner tc-top-left"></div>
@@ -1008,8 +982,7 @@ const App = () => {
                               <motion.span
                                 key={tool}
                                 className="tech-pill-badge"
-                                whileHover={{ scale: 1.08, y: -2 }}
-                                onMouseEnter={() => playSound('hover', soundEnabled)}
+                                whileHover={{ scale: 1.06, y: -2 }}
                               >
                                 {tool}
                               </motion.span>
@@ -1035,8 +1008,7 @@ const App = () => {
                                 className="palette-dot"
                                 style={{ backgroundColor: color }}
                                 title={color}
-                                whileHover={{ scale: 1.35 }}
-                                onMouseEnter={() => playSound('hover', soundEnabled)}
+                                whileHover={{ scale: 1.3 }}
                               />
                             ))}
                           </div>
@@ -1047,10 +1019,8 @@ const App = () => {
                               target="_blank"
                               rel="noreferrer"
                               className="btn-project-cta"
-                              whileHover={{ scale: 1.05, y: -2 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => playSound('click', soundEnabled)}
-                              onMouseEnter={() => playSound('hover', soundEnabled)}
+                              whileHover={{ scale: 1.04, y: -2 }}
+                              whileTap={{ scale: 0.96 }}
                             >
                               Live Demo <ExternalLink size={14} />
                             </motion.a>
@@ -1059,10 +1029,8 @@ const App = () => {
                               target="_blank"
                               rel="noreferrer"
                               className="btn-project-ghost"
-                              whileHover={{ scale: 1.05, y: -2 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => playSound('click', soundEnabled)}
-                              onMouseEnter={() => playSound('hover', soundEnabled)}
+                              whileHover={{ scale: 1.04, y: -2 }}
+                              whileTap={{ scale: 0.96 }}
                             >
                               <GithubIcon size={14} /> Code
                             </motion.a>
@@ -1074,7 +1042,7 @@ const App = () => {
                       <div className="project-visual-side">
                         <TiltCard
                           className="mockup-display-card"
-                          maxTilt={6}
+                          maxTilt={5}
                         >
                           <div className="mockup-browser-header">
                             <div className="browser-dot dot-red"></div>
@@ -1151,11 +1119,11 @@ const App = () => {
                   <motion.div
                     key={idx}
                     className={`skill-matrix-card ${isHighlighted ? 'highlighted-card' : ''} ${isFiltered && !isHighlighted ? 'dimmed-card' : ''}`}
-                    initial={{ opacity: 0, y: 28 }}
+                    initial={{ opacity: 0, y: 24 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
-                    whileHover={{ y: -6, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
-                    transition={{ duration: 0.5, delay: idx * 0.06 }}
+                    whileHover={{ y: -5, transition: { type: 'spring', stiffness: 350, damping: 20 } }}
+                    transition={{ duration: 0.45, delay: idx * 0.05 }}
                   >
                     <div className="skill-card-head">
                       <div className="skill-icon-wrap">{item.icon}</div>
@@ -1169,8 +1137,7 @@ const App = () => {
                           <motion.span
                             key={s}
                             className={`matrix-skill-badge ${isSkillMatch ? 'active-match' : ''}`}
-                            whileHover={{ scale: 1.08, y: -2 }}
-                            onMouseEnter={() => playSound('hover', soundEnabled)}
+                            whileHover={{ scale: 1.06, y: -2 }}
                           >
                             {s}
                           </motion.span>
@@ -1207,13 +1174,13 @@ const App = () => {
               {/* Experience Card */}
               <motion.div
                 className="timeline-column-card"
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.55 }}
               >
                 <div className="timeline-card-header">
-                  <Briefcase size={22} color="#FF3B1D" />
+                  <Briefcase size={22} color="#FF3825" />
                   <h3 className="timeline-card-title">Professional Experience</h3>
                 </div>
 
@@ -1287,18 +1254,18 @@ const App = () => {
               {/* Education & Achievements Card */}
               <motion.div
                 className="timeline-column-card"
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.6, delay: 0.12 }}
+                transition={{ duration: 0.55, delay: 0.1 }}
               >
                 <div className="timeline-card-header">
-                  <GraduationCap size={22} color="#059669" />
+                  <GraduationCap size={22} color="#10B981" />
                   <h3 className="timeline-card-title">Education & Milestones</h3>
                 </div>
 
                 <div className="timeline-record">
-                  <span className="record-date-badge" style={{ background: '#059669' }}>2023 — 2027</span>
+                  <span className="record-date-badge" style={{ background: '#10B981' }}>2023 — 2027</span>
                   <h4 className="record-role-heading">B.Tech in Computer Science & Engineering (AI)</h4>
                   <p className="record-organization">Parul University • Vadodara, Gujarat</p>
                   <p className="record-bullet-text">
@@ -1314,7 +1281,7 @@ const App = () => {
                 >
                   <div className="certificate-header-row">
                     <div>
-                      <span className="record-date-badge" style={{ background: '#FF0000', color: '#FFFFFF' }}>AUG 2026 • ADOBE</span>
+                      <span className="record-date-badge" style={{ background: '#FF3825', color: '#FFFFFF' }}>AUG 2026 • ADOBE</span>
                       <h4 className="record-role-heading" style={{ marginTop: '4px' }}>Adobe University Hackathon</h4>
                       <p className="record-organization">Organised by Adobe & Unstop</p>
                     </div>
@@ -1329,7 +1296,7 @@ const App = () => {
                 </TiltCard>
 
                 <div className="timeline-record" style={{ marginTop: '20px' }}>
-                  <span className="record-date-badge" style={{ background: '#059669' }}>2024 — 2026</span>
+                  <span className="record-date-badge" style={{ background: '#10B981' }}>2024 — 2026</span>
                   <h4 className="record-role-heading">Independent System Architectures</h4>
                   <p className="record-organization">Self-Directed Production Apps</p>
                   <p className="record-bullet-text">
@@ -1360,8 +1327,6 @@ const App = () => {
                   className="btn-footer-primary"
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => playSound('click', soundEnabled)}
-                  onMouseEnter={() => playSound('hover', soundEnabled)}
                 >
                   <Mail size={18} />
                   <span>Send Direct Email</span>
@@ -1372,9 +1337,8 @@ const App = () => {
                   className="btn-footer-secondary"
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.96 }}
-                  onMouseEnter={() => playSound('hover', soundEnabled)}
                 >
-                  {copiedEmail ? <Check size={18} color="#22C55E" /> : <Copy size={18} />}
+                  {copiedEmail ? <Check size={18} color="#10B981" /> : <Copy size={18} />}
                   <span>{copiedEmail ? "Email Copied!" : "Copy Email"}</span>
                 </motion.button>
 
@@ -1385,8 +1349,6 @@ const App = () => {
                   className="btn-footer-secondary"
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => playSound('click', soundEnabled)}
-                  onMouseEnter={() => playSound('hover', soundEnabled)}
                 >
                   <LinkedinIcon size={18} />
                   <span>Connect on LinkedIn</span>
@@ -1395,16 +1357,16 @@ const App = () => {
 
               {/* Social Links Row */}
               <div className="footer-social-row">
-                <motion.a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
+                <motion.a href="https://github.com/Ashok-Gumma" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
                   <GithubIcon size={15} /> GitHub Profile
                 </motion.a>
-                <motion.a href="https://linkedin.com/in/ashok-gumma1" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
+                <motion.a href="https://linkedin.com/in/ashok-gumma1" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
                   <LinkedinIcon size={15} /> LinkedIn
                 </motion.a>
-                <motion.a href="https://leetcode.com/u/gummaashok/" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }} onMouseEnter={() => playSound('hover', soundEnabled)}>
+                <motion.a href="https://leetcode.com/u/gummaashok/" target="_blank" rel="noreferrer" className="footer-social-pill" whileHover={{ scale: 1.05, y: -2 }}>
                   <LeetCodeIcon size={15} /> LeetCode Profile
                 </motion.a>
-                <span className="footer-social-pill" style={{ borderColor: 'rgba(255,255,255,0.2)' }}>
+                <span className="footer-social-pill" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
                   <MapPin size={15} /> Andhra Pradesh, India
                 </span>
               </div>
@@ -1412,7 +1374,7 @@ const App = () => {
               {/* Bottom Copyright Bar */}
               <div className="footer-bottom-bar">
                 <span>© {new Date().getFullYear()} Ashok Shankar Gumma. All rights reserved.</span>
-                <span>Designed & Engineered • Ashok Shankar Gumma </span>
+                <span>Designed & Engineered • Ashok Shankar Gumma</span>
               </div>
             </div>
           </div>
@@ -1435,7 +1397,7 @@ const App = () => {
       </AnimatePresence>
 
       {/* =========================================================
-          BEHANCE-STYLE FLOATING "AVAILABLE FOR HIRE" POPUP
+          FLOATING "AVAILABLE FOR HIRE" POPUP
           ========================================================= */}
       <AnimatePresence>
         {showHireWidget && (
@@ -1464,17 +1426,12 @@ const App = () => {
             <a
               href="#contact"
               className="widget-cta-btn"
-              onClick={() => playSound('click', soundEnabled)}
-              onMouseEnter={() => playSound('hover', soundEnabled)}
             >
               Hire Ashok
             </a>
 
             <button
-              onClick={() => {
-                playSound('click', soundEnabled);
-                setShowHireWidget(false);
-              }}
+              onClick={() => setShowHireWidget(false)}
               className="widget-close-btn"
               title="Dismiss"
               aria-label="Dismiss"
@@ -1486,7 +1443,7 @@ const App = () => {
       </AnimatePresence>
 
       {/* =========================================================
-          AESTHETIC FILM LIGHTBOX MODAL WITH NEXT/PREV CONTROLS
+          AESTHETIC LIGHTBOX MODAL WITH NEXT/PREV CONTROLS
           ========================================================= */}
       <AnimatePresence>
         {activeLightboxIndex !== null && galleryItems[activeLightboxIndex] && (
@@ -1499,18 +1456,15 @@ const App = () => {
           >
             <motion.div
               className="lightbox-content-card"
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              initial={{ scale: 0.92, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              exit={{ scale: 0.92, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', damping: 26, stiffness: 320 }}
               onClick={e => e.stopPropagation()}
             >
               <button
                 className="lightbox-close-btn"
-                onClick={() => {
-                  playSound('click', soundEnabled);
-                  setActiveLightboxIndex(null);
-                }}
+                onClick={() => setActiveLightboxIndex(null)}
                 aria-label="Close modal"
               >
                 <X size={20} />
