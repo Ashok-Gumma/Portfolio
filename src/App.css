@@ -1428,6 +1428,9 @@ html.lenis, html.lenis body {
   gap: 8px;
   margin-top: 24px;
   flex-wrap: wrap;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .filter-pill-btn {
@@ -1435,19 +1438,39 @@ html.lenis, html.lenis body {
   background: #FFFFFF;
   border: 1px solid rgba(20, 21, 24, 0.12);
   border-radius: var(--radius-pill);
-  padding: 8px 18px;
+  padding: 7px 16px;
   font-family: var(--font-display);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   color: var(--text-muted);
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.filter-pill-btn:hover {
+  color: var(--text-main);
+  border-color: rgba(20, 21, 24, 0.25);
+}
+
+.filter-pill-btn .pill-text {
+  position: relative;
+  z-index: 2;
+  transition: color 0.2s ease;
 }
 
 .filter-pill-btn.active {
   color: #FFFFFF;
   border-color: transparent;
+  background: var(--dark-bg);
+}
+
+.filter-pill-btn.active .pill-text {
+  color: #FFFFFF;
 }
 
 .active-pill-glow {
@@ -1455,8 +1478,8 @@ html.lenis, html.lenis body {
   inset: 0;
   background: var(--dark-bg);
   border-radius: var(--radius-pill);
-  z-index: -1;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
 }
 
 /* Project Board Card */
@@ -1718,16 +1741,33 @@ html.lenis, html.lenis body {
 .browser-url-pill {
   margin-left: 12px;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-pill);
-  padding: 2px 14px;
+  padding: 3px 12px;
   font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.6);
-  max-width: 220px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 280px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.browser-url-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.browser-lock-icon {
+  color: #10B981;
+  flex-shrink: 0;
 }
 
 .mockup-img-wrap {

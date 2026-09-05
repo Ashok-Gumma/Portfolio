@@ -26,7 +26,8 @@ import {
   Menu,
   Award,
   ShieldCheck,
-  Radio
+  Radio,
+  Lock
 } from 'lucide-react';
 
 import ashokPortrait from './assets/ashok_portrait_main.jpg';
@@ -180,7 +181,7 @@ const App = () => {
       image: anvaImg,
       liveLink: "https://anva-akzm.onrender.com/",
       githubLink: "https://github.com/Ashok-Gumma/Anva",
-      urlLabel: "anva.app/workspace"
+      urlLabel: "anva-akzm.onrender.com"
     },
     {
       id: "solargrid",
@@ -198,7 +199,7 @@ const App = () => {
       image: solargridImg,
       liveLink: "https://solar-grid-three.vercel.app/",
       githubLink: "https://github.com/Ashok-Gumma/solarGrid",
-      urlLabel: "solargrid.erp.app"
+      urlLabel: "solar-grid-three.vercel.app"
     },
     {
       id: "friday",
@@ -216,7 +217,7 @@ const App = () => {
       image: fridayImg,
       liveLink: "https://as-you-wish-q2lj.onrender.com/",
       githubLink: "https://github.com/Ashok-Gumma/Friday",
-      urlLabel: "friday.mindful.ai"
+      urlLabel: "as-you-wish-q2lj.onrender.com"
     }
   ];
 
@@ -928,7 +929,7 @@ const App = () => {
                     className={`filter-pill-btn ${selectedCategory === tab.id ? 'active' : ''}`}
                     onClick={() => setSelectedCategory(tab.id)}
                   >
-                    {tab.label}
+                    <span className="pill-text">{tab.label}</span>
                     {selectedCategory === tab.id && (
                       <motion.div
                         className="active-pill-glow"
@@ -1048,7 +1049,16 @@ const App = () => {
                             <div className="browser-dot dot-red"></div>
                             <div className="browser-dot dot-yellow"></div>
                             <div className="browser-dot dot-green"></div>
-                            <div className="browser-url-pill">{project.urlLabel}</div>
+                            <a
+                              href={project.liveLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="browser-url-pill"
+                              title={`Visit live site: ${project.liveLink}`}
+                            >
+                              <Lock size={10} className="browser-lock-icon" />
+                              <span>{project.urlLabel}</span>
+                            </a>
                           </div>
                           <div className="mockup-img-wrap">
                             <img src={project.image} alt={project.title} loading="lazy" />
