@@ -38,7 +38,7 @@
 \titleformat{\section}{
   \raggedright\large\bfseries\color{primary}
 }{}{0em}{}[\color{primary}\titlerule \vspace{1pt}]
-\titlespacing*{\section}{0pt}{2.5pt}{1.2pt}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
 
 % Clean, robust list environments
 \newcommand{\resumeItem}[1]{
@@ -63,9 +63,9 @@
 
 \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
 
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}, itemsep=1.2pt, topsep=0.3pt, parsep=0pt, partopsep=0pt]}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}, itemsep=2pt, topsep=1pt, parsep=0pt, partopsep=0pt]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in, label=\raisebox{0.25ex}{\tiny$\bullet$}, itemsep=0.4pt, topsep=0.3pt, parsep=0pt, partopsep=0pt]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in, label=\raisebox{0.25ex}{\tiny$\bullet$}, itemsep=1.2pt, topsep=0.8pt, parsep=0pt, partopsep=0pt]}
 \newcommand{\resumeItemListEnd}{\end{itemize}}
 
 %-------------------------------------------------------------------------------
@@ -82,7 +82,7 @@
     \href{https://github.com/Ashok-Gumma}{\underline{github.com/Ashok-Gumma}} ~$\vert$~
     \href{https://linkedin.com/in/ashok-gumma1}{\underline{linkedin.com/in/ashok-gumma1}}
 \end{center}
-\vspace{-8pt}
+\vspace{-5pt}
 
 %----------- EDUCATION -----------
 \section{Education}
@@ -90,20 +90,18 @@
     \resumeSubheading
       {Parul University}{Vadodara, Gujarat}
       {Bachelor of Technology in Computer Science \& Engineering (AI) \textnormal{\textbf{-- CGPA: 7.47 / 10.0}}}{2023 -- 2027}
-      \vspace{-2.5pt}
+      \vspace{-1.5pt}
       \item \small{\textbf{Relevant Coursework:} Data Structures \& Algorithms, Object-Oriented Programming (Java), Database Management Systems (DBMS), Operating Systems, Machine Learning \& AI Systems}
   \resumeSubHeadingListEnd
 
 %----------- TECHNICAL SKILLS -----------
 \section{Technical Skills}
- \begin{itemize}[leftmargin=0.15in, label={}, itemsep=0.2pt, topsep=0.8pt, partopsep=0pt, parsep=0pt]
-    \small{\item{
-     \textbf{Languages:}{ Java, Python, JavaScript (ES6+), TypeScript, C++, SQL, HTML5, CSS3} \\ \vspace{0.3pt}
-     \textbf{Frontend Development:}{ React.js, Next.js, Redux, Tailwind CSS, Responsive UI, WebSockets, WebRTC, Monaco Editor} \\ \vspace{0.3pt}
-     \textbf{Backend \& APIs:}{ Node.js, Express.js, RESTful APIs, JWT Authentication, OAuth 2.0, Role-Based Access Control (RBAC)} \\ \vspace{0.3pt}
-     \textbf{Databases \& DevOps:}{ PostgreSQL, MongoDB, MySQL, Docker, Git, GitHub, Linux/Bash, Postman} \\ \vspace{0.3pt}
-     \textbf{AI \& Machine Learning:}{ Hybrid ML Architectures, LLM Integration, OpenRouter APIs, Custom Dataset Training, Prompt Engineering}
-    }}
+ \begin{itemize}[leftmargin=0.15in, label={}, itemsep=1.5pt, topsep=1.2pt, partopsep=0pt, parsep=0pt]
+    \item \small{\textbf{Languages:} Java, Python, JavaScript (ES6+), TypeScript, C++, SQL, HTML5, CSS3}
+    \item \small{\textbf{Frontend Development:} React.js, Next.js, Tailwind CSS, Responsive UI, WebSockets, WebRTC}
+    \item \small{\textbf{Backend \& APIs:} Node.js, Express.js, RESTful APIs, JWT Authentication, OAuth 2.0, Role-Based Access Control (RBAC)}
+    \item \small{\textbf{Databases \& DevOps:} PostgreSQL, MongoDB, MySQL, Docker, Git, GitHub, Linux/Bash, Postman}
+    \item \small{\textbf{AI \& Machine Learning:} Hybrid ML Systems, LLM Integration, OpenRouter APIs, Custom Dataset Training, Prompt Engineering}
  \end{itemize}
 
 %----------- WORK EXPERIENCE -----------
@@ -114,10 +112,10 @@
       {Zetheta Algorithms}{Remote / Vadodara, India}
       {Frontend Engineer Intern}{Jul 2026 -- Aug 2026}
       \resumeItemListStart
-        \resumeItem{Engineered a responsive, 5-stage \textbf{Loan Application frontend} in \textbf{React.js}, implementing dynamic state persistence with local storage to prevent session data loss.}
-        \resumeItem{Built an asynchronous KYC document upload workflow with client-side file compression and strict \textbf{Zod/RegEx} validation, reducing submission drop-offs by \textbf{35\%}.}
-        \resumeItem{Integrated RESTful endpoints for real-time credit eligibility checks, dynamic EMI amortization schedules, and multi-bank loan quote comparisons.}
-        \resumeItem{Optimized React rendering performance utilizing state memoization hooks (\texttt{useMemo}, \texttt{useCallback}), eliminating redundant component re-renders across stages.}
+        \resumeItem{Built a responsive \textbf{8-step loan application frontend} using React.js.}
+        \resumeItem{Developed workflows for Personal Details, KYC, Loan Details, E-sign, Document Upload, Review, Verification, and Submission.}
+        \resumeItem{Implemented client-side form validation and seamless navigation across all application stages.}
+        \resumeItem{Added progress tracking and local state persistence to improve the multi-step user experience.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd
@@ -129,35 +127,36 @@
     \resumeProjectHeading
       {ANVA -- Company Placement Suite \& Real-Time Collaborative Platform}
       {\footnotesize \href{https://anva-akzm.onrender.com/}{\underline{Live Demo}} ~$\vert$~ \href{https://github.com/Ashok-Gumma/Anva}{\underline{GitHub}}}
-      {React.js, Node.js, Express.js, MongoDB, Monaco Code Editor, WebRTC (Stream SDK), Clerk Auth}
+      {JavaScript, React.js, Node.js, Express.js, MongoDB, OpenRouter API, Stream Chat \& Video API, Clerk Auth}
       {2026}
       \resumeItemListStart
-        \resumeItem{Architected a mutual language exchange network matching users by native and learning languages with request workflows, real-time chat, and 1-on-1 \textbf{WebRTC} video calling featuring an in-call \textbf{Monaco Code Compiler} and whiteboard.}
-        \resumeItem{Engineered a specialized \textbf{Placement Hub} allowing students to select target companies (e.g., TCS, Cognizant) to practice company-specific aptitude modules, coding challenges, debugging drills, and technical interview questions.}
-        \resumeItem{Built programming language smart flashcards (C, C++, Java), a 24/7 \textbf{AI Doubt Assistant}, and an \textbf{EduFeed} community hub enabling educational content sharing, post interactions, and peer networking.}
-        \resumeItem{Developed an \textbf{Admin Moderation \& Support Suite} featuring issue ticketing (harassment, bug reports), user suspension controls, content management, and real-time broadcast notifications.}
+        \resumeItem{Built a peer-to-peer exchange network where users trade skills they know for skills they want to learn, supported by real-time messaging, 1-on-1 video calls, collaborative whiteboards, and live interview rooms.}
+        \resumeItem{Designed a comprehensive placement hub with company-specific preparation tracks, aptitude drills, core technical questions, mock tests, and a focused Pomodoro timer.}
+        \resumeItem{Developed an interactive study assistant to explain complex concepts, algorithms, and doubts, paired with an educational feed for sharing notes, PDFs, and learning materials.}
+        \resumeItem{Implemented automated content moderation to filter inappropriate posts and images, alongside an admin dashboard for user management, issue ticketing, and campus-wide broadcasts.}
       \resumeItemListEnd
 
     \resumeProjectHeading
       {FRIDAY -- Contextual Hybrid AI \& Mindful Companion}
       {\footnotesize \href{https://as-you-wish-q2lj.onrender.com/}{\underline{Live Demo}} ~$\vert$~ \href{https://github.com/Ashok-Gumma/Friday}{\underline{GitHub}}}
-      {React.js, Node.js, Express.js, MongoDB (MERN), Hybrid ML, OpenRouter LLM APIs, OAuth 2.0}
+      {Python, JavaScript, React.js, Node.js, Express.js, MongoDB, Hybrid ML, OpenRouter API, OAuth 2.0}
       {2026}
       \resumeItemListStart
-        \resumeItem{Architected a emotional companion utilizing a \textbf{hybrid AI system}, fusing custom-trained machine learning classifiers with \textbf{OpenRouter LLMs} for contextual reasoning.}
-        \resumeItem{Trained multi-class emotional classification models on curated datasets using \textbf{Scikit-Learn/NLP}; engineered a prompt routing pipeline cutting API token consumption by \textbf{30\%}.}
-        \resumeItem{Implemented conversational memory and reflection archives in \textbf{MongoDB}; secured user session privacy with encrypted \textbf{Google OAuth 2.0} authentication tokens.}
+        \resumeItem{Built a mental wellness companion that detects the user's emotional state and tailors conversational responses to match their current mood.}
+        \resumeItem{Engineered an intelligent request routing pipeline that analyzes query intent before processing, reducing generative token usage by 30\%.}
+        \resumeItem{Implemented conversational memory to retain personal context across sessions, while securing user accounts and private chat archives with encrypted authentication.}
       \resumeItemListEnd
 
     \resumeProjectHeading
       {SolarGrid -- Rural Clean Energy Operations ERP \& CRM Platform}
       {\footnotesize \href{https://solar-grid-three.vercel.app/}{\underline{Live Demo}} ~$\vert$~ \href{https://github.com/Ashok-Gumma/solarGrid}{\underline{GitHub}}}
-      {React.js, Next.js, Node.js, Express.js, PostgreSQL, Docker, REST APIs, RBAC}
+      {TypeScript, React.js, Next.js, Node.js, Express.js, PostgreSQL, Docker, REST APIs, RBAC}
       {2026}
       \resumeItemListStart
-        \resumeItem{Built an enterprise operations ERP/CRM platform in \textbf{Next.js} to manage solar equipment supply chain logistics for rural electrification (\textit{PM Surya Ghar}) and agricultural pumps (\textit{PM-KUSUM}).}
-        \resumeItem{Designed normalized \textbf{PostgreSQL} relational schemas with foreign key integrity and B-tree indexing to handle multi-warehouse inventory tracking and automated delivery challan workflows.}
-        \resumeItem{Containerized backend microservices with \textbf{Docker} and enforced multi-tiered \textbf{Role-Based Access Control (RBAC)} across warehouse managers, field technicians, and administrators.}
+        \resumeItem{Built an integrated operations platform combining CRM and ERP capabilities to manage rural solar electrification projects and equipment distribution.}
+        \resumeItem{Designed end-to-end workflows for multi-warehouse inventory tracking and procurement, monitoring material movement across distributed operational sites.}
+        \resumeItem{Automated delivery challan generation directly from dispatch data, replacing manual paperwork and streamlining field logistics handoffs.}
+        \resumeItem{Implemented role-based dashboards tailored for administrators, warehouse crews, and field staff to manage their respective daily operations.}
       \resumeItemListEnd
 
   \resumeSubHeadingListEnd

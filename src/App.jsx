@@ -168,15 +168,15 @@ const App = () => {
     {
       id: "anva",
       category: ["ai", "fullstack", "realtime"],
-      number: "Project 01 / Placement Arena, AI & Real-time Platform",
+      number: "Project 01 / Peer Learning, Placement Hub & Real-time Collaboration",
       themeClass: "theme-emerald",
       title: "ANVA",
-      subtitle: "Where Global Fluency Meets Technical Mastery • Company Placement & Coding Suite",
-      description: "An integrated career and technical mastery platform uniting native language exchange, 24/7 AI tutoring, company placement preparation, and in-browser coding. Features an interactive Placement Arena (aptitude MCQs, Monaco code editor, TCS NQT recruitment tracks), Pomodoro focus timer, AI-generated flashcards, and real-time WebRTC audio/video calling via Stream SDK.",
-      tools: ["React.js", "Node.js", "Express.js", "MongoDB", "Placement Arena", "Mock Tests", "Pomodoro Focus", "Stream SDK", "Clerk Auth", "Monaco Editor"],
-      reviewTitle: "Placement & Coding Suite",
+      subtitle: "Peer-to-Peer Knowledge Exchange • Placement Preparation • Real-Time Collaboration",
+      description: "A peer-to-peer learning, community, and placement-preparation platform. Connects users for 1-on-1 skill exchange based on complementary knowledge, real-time messaging, video calling, and collaborative whiteboards. Features a comprehensive Placement Hub with company-specific preparation tracks (aptitude, technical questions, mock tests, Pomodoro timer), a 24/7 OpenRouter-powered AI study assistant, EduFeed knowledge community, and automated AI content moderation.",
+      tools: ["JavaScript", "React.js", "Node.js", "Express.js", "MongoDB", "OpenRouter API", "Stream Chat & Video API", "Clerk Auth", "Placement Hub", "EduFeed"],
+      reviewTitle: "P2P Learning & Placement Suite",
       reviewRating: "★★★★★",
-      reviewText: "Engineered MNC company-specific aptitude & coding mock test modules, Pomodoro productivity flow, and sub-second multi-language code compilation with real-time WebRTC video calling.",
+      reviewText: "Architected mutual skill-exchange matching, company-specific placement tracks with mock tests, automated AI content moderation, and real-time messaging & video calling via Stream API.",
       palette: ["#071E17", "#10B981", "#0F172A", "#FFFFFF"],
       image: anvaImg,
       liveLink: "https://anva-akzm.onrender.com/",
@@ -186,15 +186,15 @@ const App = () => {
     {
       id: "solargrid",
       category: ["fullstack", "enterprise"],
-      number: "Project 02 / Solar Operations ERP & CRM",
+      number: "Project 02 / Rural Clean Energy ERP & CRM Operations",
       themeClass: "theme-terracotta",
       title: "SolarGrid",
-      subtitle: "Real Hope. Real Light. Powered by SolarGrid ERP.",
-      description: "A mission-critical enterprise operations and CRM platform simplifying solar distribution for rural homes (PM Surya Ghar), village kitchens (Clean Stoves), and agricultural pump installations (PM-KUSUM Irrigation) across developing India. Features warehouse inventory tracking, automated delivery challans, and technician field service dispatching with granular RBAC.",
-      tools: ["React / Next.js", "Node.js", "Express.js", "PostgreSQL", "RBAC", "REST APIs", "Challan Automation"],
-      reviewTitle: "Enterprise Architecture",
+      subtitle: "Rural Clean Energy Operations, Supply Chain Logistics & CRM Platform",
+      description: "An enterprise operations platform combining CRM and ERP capabilities to manage rural clean energy electrification initiatives, equipment supply chains, and field logistics. Features multi-warehouse inventory tracking, procurement workflows, automated delivery challan generation from dispatch data to eliminate manual documentation, and role-based operational dashboards for administrators, warehouse crews, and field staff.",
+      tools: ["TypeScript", "React.js", "Next.js", "Node.js", "Express.js", "PostgreSQL", "Docker", "REST APIs", "RBAC", "Challan Automation"],
+      reviewTitle: "Clean Energy Operations ERP & CRM",
       reviewRating: "★★★★★",
-      reviewText: "Engineered scalable PostgreSQL relational schemas for inventory tracking, automated delivery challan workflows, and technician service ticketing.",
+      reviewText: "Engineered normalized PostgreSQL relational schemas for multi-warehouse inventory tracking, automated delivery challan generation directly from dispatch data, and multi-tier RBAC operational workflows.",
       palette: ["#1C140F", "#F97316", "#1E293B", "#F8FAFC"],
       image: solargridImg,
       liveLink: "https://solar-grid-three.vercel.app/",
@@ -204,15 +204,15 @@ const App = () => {
     {
       id: "friday",
       category: ["ai", "fullstack"],
-      number: "Project 03 / Hybrid AI Mindful Companion",
+      number: "Project 03 / Contextual Hybrid AI & Mindful Companion",
       themeClass: "theme-cyber",
       title: "FRIDAY",
-      subtitle: "A Quiet Sanctuary for Your Thoughts and Feelings (Mindful Emotional Companion)",
-      description: "An adaptive conversational intelligence system engineered with a hybrid architecture combining custom-trained Machine Learning models on manual datasets (intent classification & emotional resonance) with Generative LLMs for deep multi-turn reasoning, daily stillness reflections, and persistent memory tracking, secured with Google OAuth 2.0.",
-      tools: ["React.js", "Node.js", "Express.js", "Hybrid ML Models", "Generative LLM", "Manual Datasets", "MongoDB", "Google OAuth 2.0"],
-      reviewTitle: "Hybrid ML + LLM Intelligence",
+      subtitle: "Mood-Aware Conversational Intelligence & Mental Wellness Companion",
+      description: "A mental wellness companion that detects the user's emotional state to deliver mood-adapted conversational responses. Engineered with a hybrid AI architecture coupling custom Python Scikit-Learn emotion classifiers trained on curated datasets with OpenRouter LLMs. Features an intelligent prompt routing pipeline that reduces generative token usage by 30%, persistent conversational memory in MongoDB, and encrypted Google OAuth 2.0 authentication.",
+      tools: ["Python", "JavaScript", "React.js", "Node.js", "Express.js", "MongoDB", "Hybrid ML Systems", "OpenRouter API", "Scikit-Learn", "Prompt Routing", "Google OAuth 2.0"],
+      reviewTitle: "Hybrid ML Systems & Prompt Routing",
       reviewRating: "★★★★★",
-      reviewText: "Combined custom ML classifiers trained on curated manual datasets with high-performance Generative LLMs for contextual intent routing and persistent user memory.",
+      reviewText: "Coupled custom Python ML classifiers for emotional detection with OpenRouter LLMs, reducing API token consumption by 30% through intelligent prompt routing with persistent conversational memory.",
       palette: ["#0B1320", "#38BDF8", "#1E293B", "#FFFFFF"],
       image: fridayImg,
       liveLink: "https://as-you-wish-q2lj.onrender.com/",
@@ -250,7 +250,7 @@ const App = () => {
     {
       category: "AI & Hybrid Machine Learning",
       icon: <Cpu size={18} />,
-      skills: ["Google Antigravity", "Agentic AI Workflows", "Genkit", "Hybrid ML Models", "Generative LLMs", "Manual Dataset Training", "Contextual Prompting", "Stream Video / Chat SDK", "WebSockets"]
+      skills: ["Google Antigravity", "Agentic AI Workflows", "Genkit", "Hybrid ML Systems", "OpenRouter API", "Generative LLMs", "Manual Dataset Training", "Contextual Prompting", "Stream Video / Chat SDK", "WebSockets"]
     },
     {
       category: "Problem Solving & Core",
@@ -301,7 +301,7 @@ const App = () => {
       img: zethetaCertificate,
       title: "Zetheta Algorithms — Certificate of Project Work Experience",
       tag: "ZETHETA • 06 AUG 2026",
-      caption: "Full Stack Engineer Intern on Front End Developer Multi Step Loan Application Form. Managing Director: Suketu Sanghvi."
+      caption: "Frontend Engineer Intern on 8-step Loan Application Form. Managing Director: Suketu Sanghvi."
     },
     {
       id: "cert-corizo",
@@ -617,12 +617,12 @@ const App = () => {
 
                   <div className="experience-item">
                     <span className="exp-year-badge">2026 • ZETHETA ALGORITHMS</span>
-                    <h4 className="exp-company-title">Full Stack Engineer Intern</h4>
+                    <h4 className="exp-company-title">Frontend Engineer Intern</h4>
                     <p className="exp-role-sub">
-                      Engineered multi-step Loan Application platform with reusable React components, robust validation, and fluid UX workflows.
+                      Built a responsive 8-step loan application frontend using React.js, featuring KYC verification, document upload workflows, client-side validation, and state persistence.
                     </p>
                     <p className="exp-clients-list">
-                      React.js • Node.js • Validation • Production UX
+                      React.js • Multi-step Form • Client-side Validation • UX Workflows
                     </p>
                   </div>
 
@@ -1203,7 +1203,7 @@ const App = () => {
                   <div className="certificate-header-row">
                     <div>
                       <span className="record-date-badge">JUL 2026 — AUG 2026</span>
-                      <h4 className="record-role-heading" style={{ marginTop: '4px' }}>Full Stack Engineer Intern</h4>
+                      <h4 className="record-role-heading" style={{ marginTop: '4px' }}>Frontend Engineer Intern</h4>
                       <p className="record-organization">Zetheta Algorithms Private Limited</p>
                     </div>
                     <div className="certificate-mini-thumb">
@@ -1212,7 +1212,7 @@ const App = () => {
                     </div>
                   </div>
                   <p className="record-bullet-text" style={{ margin: 0, fontSize: '11.5px', color: 'var(--text-muted)' }}>
-                    Engineered a scalable multi-step Loan Application portal with modular React components, client-side data validation, responsive layouts, and state management.
+                    Built a responsive 8-step loan application frontend using React.js with modular components, client-side form validation, document upload flows, and local state persistence.
                   </p>
                 </TiltCard>
 
