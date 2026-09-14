@@ -32,9 +32,12 @@ import {
 
 import ashokPortrait from './assets/ashok_portrait_main.jpg';
 import ashokPolaroidCoding from './assets/ashok_polaroid_coding_desk.jpg';
-import ashokPolaroidSketching from './assets/ashok_polaroid_sketching.jpg';
-import ashokPolaroidFloor from './assets/ashok_polaroid_floor_headphones.jpg';
-import ashokResearchFloor from './assets/ashok_research_papers_floor.jpg';
+import ashokJourneyRoad from './assets/ashok_journey_long_way_to_go.jpg';
+import ashokCleanEnergyGrid from './assets/ashok_clean_energy_grid.jpg';
+import ashokStoneFoundations from './assets/ashok_stone_foundations.jpg';
+import ashokMindfulHumanTech from './assets/ashok_mindful_human_tech.jpg';
+import ashokFieldLogisticsScooter from './assets/ashok_field_logistics_scooter.jpg';
+import ashokWalkingLongWay from './assets/ashok_walking_long_way_to_go.png';
 import adobeCertificate from './assets/adobe_hackathon_certificate.png';
 import zethetaCertificate from './assets/zetheta_internship_certificate.png';
 import corizoCertificate from './assets/corizo_training_certificate.png';
@@ -47,6 +50,7 @@ import { TiltCard } from './components/TiltCard';
 import { AmbientGlow } from './components/AmbientGlow';
 import { ScrollToTop } from './components/ScrollToTop';
 import { Preloader } from './components/Preloader';
+import { AmbientAudio } from './components/AmbientAudio';
 
 import './App.css';
 
@@ -269,32 +273,53 @@ const App = () => {
       caption: "Full-Stack Developer & AI Systems Specialist. B.Tech CSE (AI) at Parul University."
     },
     {
-      id: "polaroid-floor",
-      img: ashokPolaroidFloor,
-      title: "Late-Night Flow & Creative Focus",
-      tag: "FOCUS • 2026",
-      caption: "Late night deep focus, reading system architecture and hardware flow."
-    },
-    {
-      id: "polaroid-sketching",
-      img: ashokPolaroidSketching,
-      title: "System Design & Schemas",
-      tag: "ARCHITECTURE • ASHOK",
-      caption: "Sketching database schemas, API contracts, and user journey flowcharts."
-    },
-    {
-      id: "research-floor",
-      img: ashokResearchFloor,
-      title: "Deep Research & Problem Solving",
-      tag: "RESEARCH • ARCHIVE",
-      caption: "Unravelling complex problem domains, algorithmic design, and architecture papers."
-    },
-    {
       id: "coding-desk",
       img: ashokPolaroidCoding,
       title: "Production Engineering Workspace",
-      tag: "WORKSPACE • 2026",
+      tag: "DEV WORKSPACE • 2026",
       caption: "Full-Stack Developer & AI Systems Engineer at the coding workspace."
+    },
+    {
+      id: "trip-long-way-to-go",
+      img: ashokWalkingLongWay,
+      title: "Long Way to Go... — Countryside Road Trip",
+      tag: "PERSONAL TRIP • JOURNEY",
+      caption: "Candid snapshot walking down the lush green tree tunnel road: 'long way to go..' — exploring nature and recharging outside the screen."
+    },
+    {
+      id: "trip-journey-road",
+      img: ashokJourneyRoad,
+      title: "A Long Way to Go... — Highway Road Trip",
+      tag: "PERSONAL TRIP • HIGHWAY",
+      caption: "Misty tree canopy and the iconic yellow road marker: 'A long way to go...' — candid road trip memory."
+    },
+    {
+      id: "trip-morning-breeze",
+      img: ashokCleanEnergyGrid,
+      title: "Morning Breeze — Roadside Scenery",
+      tag: "PERSONAL TRIP • 2026",
+      caption: "Taking a quiet breather along the countryside highway on a misty morning."
+    },
+    {
+      id: "trip-stone-trails",
+      img: ashokStoneFoundations,
+      title: "Old Stone Walls — Trail Exploring",
+      tag: "PERSONAL TRIP • HERITAGE",
+      caption: "Exploring historic stone walls and quiet countryside paths during a trip."
+    },
+    {
+      id: "trip-canopy-walk",
+      img: ashokMindfulHumanTech,
+      title: "Tree Canopy Walk — Nature Break",
+      tag: "PERSONAL TRIP • NATURE",
+      caption: "Peaceful walk down tree-covered country lanes on a fresh foggy morning."
+    },
+    {
+      id: "trip-country-roads",
+      img: ashokFieldLogisticsScooter,
+      title: "Country Roads — Two-Wheeled Ride",
+      tag: "PERSONAL TRIP • VILLAGE",
+      caption: "Everyday moments and scenic cruising through rural village lanes."
     },
     {
       id: "cert-zetheta",
@@ -366,6 +391,9 @@ const App = () => {
 
       {/* Floating Scroll to Top with Circular Depth Ring */}
       <ScrollToTop />
+
+      {/* YouTube Ambient Background Soundscape Stream ("Silent Flute" by The Nep Tunes) */}
+      <AmbientAudio />
 
       {/* Top Scroll Indicator Line */}
       <motion.div className="top-scroll-line" style={{ scaleX }} />
@@ -752,67 +780,125 @@ const App = () => {
                 </motion.div>
               </motion.div>
 
-              {/* EDITORIAL SNAPSHOTS & STORY POLAROIDS (WITH 3D TILT EFFECT) */}
+              {/* PERSONAL TRIP SNAPSHOTS & TRAVEL MEMORIES (NOT PROJECTS) */}
+              <div className="trip-dispatches-header">
+                <div className="trip-badge-row">
+                  <span className="trip-section-pill">
+                    <Sparkles size={11} /> PERSONAL TRIP MEMORIES • LIFE OUTSIDE CODE
+                  </span>
+                </div>
+                <h3 className="trip-section-title">Life Beyond the Terminal</h3>
+                <p className="trip-section-sub">
+                  A few candid snapshots from road trips, quiet highway trails, and countryside travels — exploring nature and recharging outside the screen.
+                </p>
+              </div>
+
+              {/* EDITORIAL SNAPSHOTS & AUTHENTIC PERSONAL TRIP POLAROIDS */}
               <motion.div
                 className="editorial-snapshots-row"
                 variants={staggerContainer}
                 initial="hidden"
                 animate="visible"
               >
+                {/* 1. Long Way to Go — Personal Journey Snapshot */}
                 <TiltCard
-                  className="polaroid-card tilt-left"
-                  onClick={() => openLightboxById('polaroid-floor')}
+                  className="polaroid-card tilt-subtle"
+                  onClick={() => openLightboxById('trip-long-way-to-go')}
                   title="Click to view full photo"
                 >
-                  <div className="washi-tape green-tape"></div>
+                  <div className="washi-tape amber-tape"></div>
                   <div className="polaroid-img-wrapper">
-                    <img src={ashokPolaroidFloor} alt="Ashok Creative Focus" loading="lazy" />
+                    <img
+                      src={ashokWalkingLongWay}
+                      alt="Ashok walking down a tree canopy road — long way to go"
+                      loading="lazy"
+                      style={{ objectPosition: 'center 20%' }}
+                    />
                     <div className="polaroid-overlay-badge">
                       <Sparkles size={12} /> VIEW RAW
                     </div>
                   </div>
                   <div className="polaroid-caption-block">
-                    <span className="polaroid-tag-label">FOCUS • 2026</span>
-                    <h4 className="polaroid-title">Late-Night Flow</h4>
-                    <p className="polaroid-sub">Ambient deep focus, reading architecture & hardware flow.</p>
+                    <span className="polaroid-tag-label" style={{ color: '#F59E0B' }}>JOURNEY • TRAILS</span>
+                    <h4 className="polaroid-title">Long Way to Go...</h4>
+                    <p className="polaroid-sub">Quiet tree tunnel highway — walking forward with miles to explore.</p>
+                  </div>
+                </TiltCard>
+
+                {/* 2. Morning Breeze */}
+                <TiltCard
+                  className="polaroid-card tilt-left"
+                  onClick={() => openLightboxById('trip-morning-breeze')}
+                  title="Click to view full photo"
+                >
+                  <div className="washi-tape green-tape"></div>
+                  <div className="polaroid-img-wrapper">
+                    <img src={ashokCleanEnergyGrid} alt="Ashok on a countryside road trip" loading="lazy" />
+                    <div className="polaroid-overlay-badge">
+                      <Sparkles size={12} /> VIEW RAW
+                    </div>
+                  </div>
+                  <div className="polaroid-caption-block">
+                    <span className="polaroid-tag-label">ROAD TRIP • 2026</span>
+                    <h4 className="polaroid-title">Morning Breeze</h4>
+                    <p className="polaroid-sub">Taking a quick breather by the roadside greenery on a quiet morning.</p>
                   </div>
                 </TiltCard>
 
                 <TiltCard
                   className="polaroid-card tilt-subtle"
-                  onClick={() => openLightboxById('polaroid-sketching')}
+                  onClick={() => openLightboxById('trip-stone-trails')}
                   title="Click to view full photo"
                 >
                   <div className="washi-tape red-tape"></div>
                   <div className="polaroid-img-wrapper">
-                    <img src={ashokPolaroidSketching} alt="Ashok System Architecture Sketching" loading="lazy" />
+                    <img src={ashokStoneFoundations} alt="Ashok exploring historic stone structures" loading="lazy" />
                     <div className="polaroid-overlay-badge">
                       <Sparkles size={12} /> VIEW RAW
                     </div>
                   </div>
                   <div className="polaroid-caption-block">
-                    <span className="polaroid-tag-label">ARCHITECTURE • ASHOK</span>
-                    <h4 className="polaroid-title">System Schemas</h4>
-                    <p className="polaroid-sub">Mapping database models, state machines & REST flowcharts.</p>
+                    <span className="polaroid-tag-label">TRAILS • EXPLORING</span>
+                    <h4 className="polaroid-title">Old Stone Walls</h4>
+                    <p className="polaroid-sub">Wandering past historic stone walls along quiet countryside trails.</p>
                   </div>
                 </TiltCard>
 
                 <TiltCard
                   className="polaroid-card tilt-right"
-                  onClick={() => openLightboxById('research-floor')}
+                  onClick={() => openLightboxById('trip-canopy-walk')}
                   title="Click to view full photo"
                 >
                   <div className="washi-tape blue-tape"></div>
                   <div className="polaroid-img-wrapper">
-                    <img src={ashokResearchFloor} alt="Deep Research & Problem Solving" loading="lazy" />
+                    <img src={ashokMindfulHumanTech} alt="Ashok walking down a tree canopy road" loading="lazy" />
                     <div className="polaroid-overlay-badge">
                       <Sparkles size={12} /> VIEW RAW
                     </div>
                   </div>
                   <div className="polaroid-caption-block">
-                    <span className="polaroid-tag-label">RESEARCH • ARCHIVE</span>
-                    <h4 className="polaroid-title">Deep Research</h4>
-                    <p className="polaroid-sub">Analyzing system documentation, algorithmic papers & schemas.</p>
+                    <span className="polaroid-tag-label">NATURE • ESCAPE</span>
+                    <h4 className="polaroid-title">Misty Canopy Walk</h4>
+                    <p className="polaroid-sub">A refreshing walk down tree-covered lanes away from the screen.</p>
+                  </div>
+                </TiltCard>
+
+                <TiltCard
+                  className="polaroid-card tilt-left"
+                  onClick={() => openLightboxById('trip-country-roads')}
+                  title="Click to view full photo"
+                >
+                  <div className="washi-tape green-tape"></div>
+                  <div className="polaroid-img-wrapper">
+                    <img src={ashokFieldLogisticsScooter} alt="Ashok on a countryside scooter ride" loading="lazy" />
+                    <div className="polaroid-overlay-badge">
+                      <Sparkles size={12} /> VIEW RAW
+                    </div>
+                  </div>
+                  <div className="polaroid-caption-block">
+                    <span className="polaroid-tag-label">VILLAGE • ROADS</span>
+                    <h4 className="polaroid-title">Country Roads</h4>
+                    <p className="polaroid-sub">Cruising on two wheels through scenic village lanes and open fields.</p>
                   </div>
                 </TiltCard>
               </motion.div>

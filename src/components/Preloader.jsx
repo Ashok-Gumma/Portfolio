@@ -10,6 +10,9 @@ export const Preloader = ({ onComplete }) => {
   const handleFinish = () => {
     if (completedRef.current) return;
     completedRef.current = true;
+    try {
+      window.dispatchEvent(new CustomEvent('start-portfolio-audio'));
+    } catch (e) {}
     setIsExiting(true);
     setTimeout(() => {
       onComplete();
