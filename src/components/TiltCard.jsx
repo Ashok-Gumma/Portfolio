@@ -7,6 +7,7 @@ export const TiltCard = ({
   maxTilt = 8,
   glare = true,
   onClick,
+  onKeyDown,
   style = {},
   ...props
 }) => {
@@ -34,7 +35,7 @@ export const TiltCard = ({
 
     setGlarePos({
       x: Math.round((mouseX / width) * 100),
-      y: Math.round((mouseY / height) * 100)
+      y: Math.round((mouseY / height) * 100),
     });
   };
 
@@ -47,6 +48,22 @@ export const TiltCard = ({
     rotateX.set(0);
     rotateY.set(0);
   };
+
+  const handleKeyDown = (e) => {
+    onKeyDown?.(e);
+    if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      onClick(e);
+    }
+  };
+
+  const interactiveProps = onClick
+    ? {
+        role: 'button',
+        tabIndex: 0,
+        onKeyDown: handleKeyDown,
+      }
+    : {};
 
   return (
     <motion.div
@@ -61,8 +78,9 @@ export const TiltCard = ({
         rotateX,
         rotateY,
         transformStyle: 'preserve-3d',
-        ...style
+        ...style,
       }}
+      {...interactiveProps}
       {...props}
     >
       {children}
@@ -71,7 +89,7 @@ export const TiltCard = ({
           className="tilt-card-glare"
           style={{
             opacity: isHovered ? 0.15 : 0,
-            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 65%)`
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 65%)`,
           }}
         />
       )}

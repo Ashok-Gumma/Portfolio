@@ -48,7 +48,7 @@ export const ScrollToTop = () => {
           <svg className="scroll-progress-ring" width="44" height="44">
             <circle
               className="progress-ring-track"
-              stroke="rgba(30, 30, 30, 0.15)"
+              stroke="rgba(255, 255, 255, 0.15)"
               strokeWidth="2.5"
               fill="transparent"
               r={radius}

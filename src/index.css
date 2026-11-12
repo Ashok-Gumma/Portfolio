@@ -1,13 +1,10 @@
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Plus Jakarta Sans', sans-serif;
-  --font-headline: 'Caveat', cursive;
+  --font-headline: 'Plus Jakarta Sans', sans-serif;
   --font-serif: 'DM Serif Display', Georgia, serif;
   --font-mono: 'JetBrains Mono', monospace;
   --font-curly: 'Caveat', cursive;
-  --font-kalam: 'Kalam', cursive;
-  --font-itim: 'Itim', cursive;
-  --font-editorial: 'Newsreader', Georgia, serif;
 
   /* Modern High-End Technical Black Palette */
   --bg-cream: #0B0C10;
@@ -107,4 +104,30 @@ body {
 
 #root {
   width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-red);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 100001;
+  background: var(--accent-red);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  box-shadow: var(--shadow-red);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 16px;
 }
